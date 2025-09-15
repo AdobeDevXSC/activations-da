@@ -2,8 +2,11 @@ import { toClassName } from '../../scripts/aem.js';
 
 function createFieldWrapper(fd) {
   const fieldWrapper = document.createElement('div');
-  if (fd.Style) fieldWrapper.className = fd.Style;
-  fieldWrapper.classList.add('field-wrapper', `${fd.Type}-wrapper`);
+  const type = fd.Customclass;
+fieldWrapper.classList.add('field-wrapper', `${type}`);
+if (fd.Class) {
+  fieldWrapper.classList.add(fd.Class);
+}
 
   fieldWrapper.dataset.fieldset = fd.Fieldset;
 
@@ -22,21 +25,26 @@ function generateFieldId(fd, suffix = '') {
 function createLabel(fd) {
   const label = document.createElement('label');
   label.id = generateFieldId(fd, '-label');
-  label.textContent = fd.Label || fd.Name;
-  label.setAttribute('for', fd.Id);
-  if (fd.Mandatory.toLowerCase() === 'true' || fd.Mandatory.toLowerCase() === 'x') {
+  label.textContent = fd.Label || fd.label || fd.Name || fd.name || '';
+  label.setAttribute('for', fd.Id || fd.id || '');
+  const mandatory = (fd.Mandatory || fd.mandatory || fd.required || '').toString().toLowerCase();
+  if (mandatory === 'true' || mandatory === 'x' || mandatory === '1' || mandatory === true) {
     label.dataset.required = true;
   }
   return label;
 }
 
+
 function setCommonAttributes(field, fd) {
-  field.id = fd.Id;
-  field.name = fd.Name;
-  field.required = fd.Mandatory && (fd.Mandatory.toLowerCase() === 'true' || fd.Mandatory.toLowerCase() === 'x');
-  field.placeholder = fd.Placeholder;
-  field.value = fd.Value;
+  field.id = fd.Id || fd.id || '';
+  field.name = fd.Name || fd.name || '';
+  const mandatory = (fd.Mandatory || fd.mandatory || fd.required || '').toString().toLowerCase();
+  field.required = mandatory === 'true' || mandatory === 'x' || mandatory === '1' || mandatory === true;
+  field.placeholder = fd.Placeholder || fd.placeholder || '';
+  field.value = fd.Value || fd.value || '';
 }
+
+
 
 const createHeading = (fd) => {
   const fieldWrapper = createFieldWrapper(fd);
@@ -143,7 +151,7 @@ const createTextArea = (fd) => {
 
 const createInput = (fd) => {
   const field = document.createElement('input');
-  field.type = fd.Type;
+  field.type = (fd.Type || fd.type || 'text').toLowerCase();
   setCommonAttributes(field, fd);
 
   const fieldWrapper = createFieldWrapper(fd);
@@ -226,11 +234,13 @@ const FIELD_CREATOR_FUNCTIONS = {
   radio: createRadio,
 };
 
+
 export default async function createField(fd, form) {
+  console.log('createField fd:', fd);  // <-- Is line ko add karein
   fd.Id = fd.Id || generateFieldId(fd);
-  const type = fd.Type.toLowerCase();
+  const type = (fd.Type || fd.type || '').toLowerCase();
   const createFieldFunc = FIELD_CREATOR_FUNCTIONS[type] || createInput;
   const fieldElements = await createFieldFunc(fd, form);
-
   return fieldElements.fieldWrapper;
 }
+

@@ -1,0 +1,9 @@
+header {display: none;}
+* {
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+}
+body {background-color: #e4e4e4;}
+
+

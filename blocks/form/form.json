@@ -1,0 +1,53 @@
+{
+  "data": [
+    {
+      "type": "text",
+      "Label": "First name",
+      "Name": "firstName",
+      "required": true,
+      "Placeholder": "Enter your first name"
+    },
+    {
+      "type": "text",
+      "Label": "Last name",
+      "Name": "lastName",
+      "required": true,
+      "Placeholder": "Enter your last name"
+    },
+    {
+      "type": "email",
+      "Label": "Email",
+      "Name": "email",
+      "required": true,
+      "Customclass": "email",
+      "Placeholder": "Enter your email address"
+    },
+    {
+      "type": "text",
+      "Label": "Company",
+      "Name": "company",
+      "required": true,
+      "Placeholder": "Enter your company's name"
+    },
+    {
+      "type": "select",
+      "Label": "Country",
+      "Name": "country",
+      "required": false,
+      "Customclass": "country-select",
+      "Placeholder": "Select your country",
+      "Options": "India, USA, UK, Canada"
+    },
+    {
+      "type": "checkbox",
+      "Label": "Keep me updated on Adobe",
+      "Name": "adobeUpdates",
+      "required": false
+    },
+    {
+      "type": "submit",
+      "Label": "Submit",
+      "Name": "submit"
+    }
+  ]
+}
