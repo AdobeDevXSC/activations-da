@@ -2,18 +2,28 @@ import { toClassName } from '../../scripts/aem.js';
 
 function createFieldWrapper(fd) {
   const fieldWrapper = document.createElement('div');
-  const type = fd.Customclass;
-fieldWrapper.classList.add('field-wrapper', `${type}`);
-if (fd.Class) {
-  fieldWrapper.classList.add(fd.Class);
-}
 
-  fieldWrapper.dataset.fieldset = fd.Fieldset;
+  // Always add 'field-wrapper' class
+  fieldWrapper.classList.add('field-wrapper');
+
+  // Add field type class fallback to 'text-wrapper' if type is missing
+  const type = (fd.Type || fd.type || 'text').toLowerCase();
+  fieldWrapper.classList.add(`${type}-wrapper`);
+
+  // Add optional custom class from JSON (support several casing variants)
+  const customClass = fd.Customclass || fd.CustomClass || fd.class || fd.Class;
+  if (customClass) {
+    fieldWrapper.classList.add(customClass);
+  }
+
+  fieldWrapper.dataset.fieldset = fd.Fieldset || '';
 
   return fieldWrapper;
 }
 
-const ids = [];
+const ids = {};
+
+// Utility to generate unique IDs
 function generateFieldId(fd, suffix = '') {
   const slug = toClassName(`form-${fd.Name}${suffix}`);
   ids[slug] = ids[slug] || 0;
@@ -25,10 +35,11 @@ function generateFieldId(fd, suffix = '') {
 function createLabel(fd) {
   const label = document.createElement('label');
   label.id = generateFieldId(fd, '-label');
-  label.textContent = fd.Label || fd.label || fd.Name || fd.name || '';
+  // Use innerHTML instead of textContent to support HTML in the label
+  label.innerHTML = fd.Label || fd.label || fd.Name || fd.name || '';
   label.setAttribute('for', fd.Id || fd.id || '');
   const mandatory = (fd.Mandatory || fd.mandatory || fd.required || '').toString().toLowerCase();
-  if (mandatory === 'true' || mandatory === 'x' || mandatory === '1' || mandatory === true) {
+  if (['true', 'x', '1'].includes(mandatory)) {
     label.dataset.required = true;
   }
   return label;
@@ -39,41 +50,37 @@ function setCommonAttributes(field, fd) {
   field.id = fd.Id || fd.id || '';
   field.name = fd.Name || fd.name || '';
   const mandatory = (fd.Mandatory || fd.mandatory || fd.required || '').toString().toLowerCase();
-  field.required = mandatory === 'true' || mandatory === 'x' || mandatory === '1' || mandatory === true;
+  field.required = ['true', 'x', '1'].includes(mandatory);
   field.placeholder = fd.Placeholder || fd.placeholder || '';
   field.value = fd.Value || fd.value || '';
 }
 
+const createInput = (fd) => {
+  const field = document.createElement('input');
+  field.type = (fd.Type || fd.type || 'text').toLowerCase();
+  setCommonAttributes(field, fd);
 
-
-const createHeading = (fd) => {
   const fieldWrapper = createFieldWrapper(fd);
+  const label = createLabel(fd);
+  field.setAttribute('aria-labelledby', label.id);
 
-  const level = fd.Style && fd.Style.includes('sub-heading') ? 3 : 2;
-  const heading = document.createElement(`h${level}`);
-  heading.textContent = fd.Value || fd.Label;
-  heading.id = fd.Id;
+  // For checkbox and radio, append label after input
+  if (field.type === 'checkbox' || field.type === 'radio') {
+    fieldWrapper.append(field);
+    fieldWrapper.append(label);
+  } else {
+    // For other inputs, prepend label before input
+    fieldWrapper.append(label);
+    fieldWrapper.append(field);
+  }
 
-  fieldWrapper.append(heading);
-
-  return { field: heading, fieldWrapper };
-};
-
-const createPlaintext = (fd) => {
-  const fieldWrapper = createFieldWrapper(fd);
-
-  const text = document.createElement('p');
-  text.textContent = fd.Value || fd.Label;
-  text.id = fd.Id;
-
-  fieldWrapper.append(text);
-
-  return { field: text, fieldWrapper };
+  return { field, fieldWrapper };
 };
 
 const createSelect = async (fd) => {
   const select = document.createElement('select');
   setCommonAttributes(select, fd);
+
   const addOption = ({ text, value }) => {
     const option = document.createElement('option');
     option.text = text.trim();
@@ -108,21 +115,16 @@ const createSelect = async (fd) => {
         value: opt.trim().toLowerCase(),
       }));
     }
-
     options.forEach((opt) => addOption(opt));
   }
 
   const fieldWrapper = createFieldWrapper(fd);
+  const label = createLabel(fd);
+  select.setAttribute('aria-labelledby', label.id);
+
+  fieldWrapper.append(label);
   fieldWrapper.append(select);
-  fieldWrapper.prepend(createLabel(fd));
-
   return { field: select, fieldWrapper };
-};
-
-const createConfirmation = (fd, form) => {
-  form.dataset.confirmation = new URL(fd.Value).pathname;
-
-  return {};
 };
 
 const createSubmit = (fd) => {
@@ -143,104 +145,78 @@ const createTextArea = (fd) => {
   const fieldWrapper = createFieldWrapper(fd);
   const label = createLabel(fd);
   field.setAttribute('aria-labelledby', label.id);
+
+  fieldWrapper.append(label);
   fieldWrapper.append(field);
-  fieldWrapper.prepend(label);
-
-  return { field, fieldWrapper };
-};
-
-const createInput = (fd) => {
-  const field = document.createElement('input');
-  field.type = (fd.Type || fd.type || 'text').toLowerCase();
-  setCommonAttributes(field, fd);
-
-  const fieldWrapper = createFieldWrapper(fd);
-  const label = createLabel(fd);
-  field.setAttribute('aria-labelledby', label.id);
-  fieldWrapper.append(field);
-  if (fd.Type === 'radio' || fd.Type === 'checkbox') {
-    fieldWrapper.append(label);
-  } else {
-    fieldWrapper.prepend(label);
-  }
-
-  return { field, fieldWrapper };
-};
-
-const createFieldset = (fd) => {
-  const field = document.createElement('fieldset');
-  setCommonAttributes(field, fd);
-
-  if (fd.Label) {
-    const legend = document.createElement('legend');
-    legend.textContent = fd.Label;
-    field.append(legend);
-  }
-
-  const fieldWrapper = createFieldWrapper(fd);
-  fieldWrapper.append(field);
-
-  return { field, fieldWrapper };
-};
-
-const createToggle = (fd) => {
-  const { field, fieldWrapper } = createInput(fd);
-  field.type = 'checkbox';
-  if (!field.value) field.value = 'on';
-  field.classList.add('toggle');
-  fieldWrapper.classList.add('selection-wrapper');
-
-  const toggleSwitch = document.createElement('div');
-  toggleSwitch.classList.add('switch');
-  toggleSwitch.append(field);
-  fieldWrapper.append(toggleSwitch);
-
-  const slider = document.createElement('span');
-  slider.classList.add('slider');
-  toggleSwitch.append(slider);
-  slider.addEventListener('click', () => {
-    field.checked = !field.checked;
-  });
-
-  return { field, fieldWrapper };
-};
-
-const createCheckbox = (fd) => {
-  const { field, fieldWrapper } = createInput(fd);
-  if (!field.value) field.value = 'checked';
-  fieldWrapper.classList.add('selection-wrapper');
-
-  return { field, fieldWrapper };
-};
-
-const createRadio = (fd) => {
-  const { field, fieldWrapper } = createInput(fd);
-  if (!field.value) field.value = fd.Label || 'on';
-  fieldWrapper.classList.add('selection-wrapper');
-
   return { field, fieldWrapper };
 };
 
 const FIELD_CREATOR_FUNCTIONS = {
   select: createSelect,
-  heading: createHeading,
-  plaintext: createPlaintext,
+  heading: (fd) => {
+    const fieldWrapper = createFieldWrapper(fd);
+    const level = fd.Style && fd.Style.includes('sub-heading') ? 3 : 2;
+    const heading = document.createElement(`h${level}`);
+    heading.textContent = fd.Value || fd.Label;
+    heading.id = fd.Id;
+    fieldWrapper.append(heading);
+    return { field: heading, fieldWrapper };
+  },
+  plaintext: (fd) => {
+    const fieldWrapper = createFieldWrapper(fd);
+    const text = document.createElement('p');
+    text.textContent = fd.Value || fd.Label;
+    text.id = fd.Id;
+    fieldWrapper.append(text);
+    return { field: text, fieldWrapper };
+  },
   'text-area': createTextArea,
-  toggle: createToggle,
+  toggle: (fd) => {
+    const { field, fieldWrapper } = createInput(fd);
+    field.type = 'checkbox';
+    if (!field.value) field.value = 'on';
+    field.classList.add('toggle');
+    fieldWrapper.classList.add('selection-wrapper');
+
+    const toggleSwitch = document.createElement('div');
+    toggleSwitch.classList.add('switch');
+    toggleSwitch.append(field);
+    fieldWrapper.append(toggleSwitch);
+
+    const slider = document.createElement('span');
+    slider.classList.add('slider');
+    toggleSwitch.append(slider);
+
+    slider.addEventListener('click', () => {
+      field.checked = !field.checked;
+    });
+
+    return { field, fieldWrapper };
+  },
+  checkbox: (fd) => {
+    const { field, fieldWrapper } = createInput(fd);
+    if (!field.value) field.value = 'checked';
+    fieldWrapper.classList.add('selection-wrapper');
+    return { field, fieldWrapper };
+  },
+  radio: (fd) => {
+    const { field, fieldWrapper } = createInput(fd);
+    if (!field.value) field.value = fd.Label || 'on';
+    fieldWrapper.classList.add('selection-wrapper');
+    return { field, fieldWrapper };
+  },
   submit: createSubmit,
-  confirmation: createConfirmation,
-  fieldset: createFieldset,
-  checkbox: createCheckbox,
-  radio: createRadio,
+  confirmation: (fd, form) => {
+    form.dataset.confirmation = new URL(fd.Value).pathname;
+    return {};
+  },
 };
 
-
 export default async function createField(fd, form) {
-  console.log('createField fd:', fd);  // <-- Is line ko add karein
+  console.log('createField fd:', fd);
   fd.Id = fd.Id || generateFieldId(fd);
   const type = (fd.Type || fd.type || '').toLowerCase();
   const createFieldFunc = FIELD_CREATOR_FUNCTIONS[type] || createInput;
   const fieldElements = await createFieldFunc(fd, form);
   return fieldElements.fieldWrapper;
 }
-

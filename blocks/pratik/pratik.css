@@ -4,6 +4,99 @@ header {display: none;}
     margin: 0px;
     box-sizing: border-box;
 }
-body {background-color: #e4e4e4;}
+body {background-image:url(../../icons/bg-gradient.jpg);background-repeat: no-repeat;
+    background-size: cover;font-family: 'adobe-clean', arial;padding: 74px 0px 234px 74px;color: #222222 !important;position: relative;}
 
+.default-content-wrapper {
+    padding: 0px !important;
+    /* max-width: 100% !important; */
+}
+/* main > .section:first-child {
+    position: absolute;
+    left:56.50%;
+    transform: translateX(-56.50%);
+    top: 3px;
+    margin: 0;
+    width: 221px;
+} */
+main > .section  {
+    margin: 0px!important;
+}
+main > .section > div {
+    max-width: 1006px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+.pratik-container {
+    border-radius: 10px;
+        background-color: #fff;
+    padding: 40px 50px;
+    max-width: 1006px;
+    margin: 0px;
+    border: 1px solid #dedede;
+}
+.pratik-container h2{
+    font-family: 'adobe-clean', arial;
+    font-size: 36px;
+    line-height: 42px;
+    font-weight: normal;
+ }
+.pratik-container h2 + p {
+    font-size: 20px;
+    line-height: 150%;
+    border-bottom: 1px solid #dedede;
+    margin: 0;
+    padding: 0px 0px 24px;
+    font-weight: 400;
+}
+ .pratik-container h2 + p + p {
+    font-size: 28px;
+    line-height: 32px;
+    padding: 24px 0px;
+    margin: 0px;
+    font-weight: normal;
+}
+.pratik-wrapper {
+    position: absolute;
+    bottom: -9px;
+    left: 0px;
+    width: 385px}
+.video-wrapper {
+    position: absolute;
+    bottom: 0;
+    right: 0px;
+    width: 44%;
+    /* z-index: -1; */
+}
 
+.video {
+  margin: 0px!important;
+  max-width: 100%!important;
+}
+video::-webkit-media-controls {
+  display: none !important;
+}
+ video.autoplay,
+video.background {
+  controls: none !important; /* For browsers that support this property */
+  pointer-events: none;      /* Prevent interaction */
+}
+
+/* Fallback to hide the controls UI */
+video.autoplay::-webkit-media-controls,
+video.background::-webkit-media-controls {
+  display: none !important;
+}
+
+.section.form-container.pratik-container.video-container:before {
+    position: absolute;
+    content: "";
+    z-index: 999;
+    background-image: url(http://localhost:3000/sharpie/media_19265cb17ae7476b532ef9e601c75ffb767d398bf.webp);
+    background-repeat: no-repeat;
+    width: 221px;
+    height: 223px;
+    left: 966px;
+    top: 10px;
+    background-size: contain;
+}
