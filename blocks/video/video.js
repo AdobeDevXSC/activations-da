@@ -56,25 +56,50 @@ function embedVimeo(url, autoplay, background) {
 
 function getVideoElement(source, autoplay, background) {
   const video = document.createElement('video');
-  video.setAttribute('controls', '');
-  if (autoplay) video.setAttribute('autoplay', '');
-  if (background) {
-    video.setAttribute('loop', '');
-    video.setAttribute('playsinline', '');
+
+  video.setAttribute('playsinline', '');
+  video.setAttribute('webkit-playsinline', '');
+  video.muted = true;
+  video.setAttribute('muted', '');
+
+  // Apply controls and looping based on flags
+  if (background || autoplay) {
     video.removeAttribute('controls');
-    video.addEventListener('canplay', () => {
-      video.muted = true;
-      if (autoplay) video.play();
-    });
+    video.setAttribute('loop', '');
+  } else {
+    video.controls = true;
+  }
+
+  if (autoplay) {
+    video.setAttribute('autoplay', '');
   }
 
   const sourceEl = document.createElement('source');
-  sourceEl.setAttribute('src', source);
-  sourceEl.setAttribute('type', `video/${source.split('.').pop()}`);
-  video.append(sourceEl);
+  sourceEl.src = source;
+  sourceEl.type = `video/${source.split('.').pop()}`;
+  video.appendChild(sourceEl);
+
+  // Try playing video on canplay
+  video.addEventListener('canplay', () => {
+    video.muted = true;
+    video.play().catch((e) => {
+      console.warn('Video autoplay failed:', e);
+    });
+  });
+
+  // Fallback in case loop attribute doesn’t work: restart video on ended
+  video.addEventListener('ended', () => {
+    if (background || autoplay) {
+      video.currentTime = 0;
+      video.play().catch(() => {});
+    }
+  });
 
   return video;
 }
+
+
+
 
 const loadVideoEmbed = (block, link, autoplay, background) => {
   if (block.dataset.embedLoaded === 'true') {

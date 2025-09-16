@@ -3,6 +3,9 @@ import createField from './form-fields.js';
 async function createForm(formHref, submitHref) {
   const { pathname } = new URL(formHref);
   const resp = await fetch(pathname);
+  if (!resp.ok) {
+    throw new Error(`Failed to fetch form JSON: ${resp.statusText}`);
+  }
   const json = await resp.json();
 
   const form = document.createElement('form');
@@ -15,10 +18,10 @@ async function createForm(formHref, submitHref) {
     }
   });
 
-  // group fields into fieldsets
+  // group fields into fieldsets if any
   const fieldsets = form.querySelectorAll('fieldset');
   fieldsets.forEach((fieldset) => {
-    form.querySelectorAll(`[data-fieldset="${fieldset.name}"`).forEach((field) => {
+    form.querySelectorAll(`[data-fieldset="${fieldset.Name}"]`).forEach((field) => {
       fieldset.append(field);
     });
   });
@@ -28,13 +31,16 @@ async function createForm(formHref, submitHref) {
 
 function generatePayload(form) {
   const payload = {};
-
   [...form.elements].forEach((field) => {
     if (field.name && field.type !== 'submit' && !field.disabled) {
       if (field.type === 'radio') {
         if (field.checked) payload[field.name] = field.value;
       } else if (field.type === 'checkbox') {
-        if (field.checked) payload[field.name] = payload[field.name] ? `${payload[field.name]},${field.value}` : field.value;
+        if (field.checked) {
+          payload[field.name] = payload[field.name]
+            ? `${payload[field.name]},${field.value}`
+            : field.value;
+        }
       } else {
         payload[field.name] = field.value;
       }
@@ -51,7 +57,6 @@ async function handleSubmit(form) {
     form.setAttribute('data-submitting', 'true');
     submit.disabled = true;
 
-    // create payload
     const payload = generatePayload(form);
     const response = await fetch(form.dataset.action, {
       method: 'POST',
@@ -60,17 +65,20 @@ async function handleSubmit(form) {
         'Content-Type': 'application/json',
       },
     });
+
     if (response.ok) {
       if (form.dataset.confirmation) {
         window.location.href = form.dataset.confirmation;
+      } else {
+        alert('Form submitted successfully!');
       }
     } else {
       const error = await response.text();
       throw new Error(error);
     }
   } catch (e) {
-    // eslint-disable-next-line no-console
-    console.error(e);
+    console.error('Form submission error:', e);
+    alert(`Submission failed: ${e.message}`);
   } finally {
     form.setAttribute('data-submitting', 'false');
     submit.disabled = false;
@@ -78,25 +86,39 @@ async function handleSubmit(form) {
 }
 
 export default async function decorate(block) {
+  if (!block) {
+    console.error('No block provided to decorate function');
+    return;
+  }
+
   const links = [...block.querySelectorAll('a')].map((a) => a.href);
   const formLink = links.find((link) => link.startsWith(window.location.origin) && link.endsWith('.json'));
   const submitLink = links.find((link) => link !== formLink);
-  if (!formLink || !submitLink) return;
 
-  const form = await createForm(formLink, submitLink);
-  block.replaceChildren(form);
+  if (!formLink || !submitLink) {
+    console.warn('Form JSON link or submit endpoint missing in block');
+    return;
+  }
 
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const valid = form.checkValidity();
-    if (valid) {
-      handleSubmit(form);
-    } else {
-      const firstInvalidEl = form.querySelector(':invalid:not(fieldset)');
-      if (firstInvalidEl) {
-        firstInvalidEl.focus();
-        firstInvalidEl.scrollIntoView({ behavior: 'smooth' });
+  try {
+    const form = await createForm(formLink, submitLink);
+    block.replaceChildren(form);
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const valid = form.checkValidity();
+      if (valid) {
+        handleSubmit(form);
+      } else {
+        const firstInvalidEl = form.querySelector(':invalid:not(fieldset)');
+        if (firstInvalidEl) {
+          firstInvalidEl.focus();
+          firstInvalidEl.scrollIntoView({ behavior: 'smooth' });
+        }
       }
-    }
-  });
+    });
+  } catch (error) {
+    console.error('Error decorating form block:', error);
+    block.textContent = 'Failed to load form. Please try again later.';
+  }
 }
