@@ -92,7 +92,7 @@ video.background::-webkit-media-controls {
     position: absolute;
     content: "";
     z-index: 999;
-    background-image: url(http://localhost:3000/sharpie/media_19265cb17ae7476b532ef9e601c75ffb767d398bf.webp);
+    background-image: url(../../icons/sunflower.webp);
     background-repeat: no-repeat;
     width: 221px;
     height: 223px;
