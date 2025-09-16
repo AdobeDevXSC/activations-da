@@ -1,14 +1,11 @@
-
-/* pratik */
 .form-wrapper {
-  padding: 0px !important;
+  padding: 0 !important;
 }
-
 
 .form.block form {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 24px; /* row-gap: 30px, column-gap: 40px */
+  gap: 24px;
   justify-items: stretch;
 }
 
@@ -18,7 +15,7 @@
 
 .field-wrapper label {
   font-size: 18px;
-  padding-bottom:13px;
+  padding-bottom: 13px;
   display: block;
   font-weight: 500;
 }
@@ -32,7 +29,7 @@
   border-radius: 10px;
   border: 2px solid #dadada;
   font-size: 18px;
-  margin-bottom: 0px;
+  margin-bottom: 0;
   background: #fff;
   color: #171536;
   box-sizing: border-box;
@@ -43,14 +40,12 @@
 .form.block form input:focus,
 .form.block form select:focus,
 .form.block form textarea:focus {
-  /* border-color: #2d70ff; */
   outline: none;
-  /* background-color: #f5f5f5; */
 }
 
 .form.block form button.button {
   margin: 20px;
-  padding: 10px 0px;
+  padding: 10px 0;
   font-size: 22.5px;
   border-radius: 100px;
   background: #3B63FB;
@@ -58,7 +53,7 @@
   border: none;
   font-weight: 600;
   cursor: pointer;
-  grid-column: span 2; /* Full width of the form */
+  grid-column: span 2;
   justify-self: center;
   width: 155px;
   height: 59px;
@@ -74,10 +69,16 @@ textarea::placeholder {
   opacity: 1;
   font-size: 18px;
 }
-.field-wrapper.submit-button, .field-wrapper.selection-wrapper  {
-    grid-column: span 2;
-} 
-.field-wrapper.submit-button {text-align: center;}
+
+.field-wrapper.submit-button,
+.field-wrapper.selection-wrapper {
+  grid-column: span 2;
+}
+
+.field-wrapper.submit-button {
+  text-align: center;
+}
+
 .field-wrapper.selection-wrapper label {
   font-size: 15px;
   font-weight: 400;
@@ -88,28 +89,36 @@ textarea::placeholder {
   display: inline-block;
   vertical-align: middle;
 }
+
 .form.block form .selection-wrapper input {
   width: 20px;
   display: inline-block;
-      height: 20px;
-      vertical-align: middle;
+  height: 20px;
+  vertical-align: middle;
 
-} .selection-wrapper p{
+}
+
+.selection-wrapper p {
   color: #292929;
 }
- .selection-wrapper a {color: #1473E6;text-decoration: none;}
-@media (max-width: 900px) {
+
+.selection-wrapper a {
+  color: #1473E6;
+  text-decoration: none;
+}
+
+@media (width <= 900px) {
   .form.block {
     padding: 30px;
   }
+
   .form.block form {
     grid-template-columns: 1fr;
-    gap: 25px 0px;
+    gap: 25px 0;
   }
+
   .form.block form button.button,
   .field-wrapper.selection-wrapper {
     grid-column: 1;
   }
 }
-
-

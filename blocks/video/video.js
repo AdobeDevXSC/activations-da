@@ -83,7 +83,7 @@ function getVideoElement(source, autoplay, background) {
   video.addEventListener('canplay', () => {
     video.muted = true;
     video.play().catch((e) => {
-      console.warn('Video autoplay failed:', e);
+      console.warn('Video autoplay failed:', e); // eslint-disable-line no-console
     });
   });
 
@@ -97,9 +97,6 @@ function getVideoElement(source, autoplay, background) {
 
   return video;
 }
-
-
-
 
 const loadVideoEmbed = (block, link, autoplay, background) => {
   if (block.dataset.embedLoaded === 'true') {

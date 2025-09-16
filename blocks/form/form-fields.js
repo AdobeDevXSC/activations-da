@@ -45,7 +45,6 @@ function createLabel(fd) {
   return label;
 }
 
-
 function setCommonAttributes(field, fd) {
   field.id = fd.Id || fd.id || '';
   field.name = fd.Name || fd.name || '';
@@ -213,7 +212,6 @@ const FIELD_CREATOR_FUNCTIONS = {
 };
 
 export default async function createField(fd, form) {
-  console.log('createField fd:', fd);
   fd.Id = fd.Id || generateFieldId(fd);
   const type = (fd.Type || fd.type || '').toLowerCase();
   const createFieldFunc = FIELD_CREATOR_FUNCTIONS[type] || createInput;

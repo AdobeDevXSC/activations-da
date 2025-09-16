@@ -70,15 +70,15 @@ async function handleSubmit(form) {
       if (form.dataset.confirmation) {
         window.location.href = form.dataset.confirmation;
       } else {
-        alert('Form submitted successfully!');
+        alert('Form submitted successfully!'); // eslint-disable-line no-alert
       }
     } else {
       const error = await response.text();
       throw new Error(error);
     }
   } catch (e) {
-    console.error('Form submission error:', e);
-    alert(`Submission failed: ${e.message}`);
+    console.error('Form submission error:', e); // eslint-disable-line no-console
+    alert(`Submission failed: ${e.message}`); // eslint-disable-line no-alert
   } finally {
     form.setAttribute('data-submitting', 'false');
     submit.disabled = false;
@@ -87,7 +87,7 @@ async function handleSubmit(form) {
 
 export default async function decorate(block) {
   if (!block) {
-    console.error('No block provided to decorate function');
+    console.error('No block provided to decorate function'); // eslint-disable-line no-console
     return;
   }
 
@@ -96,7 +96,7 @@ export default async function decorate(block) {
   const submitLink = links.find((link) => link !== formLink);
 
   if (!formLink || !submitLink) {
-    console.warn('Form JSON link or submit endpoint missing in block');
+    console.warn('Form JSON link or submit endpoint missing in block'); // eslint-disable-line no-console
     return;
   }
 
@@ -118,7 +118,7 @@ export default async function decorate(block) {
       }
     });
   } catch (error) {
-    console.error('Error decorating form block:', error);
+    console.error('Error decorating form block:', error); // eslint-disable-line no-console
     block.textContent = 'Failed to load form. Please try again later.';
   }
 }
