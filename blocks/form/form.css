@@ -92,7 +92,9 @@ textarea::placeholder {
 
 /* Hide the native checkbox */
 .intake-form form input[type="checkbox"] {
-  appearance: none;  /* Remove default checkbox styling */
+  appearance: none;
+
+  /* Remove default checkbox styling */
   width: 20px;
   height: 20px;
   border: 2px solid #292929;
@@ -101,26 +103,30 @@ textarea::placeholder {
   background-color: #fff;
   cursor: pointer;
   position: relative;
-  padding: 0px;
+  padding: 0;
   display: inline-block;
 }
 
-/* When the checkbox is checked, add custom styles */
-.intake-form form input[type="checkbox"]:checked {
-  background-color: #292929; /* Custom background color */
-}
-
 /* Use the ::after pseudo-element to display a checkmark */
-.intake-form form input[type="checkbox"]:checked::after, intake-form form input[type="checkbox"]:checked {
-  content: '\2713'; /* Unicode checkmark */
+.intake-form form input[type="checkbox"]:checked::after,
+intake-form form input[type="checkbox"]:checked {
+  content: '\2713';
+
+  /* Unicode checkmark */
   color: white;
   font-weight: bold;
   position: absolute;
   top: -2px;
-left: 3px;
-font-size: 13px;
+  left: 3px;
+  font-size: 13px;
 }
 
+/* When the checkbox is checked, add custom styles */
+.intake-form form input[type="checkbox"]:checked {
+  background-color: #292929;
+  
+  /* Custom background color */
+}
 
 .selection-wrapper p {
   color: #292929;
@@ -130,9 +136,10 @@ font-size: 13px;
   color: #1473E6;
   text-decoration: none;
 }
+
 .submit-class button {
-  margin: 10px 0px 20px;
-  padding: 10px 0px;
+  margin: 10px 0 20px;
+  padding: 10px 0;
   font-size: 22.5px;
   border-radius: 100px;
   background: #3B63FB;
@@ -140,21 +147,24 @@ font-size: 13px;
   border: none;
   font-weight: 600;
   cursor: pointer;
-  grid-column: span 2; /* Full width of the form */
+  grid-column: span 2;
+
+  /* Full width of the form */
   justify-self: center;
   width: 155px;
   height: 59px;
 }
-.submit-class {
-      text-align: center;
 
+.submit-class {
+  text-align: center;
 }
+
 .submit-class button:hover {
   background: #274DEA;
 }
 
 
-@media (width <= 900px) {
+@media (width <=900px) {
   .form.block {
     padding: 30px;
   }
