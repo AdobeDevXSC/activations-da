@@ -61,11 +61,12 @@ function getVideoElement(source, autoplay, background) {
   video.setAttribute('webkit-playsinline', '');
   video.muted = true;
   video.setAttribute('muted', '');
+  video.setAttribute('loop', '');
 
   // Apply controls and looping based on flags
   if (background || autoplay) {
     video.removeAttribute('controls');
-    video.setAttribute('loop', '');
+    video.removeAttribute('loop', '');
   } else {
     video.controls = true;
   }

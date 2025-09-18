@@ -70,7 +70,7 @@ textarea::placeholder {
   font-size: 18px;
 }
 
-.field-wrapper.submit-button,
+.field-wrapper.submit-class,
 .field-wrapper.selection-wrapper {
   grid-column: span 2;
 }
@@ -85,17 +85,47 @@ textarea::placeholder {
   padding-left: 13px;
   margin: 0;
   padding-bottom: 0;
-  width: 97%;
+  width: 95%;
   display: inline-block;
   vertical-align: middle;
 }
 
-.form.block form .selection-wrapper input {
-  width: 20px;
-  display: inline-block;
-  height: 20px;
-  vertical-align: middle;
+/* Hide the native checkbox */
+.intake-form form input[type="checkbox"] {
+  appearance: none;
 
+  /* Remove default checkbox styling */
+  width: 20px;
+  height: 20px;
+  border: 2px solid #292929;
+  vertical-align: middle;
+  border-radius: 6px;
+  background-color: #fff;
+  cursor: pointer;
+  position: relative;
+  padding: 0;
+  display: inline-block;
+}
+
+/* Use the ::after pseudo-element to display a checkmark */
+.intake-form form input[type="checkbox"]:checked::after,
+intake-form form input[type="checkbox"]:checked {
+  content: '\2713';
+
+  /* Unicode checkmark */
+  color: white;
+  font-weight: bold;
+  position: absolute;
+  top: -2px;
+  left: 3px;
+  font-size: 13px;
+}
+
+/* When the checkbox is checked, add custom styles */
+.intake-form form input[type="checkbox"]:checked {
+  background-color: #292929;
+  
+  /* Custom background color */
 }
 
 .selection-wrapper p {
@@ -107,7 +137,34 @@ textarea::placeholder {
   text-decoration: none;
 }
 
-@media (width <= 900px) {
+.submit-class button {
+  margin: 10px 0 20px;
+  padding: 10px 0;
+  font-size: 22.5px;
+  border-radius: 100px;
+  background: #3B63FB;
+  color: #fff;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  grid-column: span 2;
+
+  /* Full width of the form */
+  justify-self: center;
+  width: 155px;
+  height: 59px;
+}
+
+.submit-class {
+  text-align: center;
+}
+
+.submit-class button:hover {
+  background: #274DEA;
+}
+
+
+@media (width <=900px) {
   .form.block {
     padding: 30px;
   }

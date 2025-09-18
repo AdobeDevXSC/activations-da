@@ -3,17 +3,22 @@
   margin: 0px;
   box-sizing: border-box;
 }
-body {
+p {
+  margin: 0;
+}
+body.sharpie {
   background-image: url(../../icons/bg-gradient.jpg);
   background-repeat: no-repeat;
   background-size: cover;
-  font-family: 'adobe-clean', arial;
+  font-family: Adobe Clean, Arial, Helvetica, sans-serif;
   padding: 74px 0px 234px 74px;
   color: #222222 !important;
   position: relative;
+  height: 100vh;
+  overflow: hidden;
 }
 
-header {
+header,footer {
   display: none;
 }
 
@@ -21,9 +26,6 @@ body {
   /* overflow: hidden; */
 }
 
-footer {
-  display: none;
-}
 
 .default-content-wrapper {
   padding: 0px !important;
@@ -33,7 +35,7 @@ footer {
 main > .section  {
   margin: 0px!important;
 }
-main > .section > div {
+.sharpie main > .section > div {
   max-width: 1006px !important;
   padding: 0 !important;
   margin: 0 !important;
@@ -42,17 +44,18 @@ main > .section > div {
 .intake-form {
   border-radius: 10px;
       background-color: #fff;
-  padding: 40px 50px;
+  padding: 40px 56px;
   max-width: 1006px;
   margin: 0px;
   border: 1px solid #dedede;
 }
 
 .intake-form h2{
-  font-family: 'adobe-clean', arial;
+  font-family: 'Adobe Clean', Arial, Helvetica, sans-serif;
   font-size: 36px;
   line-height: 42px;
-  font-weight: normal;
+  font-weight: 600;
+  margin: 54px 0px 12px;
 }
 
 .intake-form h2 + p {
@@ -76,6 +79,25 @@ main > .section > div {
 
 .intake-form > .default-content-wrapper:nth-child(3) {
   position: absolute;
-  bottom: -9px;
-  left: 0px;
-  width: 385px}
+  bottom: 0px;
+  left: -30px;
+  /* width: 385px; */
+  width: 290px;
+}
+
+.intake-form > .default-content-wrapper:nth-child(3) picture img{    margin-bottom: -8px;}
+
+  .intake-form:before {
+    position: absolute;
+    content: "";
+    z-index: 999;
+    background-image: url(../../icons/sunflower.webp);
+    background-repeat: no-repeat;
+    width: 221px;
+    height: 223px;
+    left: 966px;
+    top: 10px;
+    background-size: contain;
+}
+
+

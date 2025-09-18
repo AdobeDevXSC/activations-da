@@ -71,25 +71,25 @@
   transform: translate(-50%, -50%);
 }
 
-.video-wrapper {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 44%;
+.intake-form .video-wrapper {
+ position: absolute;
+    bottom: -8px;
+    right: 8%;
+    width: 30%;
+    z-index: -1;
 }
 
-video::-webkit-media-controls {
+.intake-form video::-webkit-media-controls {
   display: none !important;
 }
 
-video.autoplay,
-video.background {
+.intake-form video.autoplay, .intake-form  video.background {
   pointer-events: none;
 }
 
 /* Fallback to hide the controls UI */
-video.autoplay::-webkit-media-controls,
-video.background::-webkit-media-controls {
+.intake-form  video.autoplay::-webkit-media-controls,
+.intake-form  video.background::-webkit-media-controls {
   display: none !important;
 }
 
