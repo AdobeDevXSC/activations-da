@@ -56,21 +56,19 @@ function embedVimeo(url, autoplay, background) {
 
 function getVideoElement(source, autoplay, background) {
   const video = document.createElement('video');
-
   video.setAttribute('playsinline', '');
   video.setAttribute('webkit-playsinline', '');
-  video.muted = true;
-  video.setAttribute('muted', '');
-  video.setAttribute('loop', '');
-
+  // video.muted = true;
+  // video.setAttribute('muted', '');
+  // video.setAttribute('loop', '');
   // Apply controls and looping based on flags
-  if (background || autoplay) {
-    video.removeAttribute('controls');
-    video.removeAttribute('loop', '');
-  } else {
-    video.controls = true;
-  }
-
+  // if (background || autoplay) {
+  //   video.removeAttribute('controls');
+  //   video.removeAttribute('loop', '');
+  // }
+  // else {
+  //   video.controls = true;
+  // }
   if (autoplay) {
     video.setAttribute('autoplay', '');
   }
@@ -92,7 +90,7 @@ function getVideoElement(source, autoplay, background) {
   video.addEventListener('ended', () => {
     if (background || autoplay) {
       video.currentTime = 0;
-      video.play().catch(() => {});
+      video.play().catch(() => { });
     }
   });
 
@@ -166,3 +164,37 @@ export default async function decorate(block) {
     observer.observe(block);
   }
 }
+
+/* sharpie video section javascript end code*/
+
+window.onload = function () {
+  const IntakeVideo = document.querySelector('.intake-form video');
+  if (IntakeVideo) {
+    IntakeVideo.setAttribute('muted', '');
+    IntakeVideo.setAttribute('loop', '');
+  }
+  const SharpiVideo = document.querySelector('.sharpie-video video');
+  const link = document.querySelector('.sharpie-video .button');
+  const videoWrap = document.querySelector('.sharpie-video .video')
+
+  if (SharpiVideo) {
+    SharpiVideo.setAttribute('controls', '');
+
+    // Single click → play if paused
+    SharpiVideo.addEventListener('click', () => {
+      if (SharpiVideo.paused) SharpiVideo.play();
+    });
+
+    // Video ended → enable link
+    SharpiVideo.addEventListener('ended', () => {
+      if (link) link.classList.add('enabled');
+    });
+    videoWrap.addEventListener('dblclick', () => {
+      if (link) link.classList.add('enabled');
+    });
+    videoWrap.addEventListener('contextmenu', (e) => {
+      if (link) link.classList.add('enabled');
+    });
+  }
+};
+/* sharpie video section javascript end code*/

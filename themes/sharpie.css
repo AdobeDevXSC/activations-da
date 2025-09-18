@@ -3,9 +3,11 @@
   margin: 0px;
   box-sizing: border-box;
 }
+
 p {
   margin: 0;
 }
+
 body.sharpie {
   background-image: url(../../icons/bg-gradient.jpg);
   background-repeat: no-repeat;
@@ -18,7 +20,8 @@ body.sharpie {
   overflow: hidden;
 }
 
-header,footer {
+header,
+footer {
   display: none;
 }
 
@@ -32,10 +35,11 @@ body {
   /* max-width: 100% !important; */
 }
 
-main > .section  {
-  margin: 0px!important;
+main>.section {
+  margin: 0px !important;
 }
-.sharpie main > .section > div {
+
+.sharpie main>.section>div {
   max-width: 1006px !important;
   padding: 0 !important;
   margin: 0 !important;
@@ -43,22 +47,26 @@ main > .section  {
 
 .intake-form {
   border-radius: 10px;
-      background-color: #fff;
+  background-color: #fff;
   padding: 40px 56px;
   max-width: 1006px;
   margin: 0px;
   border: 1px solid #dedede;
 }
 
-.intake-form h2{
-  font-family: 'Adobe Clean', Arial, Helvetica, sans-serif;
+.intake-form h2 {
+  /* font-family: 'Adobe Clean', Arial, Helvetica, sans-serif; */
   font-size: 36px;
   line-height: 42px;
-  font-weight: 600;
+  /* font-weight: 800; */
   margin: 54px 0px 12px;
 }
 
-.intake-form h2 + p {
+.intake-form h2 strong {
+  font-weight: normal;
+}
+
+.intake-form h2+p {
   font-size: 20px;
   line-height: 150%;
   border-bottom: 1px solid #dedede;
@@ -67,7 +75,7 @@ main > .section  {
   font-weight: 400;
 }
 
-.intake-form h2 + p + p {
+.intake-form h2+p+p {
   font-size: 28px;
   line-height: 32px;
   padding: 24px 0px;
@@ -77,7 +85,7 @@ main > .section  {
 
 /* .intake-form > div:nth-child(3) */
 
-.intake-form > .default-content-wrapper:nth-child(3) {
+.intake-form>.default-content-wrapper:nth-child(3) {
   position: absolute;
   bottom: 0px;
   left: -30px;
@@ -85,19 +93,19 @@ main > .section  {
   width: 290px;
 }
 
-.intake-form > .default-content-wrapper:nth-child(3) picture img{    margin-bottom: -8px;}
-
-  .intake-form:before {
-    position: absolute;
-    content: "";
-    z-index: 999;
-    background-image: url(../../icons/sunflower.webp);
-    background-repeat: no-repeat;
-    width: 221px;
-    height: 223px;
-    left: 966px;
-    top: 10px;
-    background-size: contain;
+.intake-form>.default-content-wrapper:nth-child(3) picture img {
+  margin-bottom: -8px;
 }
 
-
+.intake-form:before {
+  position: absolute;
+  content: "";
+  z-index: 999;
+  background-image: url(../../icons/sunflower.webp);
+  background-repeat: no-repeat;
+  width: 221px;
+  height: 223px;
+  left: 966px;
+  top: 10px;
+  background-size: contain;
+}
