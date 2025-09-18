@@ -166,26 +166,35 @@ export default async function decorate(block) {
 }
 
 /* sharpie video section javascript end code*/
+
 window.onload = function () {
   const IntakeVideo = document.querySelector('.intake-form video');
   if (IntakeVideo) {
     IntakeVideo.setAttribute('muted', '');
     IntakeVideo.setAttribute('loop', '');
   }
-
   const SharpiVideo = document.querySelector('.sharpie-video video');
   const link = document.querySelector('.sharpie-video .button');
+  const videoWrap = document.querySelector('.sharpie-video .video')
 
   if (SharpiVideo) {
     SharpiVideo.setAttribute('controls', '');
+
+    // Single click → play if paused
     SharpiVideo.addEventListener('click', () => {
       if (SharpiVideo.paused) SharpiVideo.play();
     });
+
+    // Video ended → enable link
     SharpiVideo.addEventListener('ended', () => {
+      if (link) link.classList.add('enabled');
+    });
+    videoWrap.addEventListener('dblclick', () => {
+      if (link) link.classList.add('enabled');
+    });
+    videoWrap.addEventListener('contextmenu', (e) => {
       if (link) link.classList.add('enabled');
     });
   }
 };
-
-
 /* sharpie video section javascript end code*/
