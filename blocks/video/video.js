@@ -91,7 +91,7 @@ function getVideoElement(source, autoplay, background) {
   video.addEventListener('ended', () => {
     if (background || autoplay) {
       video.currentTime = 0;
-      video.play().catch(() => {});
+      video.play().catch(() => { });
     }
   });
 
@@ -165,3 +165,17 @@ export default async function decorate(block) {
     observer.observe(block);
   }
 }
+
+/* sharpie video section javascript end code*/
+window.onload = function () {
+  const video = document.querySelector('.sharpie-video video');
+  const link = document.querySelector('.sharpie-video .button');
+  video.addEventListener('click', () => {
+    if (video.paused) video.play();
+  });
+  video.addEventListener('ended', () => {
+    link.classList.add('enabled');
+  });
+};
+
+/* sharpie video section javascript end code*/
