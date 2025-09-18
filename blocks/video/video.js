@@ -56,21 +56,19 @@ function embedVimeo(url, autoplay, background) {
 
 function getVideoElement(source, autoplay, background) {
   const video = document.createElement('video');
-
   video.setAttribute('playsinline', '');
   video.setAttribute('webkit-playsinline', '');
-  video.muted = true;
-  video.setAttribute('muted', '');
-  video.setAttribute('loop', '');
-
+  // video.muted = true;
+  // video.setAttribute('muted', '');
+  // video.setAttribute('loop', '');
   // Apply controls and looping based on flags
-  if (background || autoplay) {
-    video.removeAttribute('controls');
-    video.removeAttribute('loop', '');
-  } else {
-    video.controls = true;
-  }
-
+  // if (background || autoplay) {
+  //   video.removeAttribute('controls');
+  //   video.removeAttribute('loop', '');
+  // }
+  // else {
+  //   video.controls = true;
+  // }
   if (autoplay) {
     video.setAttribute('autoplay', '');
   }
@@ -169,14 +167,25 @@ export default async function decorate(block) {
 
 /* sharpie video section javascript end code*/
 window.onload = function () {
-  const video = document.querySelector('.sharpie-video video');
+  const IntakeVideo = document.querySelector('.intake-form video');
+  if (IntakeVideo) {
+    IntakeVideo.setAttribute('muted', '');
+    IntakeVideo.setAttribute('loop', '');
+  }
+
+  const SharpiVideo = document.querySelector('.sharpie-video video');
   const link = document.querySelector('.sharpie-video .button');
-  video.addEventListener('click', () => {
-    if (video.paused) video.play();
-  });
-  video.addEventListener('ended', () => {
-    link.classList.add('enabled');
-  });
+
+  if (SharpiVideo) {
+    SharpiVideo.setAttribute('controls', '');
+    SharpiVideo.addEventListener('click', () => {
+      if (SharpiVideo.paused) SharpiVideo.play();
+    });
+    SharpiVideo.addEventListener('ended', () => {
+      if (link) link.classList.add('enabled');
+    });
+  }
 };
+
 
 /* sharpie video section javascript end code*/
