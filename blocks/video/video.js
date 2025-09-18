@@ -165,9 +165,9 @@ export default async function decorate(block) {
   }
 }
 
-/* sharpie video section javascript end code*/
+/* sharpie video section javascript end code */
 
-window.onload = function () {
+window.onload = function () { // eslint-disable-line func-names
   const IntakeVideo = document.querySelector('.intake-form video');
   if (IntakeVideo) {
     IntakeVideo.setAttribute('muted', '');
@@ -175,7 +175,7 @@ window.onload = function () {
   }
   const SharpiVideo = document.querySelector('.sharpie-video video');
   const link = document.querySelector('.sharpie-video .button');
-  const videoWrap = document.querySelector('.sharpie-video .video')
+  const videoWrap = document.querySelector('.sharpie-video .video');
 
   if (SharpiVideo) {
     SharpiVideo.setAttribute('controls', '');
@@ -192,9 +192,9 @@ window.onload = function () {
     videoWrap.addEventListener('dblclick', () => {
       if (link) link.classList.add('enabled');
     });
-    videoWrap.addEventListener('contextmenu', (e) => {
+    videoWrap.addEventListener('contextmenu', () => {
       if (link) link.classList.add('enabled');
     });
   }
 };
-/* sharpie video section javascript end code*/
+/* sharpie video section javascript end code */

@@ -25,6 +25,11 @@
   position: relative;
 }
 
+.sharpie-video * {
+  margin: 0;
+  padding: 0;
+}
+
 .video .video-placeholder>* {
   display: flex;
   align-items: center;
@@ -93,9 +98,9 @@
   display: none !important;
 }
 
-/* sharpie video section css start code*/
+/* sharpie video section css start code */
 .sharpie-video {
-  background-image: url(../../icons/Sizzle-Video-Intro-Screen.webp);
+  background-image: url("../../icons/Sizzle-Video-Intro-Screen.webp");
   background-size: cover;
   height: 100vh;
   padding-top: 40px;
@@ -103,14 +108,9 @@
   box-sizing: border-box;
 }
 
-.sharpie-video * {
-  margin: 0;
-  padding: 0;
-}
-
 .sharpie-video .video-wrapper {
   background: #fff;
-  padding: 40px 40px 0 40px;
+  padding: 40px 40px 0;
   max-width: 80%;
   width: 100%;
   border-top-left-radius: 10px;
@@ -133,7 +133,7 @@
 .sharpie-video>.default-content-wrapper {
   background: #fff;
   text-align: center;
-  padding: 32px 40px 40px 40px;
+  padding: 32px 40px 40px;
   width: 100%;
   max-width: 80%;
   border-bottom-left-radius: 10px;
@@ -143,7 +143,6 @@
 
 .sharpie-video>.default-content-wrapper .button {
   text-decoration: none;
-  border-radius: 6px;
   opacity: 0.5;
   pointer-events: none;
   border-radius: 40px;
@@ -165,4 +164,4 @@
   background: #274DEA;
 }
 
-/* sharpie video section css end code*/
+/* sharpie video section css end code */
