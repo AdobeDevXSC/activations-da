@@ -122,3 +122,106 @@ export default async function decorate(block) {
     block.textContent = 'Failed to load form. Please try again later.';
   }
 }
+
+
+// slide up
+document.querySelectorAll('[class*=" sketch-screen"]').forEach(slide => {
+  // Create wrapper div
+  const wrapper = document.createElement('div');
+  wrapper.className = 'inner-content';
+
+  // Move existing child nodes into wrapper
+  while (slide.firstChild) {
+    wrapper.appendChild(slide.firstChild);
+  }
+
+  // Append wrapper inside slide
+  slide.appendChild(wrapper);
+});
+const container = document.querySelector('.tabs-dots');
+if (container) {
+  const nav = document.createElement('nav');
+  nav.className = 'vertical-dot-nav slide-up-nav';
+  const ul = document.createElement('ul');
+  const dotCount = 4;      // number of dots
+  let activeIndex = 0;     // start with first active
+
+  for (let i = 0; i < dotCount; i++) {
+    const li = document.createElement('li');
+    li.className = i === activeIndex ? 'active' : '';
+
+    // Create anchor inside each dot using class selector instead of ID
+    const sectionClass = `sketch-screen${i + 1}`;
+    const a = document.createElement('a');
+    a.href = '#';  // Prevent default jump
+    a.dataset.targetClass = sectionClass; // store target class for scroll
+
+    // Example: add slide-up class to odd dots or customize as needed
+    if (i % 2 === 0) {
+      a.classList.add('slide-up');
+    }
+
+    li.appendChild(a);
+    li.addEventListener('click', (e) => {
+      e.preventDefault(); // prevent anchor default behavior
+      setActiveDot(i);
+      updateNavVisibility();
+      showSlide(sectionClass);
+      const target = document.querySelector(`.${sectionClass}`);
+      if (target) {
+        target.scrollIntoView({behavior: 'smooth'});
+      }
+    });
+    ul.appendChild(li);
+  }
+  nav.appendChild(ul);
+  container.appendChild(nav);
+
+  updateNavVisibility();
+  showSlide(`sketch-screen${activeIndex + 1}`); // Show initial slide
+}
+
+function setActiveDot(index) {
+  const dots = document.querySelectorAll('.vertical-dot-nav li');
+  dots.forEach((dot, i) => {
+    dot.classList.toggle('active', i === index);
+  });
+}
+
+function updateNavVisibility() {
+  const nav = document.querySelector('.vertical-dot-nav');
+  let shouldSlideUp = false;
+  nav.querySelectorAll('li').forEach(dot => {
+    if (dot.classList.contains('active')) {
+      const link = dot.querySelector('a');
+      if (link && link.classList.contains('slide-up')) {
+        shouldSlideUp = true;
+      }
+    }
+  });
+  if (shouldSlideUp) {
+    nav.classList.add('visible');
+  } else {
+    nav.classList.remove('visible');
+  }
+}
+
+function showSlide(targetClass) {
+  const slides = document.querySelectorAll('[class*=" sketch-screen"]');
+  if (!slides.length) {
+    console.warn('No slides found');
+    return;
+  }
+  slides.forEach(slide => {
+    // Check if the slide's classList contains the exact targetClass as one of its classes
+    if (slide.classList.contains(targetClass)) {
+      slide.classList.add('slide-up-visible');
+      slide.classList.remove('slide-up-hidden');
+    } else {
+      slide.classList.remove('slide-up-visible');
+      slide.classList.add('slide-up-hidden');
+    }
+  });
+  console.log(`Showing slide: ${targetClass}`);
+}
+

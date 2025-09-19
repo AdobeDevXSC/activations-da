@@ -9,16 +9,33 @@ p {
 }
 
 body.sharpie {
-  background-image: url(../../icons/bg-gradient.jpg);
-  background-repeat: no-repeat;
-  background-size: cover;
+
   font-family: Adobe Clean, Arial, Helvetica, sans-serif;
-  padding: 74px 0px 234px 74px;
+  padding: 74px;
   color: #222222 !important;
   position: relative;
   height: 100vh;
   overflow: hidden;
 }
+
+.intake-form::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background-image: url(../../icons/bg-gradient.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  z-index: -1;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+
+
+
 
 header,
 footer {
@@ -30,7 +47,7 @@ body {
 }
 
 
-.default-content-wrapper {
+.intake-form .default-content-wrapper {
   padding: 0px !important;
   /* max-width: 100% !important; */
 }
@@ -39,11 +56,11 @@ main>.section {
   margin: 0px !important;
 }
 
-.sharpie main>.section>div {
+/* .sharpie main>.section>div {
   max-width: 1006px !important;
   padding: 0 !important;
   margin: 0 !important;
-}
+} */
 
 .intake-form {
   border-radius: 10px;
@@ -109,3 +126,124 @@ main>.section {
   top: 10px;
   background-size: contain;
 }
+/* sketch screen css start */
+/* .section.sketch-screen2.left-content-container, .section.sketch-screen3 {
+  display:none ;
+} */
+[class*=" sketch-screen"] {
+  box-sizing: border-box;
+  border-radius: 10px;
+  border: 1px solid #DEDEDE;
+  background: #FFF;
+  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.12), 0px 2px 6px rgba(0, 0, 0, 0.04), 0px 4px 12px rgba(0, 0, 0, 0.08);
+  height: 800px;
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.6s ease, opacity 0.6s ease;
+}
+
+main>.left-content-container.section > .inner-content {
+  padding: 40px 56px!important; /* Add padding here */
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+}
+.slide-up-visible {
+  /* display: block; */
+    max-height: 800px; /* Large enough for content height */
+  opacity: 1;
+  overflow: visible;
+  transition: max-height 0.6s ease, opacity 0.6s ease, ;
+}
+
+.left-content-wrapper  {
+  margin: 0!important;
+}
+.tabs-dots::before {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  background-image: url(../../icons/sketchslidebg.jpg);
+  background-repeat: no-repeat; 
+  background-size: cover;
+  z-index: -1;
+  top: 0;
+  left: 0;
+}
+.left-content-wrapper img {
+    padding-bottom: 100px;
+}
+.left-content-wrapper h2{
+  font-style: normal;
+font-weight: 900;
+font-size: 105px;
+line-height: 95%;
+margin: 0px;
+letter-spacing: -0.01em;
+color: #000000; 
+
+}
+.left-content-wrapper div > p{
+width: 769px;
+font-family: 'Adobe Clean';
+font-style: normal;
+font-weight: 400;
+font-size: 24px;
+line-height: 120%;
+color: #000000;
+padding: 40px 0px;
+}
+.left-content-wrapper .button-container p {
+  padding: 0px;
+}
+.left-content-wrapper .button-container p a {
+  margin: 0px;
+}
+/* .left-content-wrapper .button-container p a:before {
+    content: '';
+    width: 31px;
+    height: 31px;
+    display: inline-block;
+    background-image: url(../../icons/camera.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+} */
+.vertical-dot-nav {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 30px;
+    z-index: 1;
+}
+.vertical-dot-nav ul {
+    margin: 0px;
+    width: 13.91px;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+.vertical-dot-nav li {
+  transition: width 0.3s ease-in-out, height 0.3s ease-in-out, background-color 0.3s ease-in-out; 
+  width: 7.91px;
+  height: 7.91px;
+  /* border: 3px solid #ffffff00; */
+  border-radius: 100px;
+  margin-bottom: 28px;
+  list-style: none;
+  background-color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+}
+.vertical-dot-nav li.active {
+   width: 13.91px;
+  height: 13.91px;
+  background-color: #ffffff;
+  /* border-color: #ffffff; */
+}
+main>.left-content-container.section>div {
+
+  padding: 0 !important;
+}
+/* sketch screen css end  */
