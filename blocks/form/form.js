@@ -136,6 +136,7 @@ document.querySelectorAll('[class*=" sketch-screen"]').forEach(slide => {
   }
 
   // Append wrapper inside slide
+  
   slide.appendChild(wrapper);
 });
 const container = document.querySelector('.tabs-dots');
@@ -143,7 +144,7 @@ if (container) {
   const nav = document.createElement('nav');
   nav.className = 'vertical-dot-nav slide-up-nav';
   const ul = document.createElement('ul');
-  const dotCount = 4;      // number of dots
+  const dotCount = 5;      // number of dots
   let activeIndex = 0;     // start with first active
 
   for (let i = 0; i < dotCount; i++) {
@@ -156,10 +157,6 @@ if (container) {
     a.href = '#';  // Prevent default jump
     a.dataset.targetClass = sectionClass; // store target class for scroll
 
-    // Example: add slide-up class to odd dots or customize as needed
-    if (i % 2 === 0) {
-      a.classList.add('slide-up');
-    }
 
     li.appendChild(a);
     li.addEventListener('click', (e) => {
@@ -208,20 +205,23 @@ function updateNavVisibility() {
 
 function showSlide(targetClass) {
   const slides = document.querySelectorAll('[class*=" sketch-screen"]');
-  if (!slides.length) {
-    console.warn('No slides found');
-    return;
-  }
   slides.forEach(slide => {
-    // Check if the slide's classList contains the exact targetClass as one of its classes
     if (slide.classList.contains(targetClass)) {
-      slide.classList.add('slide-up-visible');
-      slide.classList.remove('slide-up-hidden');
+      slide.style.display = 'block';
+      requestAnimationFrame(() => {
+        slide.classList.add('slide-up-visible');
+        slide.classList.remove('slide-up-hidden');
+      });
     } else {
       slide.classList.remove('slide-up-visible');
       slide.classList.add('slide-up-hidden');
+      setTimeout(() => {
+        slide.style.display = 'none';
+      }, 300); // match CSS transition duration
     }
   });
-  console.log(`Showing slide: ${targetClass}`);
 }
+
+
+
 

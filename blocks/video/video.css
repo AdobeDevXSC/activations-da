@@ -78,12 +78,15 @@
 
 .intake-form .video-wrapper {
  position: absolute;
-    bottom: -8px;
+    bottom: 0;
+    overflow: hidden;
     right: 8%;
     width: 30%;
     z-index: 1;
 }
-
+.intake-form .video-wrapper video {
+  margin-bottom: -8px;
+}
 .intake-form video::-webkit-media-controls {
   display: none !important;
 }
