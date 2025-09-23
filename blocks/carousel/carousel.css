@@ -151,3 +151,198 @@
     --slide-content-width: auto;
   }
 }
+
+/* pratik  */
+body.carousel-1-slide-0 {
+   background-image: url(../../icons/sketchslidebg.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.carousel-1-slide-1 { background-image: url(../../icons/sketchslidebg.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;}
+    .carousel-1-slide-2 { background-image: url(../../icons/sketchslidebg.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;}
+.carousel-1-slide-4 { background-image: url(../../icons/workfront-approval.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;}
+ main>.section>div.carousel-wrapper {
+  padding: 0px !important;
+ }
+ .sketch-screen .carousel-navigation-buttons {
+  display: none !important;
+ }
+ .sketch-screen.carousel .carousel-slide {  
+    flex-direction: initial;
+ }
+ .sketch-screen.carousel .carousel-slide .carousel-slide-content {
+  margin: 0px;
+    padding: 0;
+    background-color: transparent;
+ }
+ .carousel-slide-image {
+  position: relative;
+  
+ }
+  .sketch-screen .carousel-slide-image picture {
+  position: unset !important;
+ }
+ .sketch-screen.carousel .carousel-slide {
+  min-height:auto!important;
+  height: 800px;
+  overflow: hidden;
+  box-sizing: border-box;
+    flex-direction: initial;
+    padding: 40px 56px!important;
+    justify-content: space-between;
+    background-color: #ffffff;
+    box-sizing: border-box;
+    border-radius: 10px;
+    border: 1px solid #DEDEDE;
+    background: #FFF;
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.12), 0px 2px 6px rgba(0, 0, 0, 0.04), 0px 4px 12px rgba(0, 0, 0, 0.08);
+}
+.sketch-screen.carousel #carousel-1-slide-2.carousel-slide .carousel-slide-image picture > img {padding-bottom: 50px;}
+.sketch-screen.carousel .carousel-slide-indicators {
+    gap: 0;
+    padding: 0;
+    background-color: transparent;
+    flex-direction: column;
+}
+.sketch-screen.carousel .carousel-slide-indicator button {
+    transition: width 0.3s 
+ease-in-out, height 0.3s 
+ease-in-out, background-color 0.3s 
+ease-in-out;
+    width: 7.91px;
+    height: 7.91px;
+    /* border: 3px solid #ffffff00; */
+    border-radius: 100px;
+    margin-bottom: 28px;
+    list-style: none;
+    background-color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+}
+.sketch-screen.carousel .carousel-slide-indicator button[disabled="true"] {
+    background-color: #ffffff;
+        width: 13.91px;
+    height: 13.91px;
+}
+li.carousel-slide-indicator {
+    display: inline-flex;
+    justify-content: center;
+}
+.sketch-screen.carousel nav {
+  display: inline-block;
+      position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 28px;
+}
+.sketch-screen.carousel .carousel-slide .carousel-slide-image picture > img {
+    padding-bottom: 100px;
+    padding-top: 20px;
+        width: auto;
+    object-fit: contain;
+}
+.sketch-screen.carousel h2{
+  font-style: normal;
+font-weight: 900;
+font-size: 105px;
+line-height: 95%;
+margin: 0px;
+letter-spacing: -0.01em;
+color: #000000; 
+}
+.sketch-screen.carousel #carousel-1-slide-4  h2 {
+  font-size: 0px;
+}
+/* .sketch-screen3 .left-content-wrapper img {
+    padding-bottom: 60px;
+} */
+.sketch-screen.carousel .carousel-slide-image h2 + p{
+width: 769px;
+font-family: 'Adobe Clean';
+font-style: normal;
+font-weight: 400;
+font-size: 24px;
+line-height: 120%;
+color: #000000;
+padding: 40px 0px;
+}
+.sketch-screen a.button {
+    margin: 0px;
+    font-weight: 500;
+    font-size: 22.1212px;
+    line-height: 27px;
+    display: inline-flex;
+    gap: 11px;
+    align-items: center;
+}
+
+.sketch-screen #carousel-1-slide-0 p a.button:before {
+    content: '';
+    width: 28px;
+    height: 28px;
+    display: inline-block;
+    background-image: url(../../icons/Camera.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin-top: 3px;
+}
+.sketch-screen #carousel-1-slide-4 h2 + p {
+        position: absolute !important;
+
+    top: 0;
+    right: -20px;
+}
+li#carousel-1-slide-3 .carousel-slide-content img {
+    max-width: 80%;
+}
+.sketch-screen #carousel-1-slide-4 h2 + p, .carousel-slide-content p:first-child{
+  text-align: left;
+    font-weight: 400;
+    font-size: 17.8561px;
+    line-height: 130%;
+    padding: 16px 45px 16px 16px;
+    margin-bottom: 20px;
+    margin-left: auto;
+    width: 697px;
+    min-width: 346.92px;
+    height: 78px;
+    background: linear-gradient(88.65deg, #FFFFFF 30.5%, #E9E9E9 240.26%);
+    border: 0.5px solid #C6C6C6;
+    box-shadow: 0px 4.85156px 9.70312px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    color: #222222;
+    position: relative;
+}
+.sketch-screen #carousel-1-slide-4 h2 + p:after, .carousel-slide-content p:first-child:after {
+    content: '';
+    width: 22px;
+    height: 22px;
+    display: inline-block;
+    background-image: url(../../icons/tooltip.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 13.5px;
+}
+.sketch-screen.carousel  #carousel-1-slide-4.carousel-slide .carousel-slide-image p+p {
+  text-align: center;
+}
+
+.sketch-screen.carousel  #carousel-1-slide-2.carousel-slide .carousel-slide-content picture > img {
+    max-width: 90%;  
+}
+.sketch-screen.carousel  #carousel-1-slide-4.carousel-slide .carousel-slide-image picture > img {
+    padding-bottom: 0;
+    max-width: 75%;  
+}
+.sketch-screen #carousel-1-slide-4 .button-container {
+      text-align: center;
+    padding: 20px 0px 0px;
+}

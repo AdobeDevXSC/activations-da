@@ -180,27 +180,34 @@ intakeVideoObserver.observe(document.body, { childList: true, subtree: true });
 /* intake form video section javascript code end */
 
 
-/* sharpie video section javascript code start*/
+/* sharpie video section javascript code start */
 function initSharpieVideo() {
   const SharpiVideo = document.querySelector('.sharpie-video video');
   const link = document.querySelector('.sharpie-video .button');
   const videoWrap = document.querySelector('.sharpie-video .video');
+  const vidoeImage = document.querySelector('.video-placeholder-play')
+  if (vidoeImage) {
+    videoWrap.addEventListener('dblclick', () => link?.classList.add('enabled'));
+    videoWrap.addEventListener('contextmenu', () => link?.classList.add('enabled'));
+    vidoeImage.addEventListener('dblclick', () => link?.classList.add('enabled'));
+    vidoeImage.addEventListener('contextmenu', () => link?.classList.add('enabled'));
+  }
   if (!SharpiVideo || !videoWrap) return;
-
-  console.log('Video found:', SharpiVideo);
-
+  // console.log('Video found:', SharpiVideo);
   SharpiVideo.setAttribute('controls', '');
   SharpiVideo.addEventListener('click', () => {
     if (SharpiVideo.paused) SharpiVideo.play();
   });
-  SharpiVideo.addEventListener('ended', () => link?.classList.add('enabled'));
-  videoWrap.addEventListener('dblclick', () => link?.classList.add('enabled'));
-  videoWrap.addEventListener('contextmenu', () => link?.classList.add('enabled'));
+  SharpiVideo.addEventListener('play', () => {
+    SharpiVideo.muted = false;
+  });
+  SharpiVideo.addEventListener('ended', () => {
+    link?.classList.add('enabled');
+  });
 }
-
 document.addEventListener('DOMContentLoaded', initSharpieVideo);
 
 const observer = new MutationObserver(initSharpieVideo);
 observer.observe(document.body, { childList: true, subtree: true });
 
-/* sharpie video section javascript code end*/
+/* sharpie video section javascript code end */
