@@ -78,10 +78,15 @@
 
 .intake-form .video-wrapper {
  position: absolute;
-    bottom: -8px;
+    bottom: 0;
+    overflow: hidden;
     right: 8%;
     width: 30%;
-    z-index: -1;
+    z-index: 1;
+}
+
+.intake-form .video-wrapper video {
+  margin-bottom: -8px;
 }
 
 .intake-form video::-webkit-media-controls {
@@ -99,13 +104,13 @@
 }
 
 /* sharpie video section css start code */
-.sharpie-video {
-  background-image: url("../../icons/Sizzle-Video-Intro-Screen.webp");
+main div.sharpie-video {
+  background-image: url("../../icons/Interstitial-Before-Adobe-Express.jpg");
   background-size: cover;
   height: 100vh;
   padding-top: 40px;
-  margin: 0 !important;
   box-sizing: border-box;
+  margin: -74px!important;
 }
 
 .sharpie-video .video-wrapper {
@@ -115,7 +120,8 @@
   width: 100%;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  height: calc(100% - 204px);
+  height: calc(100vh - 204px);
+  margin: auto;
 }
 
 .sharpie-video .video-wrapper .video {
@@ -138,6 +144,7 @@
   max-width: 80%;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
+  margin: auto;
 
 }
 
@@ -164,4 +171,8 @@
   background: #274DEA;
 }
 
-/* sharpie video section css end code */
+.sharpie-video .video-wrapper .video .video-placeholder {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
