@@ -84,9 +84,11 @@
     width: 30%;
     z-index: 1;
 }
+
 .intake-form .video-wrapper video {
   margin-bottom: -8px;
 }
+
 .intake-form video::-webkit-media-controls {
   display: none !important;
 }
@@ -107,7 +109,6 @@ main div.sharpie-video {
   background-size: cover;
   height: 100vh;
   padding-top: 40px;
-  margin: 0 !important;
   box-sizing: border-box;
   margin: -74px!important;
 }
@@ -169,9 +170,9 @@ main div.sharpie-video {
 .sharpie-video>.default-content-wrapper .button.enabled:hover {
   background: #274DEA;
 }
+
 .sharpie-video .video-wrapper .video .video-placeholder {
   height: 100%;
   width: 100%;
   overflow: hidden;
 }
-/* sharpie video section css end code */
