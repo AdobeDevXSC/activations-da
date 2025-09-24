@@ -147,7 +147,7 @@ export default async function decorate(block) {
       );
       wrapper.addEventListener('click', () => {
         wrapper.remove();
-        loadVideoEmbed(block, link, false, false);
+        loadVideoEmbed(block, link, true, false);
       });
     }
     block.append(wrapper);
@@ -180,7 +180,7 @@ intakeVideoObserver.observe(document.body, { childList: true, subtree: true });
 /* intake form video section javascript code end */
 
 
-/* sharpie video section javascript code start*/
+/* sharpie video section javascript code start */
 function initSharpieVideo() {
   const SharpiVideo = document.querySelector('.sharpie-video video');
   const link = document.querySelector('.sharpie-video .button');
