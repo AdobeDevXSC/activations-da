@@ -147,7 +147,7 @@ export default async function decorate(block) {
       );
       wrapper.addEventListener('click', () => {
         wrapper.remove();
-        loadVideoEmbed(block, link, true, false);
+        loadVideoEmbed(block, link, false, false);
       });
     }
     block.append(wrapper);
