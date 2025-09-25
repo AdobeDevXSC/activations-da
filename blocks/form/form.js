@@ -122,7 +122,3 @@ export default async function decorate(block) {
     block.textContent = 'Failed to load form. Please try again later.';
   }
 }
-
-
-
-

@@ -170,7 +170,7 @@ export default async function decorate(block) {
 function initIntakeVideo() {
   const intakeVideoEl = document.querySelector('.intake-form video');
   if (!intakeVideoEl) return;
-  console.log('Intake video found:', intakeVideoEl);
+
   intakeVideoEl.setAttribute('muted', '');
   intakeVideoEl.setAttribute('loop', '');
 }
@@ -179,13 +179,12 @@ const intakeVideoObserver = new MutationObserver(initIntakeVideo);
 intakeVideoObserver.observe(document.body, { childList: true, subtree: true });
 /* intake form video section javascript code end */
 
-
 /* sharpie video section javascript code start */
 function initSharpieVideo() {
   const SharpiVideo = document.querySelector('.sharpie-video video');
   const link = document.querySelector('.sharpie-video .button');
   const videoWrap = document.querySelector('.sharpie-video .video');
-  const vidoeImage = document.querySelector('.video-placeholder-play')
+  const vidoeImage = document.querySelector('.video-placeholder-play');
   if (vidoeImage) {
     videoWrap.addEventListener('dblclick', () => link?.classList.add('enabled'));
     videoWrap.addEventListener('contextmenu', () => link?.classList.add('enabled'));
