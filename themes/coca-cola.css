@@ -1,0 +1,111 @@
+* {
+  padding: 0px;
+  margin: 0px;
+  box-sizing: border-box;
+}
+
+p {
+  margin: 0;
+}
+
+body {
+
+  font-family: Adobe Clean, Arial, Helvetica, sans-serif;
+  padding: 74px;
+  color: #ffffff !important;
+  position: relative;
+  min-height: 100vh;
+}
+
+.intake-form::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background-color:#1e1e1e;
+ 
+  z-index: -1;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+
+
+
+
+header,
+footer {
+  display: none;
+}
+
+body {
+  /* overflow: hidden; */
+}
+
+
+.intake-form .default-content-wrapper {
+  padding: 0px !important;
+  /* max-width: 100% !important; */
+}
+
+main>.section {
+  margin: 0px !important;
+}
+
+.coca-cola main>.section>div {
+  max-width: 890px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.intake-form {
+  border-radius: 10px;
+  /* background-color: #fff; */
+  padding: 0px 45px;
+  margin: 0px;
+  /* border: 1px solid #dedede; */
+}
+
+.intake-form h2 {
+  font-size: 70px;
+  line-height: 95%;
+  margin: 30px 0px 30px;
+}
+
+.intake-form h2 strong {
+  font-weight: normal;
+}
+
+.intake-form h2+p {
+ font-size: 28px;
+line-height: 32px;
+  border-top: 1px solid #686868;
+  margin: 0;
+  padding: 30px 0px;
+  font-weight: 400;
+}
+
+
+
+.intake-form .form.block form {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.intake-form  .field-wrapper label {
+    font-size: 14.78px; font-weight: 400;letter-spacing: 0;}
+
+.intake-form .submit-class {
+    text-align: left;
+}
+.intake-form .submit-class button{ margin: 0!important;}
+.adobecheckbox  {
+    padding: 14px 0px;
+}
+.intake-form .field-wrapper.submit-class,  .intake-form .field-wrapper.selection-wrapper {grid-column: span 3;}           
+.intake-form form input[type="checkbox"] {
+
+    border: 2px solid #ffffff;
+    background-color: transparent;}
