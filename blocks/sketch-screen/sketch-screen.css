@@ -22,23 +22,6 @@
   z-index: -1;
 }
 
-[class*=" sketch-screen"]>.sketch-screen-1-wrapper:after,
-[class*=" sketch-screen"]>.sketch-screen-2-wrapper:after {
-  background-image: url(../../icons/sketchslidebg.jpg);
-}
-
-[class*=" sketch-screen"]>.sketch-screen-3-wrapper:after {
-  background-image: url(../../icons/Interstitial-Before-Firefly-Boards.jpg);
-}
-
-[class*=" sketch-screen"]>.sketch-screen-4-wrapper:after {
-  background-image: url(../../icons/Interstitial-Before-Adobe-Express.jpg);
-}
-
-[class*=" sketch-screen"]>.sketch-screen-5-wrapper:after {
-  background-image: url(../../icons/workfront-approval.jpg);
-}
-
 [class*=" sketch-screen"] .block>div {
   display: flex;
   justify-content: space-between;
