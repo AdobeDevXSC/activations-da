@@ -23,7 +23,6 @@ body.sharpie {
   width: 100%;
   height: 100%;
   position: relative;
-  background-image: url(../../icons/bg-gradient.jpg);
   background-repeat: no-repeat;
   background-size: cover;
   z-index: -1;
