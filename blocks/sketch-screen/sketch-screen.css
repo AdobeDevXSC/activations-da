@@ -1,0 +1,198 @@
+[class*=" sketch-screen"]>[class*="sketch-screen"] {
+  padding: 40px 56px !important;
+
+  /* Add padding here */
+  box-sizing: border-box;
+  border-radius: 10px;
+  border: 1px solid #DEDEDE;
+  background: #FFF;
+  box-shadow: 0 0 2px rgb(0 0 0 / 12%), 0 2px 6px rgb(0 0 0 / 4%), 0 4px 12px rgb(0 0 0 / 8%);
+  height: 800px;
+}
+
+[class*=" sketch-screen"]>[class*="sketch-screen"]::after {
+  content: '';
+  display: block;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100%;
+  position: absolute;
+  width: 100vw;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+[class*=" sketch-screen"] .block>div {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+}
+
+[class*=" sketch-screen"] .block>div>div:first-child>p img {
+  padding-bottom: 100px;
+  padding-top: 20px;
+}
+
+.sketch-screen-3-container .block>div>div:first-child>p img {
+  padding-bottom: 60px;
+}
+
+[class*=" sketch-screen"] h2+p {
+  width: 769px;
+  font-family: 'Adobe Clean', Arial, Helvetica, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 120%;
+  color: #000;
+  padding: 40px 0;
+}
+
+[class*=" sketch-screen"] h2 {
+  font-style: normal;
+  font-weight: 900;
+  font-size: 105px;
+  line-height: 95%;
+  margin: 0;
+  letter-spacing: -0.01em;
+  color: #000;
+}
+
+[class*=" sketch-screen"] .button-container a.button {
+  margin: 0;
+  font-weight: 500;
+  font-size: 22.1212px;
+  line-height: 27px;
+  display: inline-flex;
+  gap: 11px;
+  align-items: center;
+}
+
+[class*=" sketch-screen"] .button-container a.button:hover {
+  background-color: #274DEA;
+}
+
+.sketch-screen-1 .button-container a.button::before {
+  content: '';
+  width: 28px;
+  height: 28px;
+  display: inline-block;
+  background-image: url("../../icons/camera.svg");
+  background-repeat: no-repeat;
+  background-size: contain;
+  margin-top: 3px;
+}
+
+.sketch-screen-3.block>div>div:nth-child(2)>p:last-child img,
+.sketch-screen-4.block>div>div:nth-child(2)>p:last-child img {
+  max-width: 85%;
+}
+
+/* [class*=" sketch-screen"] .block>div>div:nth-child(2)>p:first-child,
+.sketch-screen-5 p:nth-child(2)  */
+.sketch-screen .caption{
+  text-align: left;
+  font-weight: 400;
+  font-size: 17.8561px;
+  line-height: 130%;
+  padding: 16px 45px 16px 16px;
+  margin-bottom: 20px;
+  margin-left: auto;
+  width: 697px;
+  min-width: 346.92px;
+  height: 78px;
+  background: linear-gradient(88.65deg, #FFF 30.5%, #E9E9E9 240.26%);
+  border: 0.5px solid #C6C6C6;
+  box-shadow: 0 4.8516px 9.7031px rgb(0 0 0 / 1%);
+  border-radius: 8px;
+  color: #222;
+  position: relative;
+  z-index: 1;
+}
+
+.sketch-screen-5.block>div>div:first-child>p:first-child img {
+  padding-bottom: 20px;
+}
+
+.sketch-screen-5.block>div>div:first-child>p:nth-child(3) img {
+  padding: 0;
+  max-width: 80%;
+}
+
+.sketch-screen-5 {
+  position: relative;
+}
+
+.sketch-screen-5 p:nth-child(2) {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.sketch-screen-5 p.button-container,
+.sketch-screen-5.block>div>div:first-child>p:nth-child(3) {
+  text-align: center;
+}
+
+.sketch-screen-5 p:nth-child(2)::after, [class*=" sketch-screen"] .block>div>div:nth-child(2)>p:first-child::after {
+  content: '';
+  width: 22px;
+  height: 22px;
+  display: inline-block;
+  background-image: url("../../icons/tooltip.svg");
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 13.5px;
+}
+
+.sketch-screen > video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Make ANY video inside the block fill the screen */
+.sketch-screen > video,
+.sketch-screen .video video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;          /* fills box; crops if needed */
+  display: block;
+  pointer-events: none;       /* avoid control chrome popping up */
+}
+
+.sketch-screen .video-placeholder {
+  width: auto;
+  position: relative;
+  height: 100%;
+}
+
+.sketch-screen .video-placeholder video {
+  max-width: 100%;
+  width: auto;
+  height: auto;
+}
+
+.sketch-screen.sketch-screen-3 .video-placeholder video,
+.sketch-screen.sketch-screen-4 .video-placeholder video {
+  position: absolute;
+  top: -20px;
+  z-index: 0;
+}
+
+/* Generic "screen" container helper (if your markup uses a class like .sketch-screen) */
+.sketch-screen {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+/* Insterstitial pages css end   */

@@ -56,3 +56,21 @@
 .tabs .tabs-panel[aria-hidden='true'] {
   display: none;
 }
+
+/* --- Fix: give the media cell in tabs a predictable box --- */
+.tabs .tab-panel :where(.video, figure, .embed) {
+  /* If your screen is portrait, use ~9/16. If landscape, use ~16/9. 
+     The MP4s in these interstitials are landscape; use 16/9. */
+  aspect-ratio: 16 / 9;
+  width: 100%;
+}
+
+/* Ensure any <video> directly inside a tab still fills if not in Video block */
+.tabs .tab-panel video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
