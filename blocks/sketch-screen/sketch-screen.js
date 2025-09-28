@@ -1,6 +1,9 @@
+import { fetchPlaceholders } from '../../scripts/placeholders.js';
+
 export default async function decorate(block) {
   let animationDiv;
-
+  const placeholders = await fetchPlaceholders('sharpie');
+  const workstation = placeholders[localStorage.getItem('sharpie-workstation') || 'workstation-01'];
   if (!block.querySelector('div > div:nth-child(2)')) {
     animationDiv = block.querySelector('div > div:nth-child(1)');
   } else {
@@ -40,5 +43,11 @@ export default async function decorate(block) {
   }
   animationDiv.querySelectorAll('p').forEach((p) => {
     if (p.textContent.trim() === '' && p.classList.length === 0) p.remove();
+  });
+
+  block.querySelectorAll('a').forEach((a) => {
+    if (new URL(a.href).hostname === 'next.frame.io') {
+      a.href = workstation;
+    }
   });
 }
