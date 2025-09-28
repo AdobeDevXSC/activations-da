@@ -31,10 +31,6 @@ body.sharpie {
   left: 0;
 }
 
-
-
-
-
 header,
 footer {
   display: none;
@@ -310,4 +306,12 @@ main div.completion-section::before {
    width: 13.91px;
   height: 13.91px;
   background-color: #ffffff;
+}
+
+/* --- Safety net for any video in the interstitial pages --- */
+body.sharpie :where(video) {
+  /* If you don't have a page-scoped class yet, add one in <head.html>, 
+     e.g., on <body>. Until then, you can keep the selector broader: body :where(video) */
+  display: block;
+  max-width: 100%;
 }

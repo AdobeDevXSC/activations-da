@@ -176,3 +176,26 @@ main div.sharpie-video {
   width: 100%;
   overflow: hidden;
 }
+
+/* --- Fix: make embedded videos fill the "sketch screen" area --- */
+.video, .video > figure, .video > div, .video :where(figure, .embed) {
+  position: relative;
+  overflow: hidden;            /* keeps rounded corners clean */
+  border-radius: 12px;         /* match your device/screen radius */
+}
+
+/* target the actual <video> element no matter how it's wrapped */
+.video video {
+  position: absolute;
+  inset: 0;                    /* top/right/bottom/left: 0 */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;           /* no letterboxing; crop to fill */
+  display: block;
+  pointer-events: none;        /* avoid accidental taps showing controls */
+}
+
+/* optional: hide native controls if any leak through on Safari */
+.video video::-webkit-media-controls {
+  display: none !important;
+}

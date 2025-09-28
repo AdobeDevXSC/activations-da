@@ -160,4 +160,18 @@
   height: auto;
 }
 
+/* Generic "screen" container helper (if your markup uses a class like .sketch-screen) */
+.sketch-screen {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+}
+.sketch-screen > video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 /* Insterstitial pages css end   */
