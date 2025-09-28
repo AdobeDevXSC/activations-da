@@ -36,11 +36,6 @@ footer {
   display: none;
 }
 
-body {
-  /* overflow: hidden; */
-}
-
-
 .intake-form .default-content-wrapper {
   padding: 0px !important;
   /* max-width: 100% !important; */
@@ -49,12 +44,6 @@ body {
 main>.section {
   margin: 0px !important;
 }
-
-/* .sharpie main>.section>div {
-  max-width: 1006px !important;
-  padding: 0 !important;
-  margin: 0 !important;
-} */
 
 .intake-form {
   border-radius: 10px;
@@ -306,12 +295,4 @@ main div.completion-section::before {
    width: 13.91px;
   height: 13.91px;
   background-color: #ffffff;
-}
-
-/* --- Safety net for any video in the interstitial pages --- */
-body.sharpie :where(video) {
-  /* If you don't have a page-scoped class yet, add one in <head.html>, 
-     e.g., on <body>. Until then, you can keep the selector broader: body :where(video) */
-  display: block;
-  max-width: 100%;
 }
