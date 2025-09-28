@@ -170,6 +170,7 @@ export default async function decorate(block) {
 function initIntakeVideo() {
   const intakeVideoEl = document.querySelector('.intake-form video');
   if (!intakeVideoEl) return;
+
   intakeVideoEl.setAttribute('muted', '');
   intakeVideoEl.setAttribute('loop', '');
 }
