@@ -1,6 +1,6 @@
 import createField from './form-fields.js';
 
-async function createForm(formHref, submitHref) {
+async function createForm(formHref, submitHref, confirmationHref) {
   const { pathname } = new URL(formHref);
   const resp = await fetch(pathname);
   if (!resp.ok) {
@@ -10,6 +10,7 @@ async function createForm(formHref, submitHref) {
 
   const form = document.createElement('form');
   form.dataset.action = submitHref;
+  form.dataset.confirmation = confirmationHref;
 
   const fields = await Promise.all(json.data.map((fd) => createField(fd, form)));
   fields.forEach((field) => {
@@ -17,6 +18,13 @@ async function createForm(formHref, submitHref) {
       form.append(field);
     }
   });
+
+  const hiddenFields = form.querySelector('input[name="key"]');
+  const session = localStorage.getItem('sharpie-session');
+  if (hiddenFields && session) {
+    const { key } = JSON.parse(session);
+    hiddenFields.value = key;
+  }
 
   // group fields into fieldsets if any
   const fieldsets = form.querySelectorAll('fieldset');
@@ -68,9 +76,11 @@ async function handleSubmit(form) {
 
     if (response.ok) {
       if (form.dataset.confirmation) {
+        localStorage.setItem('sharpie-session', await response.text());
         window.location.href = form.dataset.confirmation;
       } else {
-        alert('Form submitted successfully!'); // eslint-disable-line no-alert
+        console.log('Form submitted successfully!', await response.text()); // eslint-disable-line no-console
+        console.log(form.dataset); // eslint-disable-line no-console
       }
     } else {
       const error = await response.text();
@@ -92,7 +102,10 @@ export default async function decorate(block) {
   }
 
   const links = [...block.querySelectorAll('a')].map((a) => a.href);
+  console.log(links); // eslint-disable-line no-console
   const formLink = links.find((link) => link.startsWith(window.location.origin) && link.endsWith('.json'));
+  const confirmationLink = links.find((link) => link.startsWith(window.location.origin) && link !== formLink); // eslint-disable-line max-len
+
   const submitLink = links.find((link) => link !== formLink);
 
   if (!formLink || !submitLink) {
@@ -101,7 +114,7 @@ export default async function decorate(block) {
   }
 
   try {
-    const form = await createForm(formLink, submitLink);
+    const form = await createForm(formLink, submitLink, confirmationLink);
     block.replaceChildren(form);
 
     form.addEventListener('submit', (e) => {

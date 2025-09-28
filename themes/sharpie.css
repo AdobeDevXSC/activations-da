@@ -191,6 +191,10 @@ main div.completion-section::before {
   justify-content: flex-start;
 }
 
+.completion-section .form-wrapper .form>form .field-wrapper.hidden-wrapper {
+  display: none;
+}
+
 .completion-section .form-wrapper .form>form .field-wrapper.submit-wrapper {
   grid-column: unset;
   width: 100%;
