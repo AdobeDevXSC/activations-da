@@ -25,7 +25,7 @@
   position: relative;
 }
 
-.sharpie-video * {
+.custom-video * {
   margin: 0;
   padding: 0;
 }
@@ -51,7 +51,7 @@
   object-fit: cover;
 }
 
-.video .video-placeholder-play button {
+/* .video .video-placeholder-play button {
   position: relative;
   display: block;
   width: 44px;
@@ -74,7 +74,35 @@
   top: 50%;
   left: calc(50% + 2px);
   transform: translate(-50%, -50%);
+} */
+/* custom play button css start  */
+.video .video-placeholder-play button {
+  position: relative;
+  display: block;
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.6);
+  margin-left: -2px;
 }
+ 
+.video .video-placeholder-play button::before {
+  content: '';
+  background-image: url('/coca-cola/assets/media_11723a9864a58b190b3c607b9fcbfc97918e5407e.png');
+  display: block;
+  background-repeat: no-repeat;
+  background-size: contain;
+  box-sizing: border-box;
+  position: absolute;
+  background-position: center;
+  width: 25px;
+  height: 27px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+/* custom play button css end  */
 
 .intake-form .video-wrapper {
  position: absolute;
@@ -104,16 +132,16 @@
 }
 
 /* sharpie video section css start code */
-main div.sharpie-video {
-  background-image: url("../../icons/Interstitial-Before-Adobe-Express.jpg");
+main div.custom-video {
+  /* background-image: url("../../icons/Interstitial-Before-Adobe-Express.jpg");
   background-size: cover;
-  height: 100vh;
+  height: 100vh; */
   padding-top: 40px;
   box-sizing: border-box;
   margin: -74px!important;
 }
 
-.sharpie-video .video-wrapper {
+.custom-video .video-wrapper {
   background: #fff;
   padding: 40px 40px 0;
   max-width: 80%;
@@ -124,19 +152,19 @@ main div.sharpie-video {
   margin: auto;
 }
 
-.sharpie-video .video-wrapper .video {
+.custom-video .video-wrapper .video {
   height: 100%;
   width: 100%;
   overflow: hidden;
 }
 
-.sharpie-video .video-wrapper video {
+.custom-video .video-wrapper video {
   height: 100%;
   width: 100%;
   object-fit: cover;
 }
 
-.sharpie-video>.default-content-wrapper {
+.custom-video>.default-content-wrapper {
   background: #fff;
   text-align: center;
   padding: 32px 40px 40px;
@@ -148,7 +176,7 @@ main div.sharpie-video {
 
 }
 
-.sharpie-video>.default-content-wrapper .button {
+.custom-video>.default-content-wrapper .button {
   text-decoration: none;
   opacity: 0.5;
   pointer-events: none;
@@ -160,18 +188,18 @@ main div.sharpie-video {
   margin: 0;
 }
 
-.sharpie-video>.default-content-wrapper .button.enabled {
+.custom-video>.default-content-wrapper .button.enabled {
   opacity: 1;
   pointer-events: auto;
   background: #3B63FB;
   transition: all 0.4s ease;
 }
 
-.sharpie-video>.default-content-wrapper .button.enabled:hover {
+.custom-video>.default-content-wrapper .button.enabled:hover {
   background: #274DEA;
 }
 
-.sharpie-video .video-wrapper .video .video-placeholder {
+.custom-video .video-wrapper .video .video-placeholder {
   height: 100%;
   width: 100%;
   overflow: hidden;

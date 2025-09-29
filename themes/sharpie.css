@@ -101,7 +101,7 @@ main>.section {
   position: absolute;
   content: "";
   z-index: 999;
-  background-image: url(../../icons/sunflower.webp);
+  background-image: url('/sharpie/assets/sunflower.png');
   background-repeat: no-repeat;
   width: 221px;
   height: 223px;
@@ -163,18 +163,7 @@ main div.completion-section .default-content-wrapper p:nth-child(1) {
   text-align: center;
 }
 
-main div.completion-section::before {
-  position: absolute;
-  content: "";
-  background-image: url(../../icons/Completion-screen-bg-image.webp);
-  background-repeat: no-repeat;
-  top: 0;
-  left: 0;
-  background-size: cover;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-}
+
 
 .completion-section .form-wrapper .form>form {
   display: flex;

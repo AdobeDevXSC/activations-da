@@ -64,10 +64,13 @@
 }
 
 input::placeholder,
-textarea::placeholder {
+textarea::placeholder, select::placeholder {
   color: #909090;
   opacity: 1;
   font-size: 18px;
+}
+select option::selected  {
+  color: #909090!important;
 }
 
 .field-wrapper.submit-class,

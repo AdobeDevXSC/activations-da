@@ -17,7 +17,7 @@ body {
   min-height: 100vh;
 }
 
-.intake-form::after {
+/* .intake-form::after {
   content: "";
   display: block;
   width: 100%;
@@ -29,7 +29,7 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-}
+} */
 
 
 
@@ -54,7 +54,7 @@ main>.section {
   margin: 0px !important;
 }
 
-.coca-cola main>.section>div {
+.coca-cola main>.section.intake-form>div {
   max-width: 890px !important;
   padding: 0 !important;
   margin: 0 !important;
@@ -86,9 +86,23 @@ line-height: 32px;
   padding: 30px 0px;
   font-weight: 400;
 }
+.intake-form .form.block form input, .intake-form .form.block form select {
+font-weight: 400;
+font-style: Regular;
+font-size: 14.78px;
+line-height: 100%;
+letter-spacing: 0%;
 
-
-
+}
+.intake-form input:-internal-autofill-selected{background-color: #ffffff!important;}
+.intake-form .form.block form select { margin-right: 20px;}
+select:invalid {
+  color: #909090!important;  /* also affects the select if no valid value is chosen */
+}
+input::placeholder, select::placeholder {
+  font-size: 14.78px;
+line-height: 100%;
+}
 .intake-form .form.block form {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -104,8 +118,72 @@ line-height: 32px;
 .adobecheckbox  {
     padding: 14px 0px;
 }
-.intake-form .field-wrapper.submit-class,  .intake-form .field-wrapper.selection-wrapper {grid-column: span 3;}           
+.intake-form .field-wrapper.submit-class,  .intake-form .field-wrapper.selection-wrapper,  .intake-form .field-wrapper.html-wrapper  {grid-column: span 3;}   
+.intake-form .html-wrapper p{
+font-size: 11.59px;
+line-height: 150%;
+letter-spacing: 0px;
+padding-bottom: 20px;
+}        
 .intake-form form input[type="checkbox"] {
-
     border: 2px solid #ffffff;
-    background-color: transparent;}
+    background-color: transparent;
+}
+/* video for intake form */
+.coca-cola .intake-form .video-wrapper {
+    bottom: 8%;
+    right: 40px;
+    width: 42%;
+}
+
+/*track-landing-page css start*/
+.custom-2-column-section h2 {
+  font-size: 70px;
+  text-align: center;
+  margin: 0 0 40px 0;
+}
+ 
+.custom-2-column-section h3 {
+  font-size: 60px;
+  margin: 30px 0;
+}
+ 
+.custom-2-column-section p {
+  font-size: 17px;
+  max-width: 635px;
+  font-weight: bold;
+}
+ 
+.custom-2-column-section .button-container {
+  margin-top: 30px;
+}
+ 
+.custom-2-column-section a.button {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+}
+ 
+.custom-2-column-section p,
+.custom-2-column-section p {
+  font-family: Adobe Clean, Arial, Helvetica, sans-serif;
+}
+ 
+.custom-2-column-section .columns-wrapper {
+  padding: 0;
+}
+ 
+.custom-2-column-section .columns-2-cols>div {
+  gap: 50px;
+}
+ 
+.custom-2-column-section .columns-2-cols>div>div {
+  background: #242424;
+  padding: 40px;
+  border-radius: 16px;
+  border: 1.5px solid #444;
+}
+.custom-2-column-section * {
+  max-width: 100%;
+}
+/*track-landing-page css end*/

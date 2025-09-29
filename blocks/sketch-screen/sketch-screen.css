@@ -78,17 +78,19 @@
   width: 28px;
   height: 28px;
   display: inline-block;
-  background-image: url("../../icons/camera.svg");
+  background-image: url("/sharpie/assets/camera.svg");
   background-repeat: no-repeat;
   background-size: contain;
   margin-top: 3px;
 }
 
-.sketch-screen-3.block>div>div:nth-child(2)>p:last-child img,
+/* .sketch-screen-3.block>div>div:nth-child(2)>p:last-child img,
 .sketch-screen-4.block>div>div:nth-child(2)>p:last-child img {
   max-width: 85%;
+} */
+.sketch-screen-3 img {
+    padding-bottom: 50px !important;
 }
-
 /* [class*=" sketch-screen"] .block>div>div:nth-child(2)>p:first-child,
 .sketch-screen-5 p:nth-child(2)  */
 .sketch-screen .caption{
@@ -99,6 +101,7 @@
   padding: 16px 45px 16px 16px;
   margin-bottom: 20px;
   margin-left: auto;
+  margin-right: 4px;
   width: 697px;
   min-width: 346.92px;
   height: 78px;
@@ -140,7 +143,7 @@
   width: 22px;
   height: 22px;
   display: inline-block;
-  background-image: url("../../icons/tooltip.svg");
+  background-image: url("/sharpie/assets/tooltip.svg");
   background-repeat: no-repeat;
   background-size: contain;
   position: absolute;
@@ -181,12 +184,12 @@
   height: auto;
 }
 
-.sketch-screen.sketch-screen-3 .video-placeholder video,
+/* .sketch-screen.sketch-screen-3 .video-placeholder video,
 .sketch-screen.sketch-screen-4 .video-placeholder video {
   position: absolute;
   top: -20px;
   z-index: 0;
-}
+} */
 
 /* Generic "screen" container helper (if your markup uses a class like .sketch-screen) */
 .sketch-screen {
@@ -196,3 +199,15 @@
 }
 
 /* Insterstitial pages css end   */
+
+.sketch-screen .video-placeholder {
+    max-width: 700px;
+     height: auto;
+}
+.sketch-screen.sketch-screen-3 .video-placeholder , .sketch-screen.sketch-screen-4 .video-placeholder {
+    max-width: 655px;
+}
+.sketch-screen.sketch-screen-5 .video-placeholder {
+    max-width: 80%;
+    margin: auto;
+}
