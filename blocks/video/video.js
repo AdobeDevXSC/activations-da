@@ -181,9 +181,9 @@ intakeVideoObserver.observe(document.body, { childList: true, subtree: true });
 
 /* sharpie video section javascript code start */
 function initSharpieVideo() {
-  const SharpiVideo = document.querySelector('.sharpie-video video');
-  const link = document.querySelector('.sharpie-video .button');
-  const videoWrap = document.querySelector('.sharpie-video .video');
+  const SharpiVideo = document.querySelector('.custom-video video');
+  const link = document.querySelector('.custom-video .button');
+  const videoWrap = document.querySelector('.custom-video .video');
   const vidoeImage = document.querySelector('.video-placeholder-play');
 
   if (vidoeImage) {

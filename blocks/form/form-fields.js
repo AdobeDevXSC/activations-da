@@ -150,6 +150,17 @@ const createTextArea = (fd) => {
   return { field, fieldWrapper };
 };
 
+// === Start of added 'html' field creator function for disclaimer text ===
+const createHtml = (fd) => {
+  const fieldWrapper = createFieldWrapper(fd);
+  const text = document.createElement('p'); // or 'div' if you prefer
+  text.innerHTML = fd.Label || fd.Value || '';
+  text.id = fd.Id;
+  fieldWrapper.append(text);
+  return { field: text, fieldWrapper };
+};
+// === End of added 'html' field creator function ===
+
 const FIELD_CREATOR_FUNCTIONS = {
   select: createSelect,
   heading: (fd) => {
@@ -169,6 +180,7 @@ const FIELD_CREATOR_FUNCTIONS = {
     fieldWrapper.append(text);
     return { field: text, fieldWrapper };
   },
+  html: createHtml, // Added this line to handle 'html' type as static text
   'text-area': createTextArea,
   toggle: (fd) => {
     const { field, fieldWrapper } = createInput(fd);
