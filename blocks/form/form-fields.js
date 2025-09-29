@@ -150,7 +150,6 @@ const createTextArea = (fd) => {
   return { field, fieldWrapper };
 };
 
-
 // === Start of added 'html' field creator function for disclaimer text ===
 const createHtml = (fd) => {
   const fieldWrapper = createFieldWrapper(fd);
@@ -230,7 +229,4 @@ export default async function createField(fd, form) {
   const createFieldFunc = FIELD_CREATOR_FUNCTIONS[type] || createInput;
   const fieldElements = await createFieldFunc(fd, form);
   return fieldElements.fieldWrapper;
-
-  
 }
- 

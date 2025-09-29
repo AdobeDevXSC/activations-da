@@ -69,7 +69,8 @@ textarea::placeholder, select::placeholder {
   opacity: 1;
   font-size: 18px;
 }
-select option::selected  {
+
+select option::selection  {
   color: #909090!important;
 }
 

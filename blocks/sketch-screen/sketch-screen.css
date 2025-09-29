@@ -29,6 +29,10 @@
   margin: 0;
 }
 
+.sketch-screen-3 img {
+  padding-bottom: 50px !important;
+}
+
 [class*=" sketch-screen"] .block>div>div:first-child>p img {
   padding-bottom: 100px;
   padding-top: 20px;
@@ -84,16 +88,7 @@
   margin-top: 3px;
 }
 
-/* .sketch-screen-3.block>div>div:nth-child(2)>p:last-child img,
-.sketch-screen-4.block>div>div:nth-child(2)>p:last-child img {
-  max-width: 85%;
-} */
-.sketch-screen-3 img {
-    padding-bottom: 50px !important;
-}
-/* [class*=" sketch-screen"] .block>div>div:nth-child(2)>p:first-child,
-.sketch-screen-5 p:nth-child(2)  */
-.sketch-screen .caption{
+.sketch-screen .caption {
   text-align: left;
   font-weight: 400;
   font-size: 17.8561px;
@@ -138,7 +133,8 @@
   text-align: center;
 }
 
-.sketch-screen-5 p:nth-child(2)::after, [class*=" sketch-screen"] .block>div>div:nth-child(2)>p:first-child::after {
+.sketch-screen-5 p:nth-child(2)::after,
+[class*=" sketch-screen"] .block>div>div:nth-child(2)>p:first-child::after {
   content: '';
   width: 22px;
   height: 22px;
@@ -152,7 +148,7 @@
   right: 13.5px;
 }
 
-.sketch-screen > video {
+.sketch-screen>video {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -161,21 +157,19 @@
 }
 
 /* Make ANY video inside the block fill the screen */
-.sketch-screen > video,
+.sketch-screen>video,
 .sketch-screen .video video {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;          /* fills box; crops if needed */
-  display: block;
-  pointer-events: none;       /* avoid control chrome popping up */
-}
+  object-fit: cover;
 
-.sketch-screen .video-placeholder {
-  width: auto;
-  position: relative;
-  height: 100%;
+  /* fills box; crops if needed */
+  display: block;
+  pointer-events: none;
+  
+  /* avoid control chrome popping up */
 }
 
 .sketch-screen .video-placeholder video {
@@ -183,13 +177,6 @@
   width: auto;
   height: auto;
 }
-
-/* .sketch-screen.sketch-screen-3 .video-placeholder video,
-.sketch-screen.sketch-screen-4 .video-placeholder video {
-  position: absolute;
-  top: -20px;
-  z-index: 0;
-} */
 
 /* Generic "screen" container helper (if your markup uses a class like .sketch-screen) */
 .sketch-screen {
@@ -201,13 +188,18 @@
 /* Insterstitial pages css end   */
 
 .sketch-screen .video-placeholder {
-    max-width: 700px;
-     height: auto;
+  position: relative;
+  width: auto;
+  max-width: 700px;
+  height: auto;
 }
-.sketch-screen.sketch-screen-3 .video-placeholder , .sketch-screen.sketch-screen-4 .video-placeholder {
-    max-width: 655px;
+
+.sketch-screen.sketch-screen-3 .video-placeholder,
+.sketch-screen.sketch-screen-4 .video-placeholder {
+  max-width: 655px;
 }
+
 .sketch-screen.sketch-screen-5 .video-placeholder {
-    max-width: 80%;
-    margin: auto;
+  max-width: 80%;
+  margin: auto;
 }
