@@ -10,7 +10,7 @@ p {
 
 body {
 
-  font-family: Adobe Clean, Arial, Helvetica, sans-serif;
+ font-family:"adobe-clean", Arial, Helvetica, sans-serif;
   padding: 74px;
   color: #ffffff !important;
   position: relative;
@@ -90,9 +90,22 @@ line-height: 32px;
 font-weight: 400;
 font-style: Regular;
 font-size: 14.78px;
-line-height: 100%;
+line-height: 20px;
 letter-spacing: 0%;
-
+}
+.intake-form .form.block form select {
+  appearance: none;
+ -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url('/coca-cola/assets/media_10a2636634b2a3ea989210c46ce4d0a2b8059d912.png');  /* your arrow icon */
+  background-repeat: no-repeat;
+  background-position: right 15px center;  /* position on right with padding */
+  background-size: 8px 5px;
+  padding-right: 30px;
+  
+}
+.adobecheckbox label#form-adobeupdate-label {
+    font-size: 12px;
 }
 .intake-form input:-internal-autofill-selected{background-color: #ffffff!important;}
 .intake-form .form.block form select { margin-right: 20px;}
@@ -116,7 +129,7 @@ line-height: 100%;
 }
 .intake-form .submit-class button{ margin: 0!important;}
 .adobecheckbox  {
-    padding: 14px 0px;
+    padding: 20px 0px;
 }
 .intake-form .field-wrapper.submit-class,  .intake-form .field-wrapper.selection-wrapper,  .intake-form .field-wrapper.html-wrapper  {grid-column: span 3;}   
 .intake-form .html-wrapper p{
@@ -137,21 +150,24 @@ padding-bottom: 20px;
 }
 
 /*track-landing-page css start*/
+main .custom-2-column-section {
+  max-width: 1670px;
+  margin: 0 auto !important;
+}
+ 
 .custom-2-column-section h2 {
-  font-size: 70px;
   text-align: center;
   margin: 0 0 40px 0;
 }
  
 .custom-2-column-section h3 {
-  font-size: 60px;
-  margin: 30px 0;
+  margin: 0px 0 20px 0;
 }
  
-.custom-2-column-section p {
+.custom-2-column-section p:not(:first-child) {
   font-size: 17px;
   max-width: 635px;
-  font-weight: bold;
+  font-weight: 600;
 }
  
 .custom-2-column-section .button-container {
@@ -166,7 +182,7 @@ padding-bottom: 20px;
  
 .custom-2-column-section p,
 .custom-2-column-section p {
-  font-family: Adobe Clean, Arial, Helvetica, sans-serif;
+  /* font-family: Adobe Clean, Arial, Helvetica, sans-serif; */
 }
  
 .custom-2-column-section .columns-wrapper {
@@ -182,8 +198,95 @@ padding-bottom: 20px;
   padding: 40px;
   border-radius: 16px;
   border: 1.5px solid #444;
+  transition: all 0.4s ease;
+  position: relative;
 }
-.custom-2-column-section * {
+ 
+.custom-2-column-section .columns-2-cols>div>div:hover {
+  border-color: #2C2C2C;
+  background: #2C2C2C;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+}
+ 
+.custom-2-column-section .columns-2-cols>div>div::before {
+  content: "";
+  display: block;
+  width: calc(100% + 7px);
+  height: calc(100% + 7px);
+  position: absolute;
+  background: #FC7D00;
+  border-radius: 16px;
+  background: linear-gradient(145deg, rgba(252, 125, 0, 1) 0%, rgba(255, 72, 133, 1) 74%);
+  left: -3.5px;
+  top: -3.5px;
+  z-index: -1;
+  opacity: 0;
+  transition: all 0.4s ease;
+}
+ 
+.custom-2-column-section .columns-2-cols>div>div:hover::before {
+  opacity: 1;
+}
+ 
+.custom-2-column-section .columns-2-cols>div>div:nth-child(2):before {
+  background: #6C5EEE;
+  background: linear-gradient(145deg, rgba(108, 94, 238, 1) 0%, rgba(197, 62, 112, 1) 100%, rgba(255, 86, 73, 1) 100%);
+}
+ 
+.custom-2-column-section .columns img {
   max-width: 100%;
+  max-height: 360px;
+  object-fit: contain;
+  object-position: center;
 }
-/*track-landing-page css end*/
+ 
+.custom-bg-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  max-width: unset;
+  background: #000000;
+}
+ 
+.custom-bg-video * {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+ 
+.custom-bg-video video {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  filter: brightness(0.3);
+}
+ 
+.custom-bg-video.home video {
+  filter: brightness(0.2);
+}
+ 
+ 
+@media(min-width:1921px) {
+  .custom-2-column-section h2 {
+    font-size: 60px;
+  }
+ 
+  .custom-2-column-section h3 {
+    font-size: 50px;
+  }
+}
+ 
+@media(max-width:1921px) and (min-width:992px) {
+  .custom-2-column-section h2 {
+    font-size: calc(60vw / 19.2);
+  }
+ 
+  .custom-2-column-section h3 {
+    font-size: calc(40vw / 19.2);
+  }
+}
+ 
+/*track-landing-page css start*/
+ 
