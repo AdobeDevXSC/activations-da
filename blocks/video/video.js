@@ -211,3 +211,18 @@ const observer = new MutationObserver(initSharpieVideo);
 observer.observe(document.body, { childList: true, subtree: true });
 
 /* sharpie video section javascript code end */
+
+/* coco cola background video js start */
+function BackgroundVideo() {
+  const BgVideo = document.querySelector('.custom-bg-video video');
+  if (BgVideo) {
+    BgVideo.setAttribute('autoplay', '');
+    BgVideo.setAttribute('loop', '');
+    BgVideo.setAttribute('muted', '');
+  }
+}
+document.addEventListener('DOMContentLoaded', BackgroundVideo);
+const observerBgVideo = new MutationObserver(BackgroundVideo);
+observerBgVideo.observe(document.body, { childList: true, subtree: true });
+
+/** coco cola background video js end */

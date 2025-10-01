@@ -10,7 +10,7 @@ p {
 
 body.sharpie {
 
-  font-family: Adobe Clean, Arial, Helvetica, sans-serif;
+  font-family:"adobe-clean", Arial, Helvetica, sans-serif;
   padding: 74px;
   color: #222222 !important;
   position: relative;
@@ -55,10 +55,8 @@ main>.section {
 }
 
 .intake-form h2 {
-  /* font-family: 'Adobe Clean', Arial, Helvetica, sans-serif; */
   font-size: 36px;
   line-height: 42px;
-  /* font-weight: 800; */
   margin: 38px 0px 12px;
 }
 
@@ -152,7 +150,7 @@ main .completion-section h3 {
   border-top: 1px solid #B6B6B6;
   font-size: 28px;
   font-weight: 700;
-  font-family: Adobe Clean, Arial, Helvetica, sans-serif;
+  font-family:"adobe-clean", Arial, Helvetica, sans-serif;
 }
 
 main .completion-section h3 strong {
