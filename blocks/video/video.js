@@ -224,5 +224,5 @@ function BackgroundVideo() {
 document.addEventListener('DOMContentLoaded', BackgroundVideo);
 const observerBgVideo = new MutationObserver(BackgroundVideo);
 observerBgVideo.observe(document.body, { childList: true, subtree: true });
- 
-/*coco cola background video js end */
+
+/** coco cola background video js end */

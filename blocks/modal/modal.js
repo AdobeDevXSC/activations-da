@@ -17,13 +17,13 @@ export async function createModal(contentNodes) {
   dialogContent.append(...contentNodes);
   dialog.append(dialogContent);
 
-  const closeButton = document.createElement('button');
+  const closeButton = dialog.querySelector('a.button');
   closeButton.classList.add('close-button');
   closeButton.setAttribute('aria-label', 'Close');
   closeButton.type = 'button';
-  closeButton.innerHTML = '<span class="icon icon-close"></span>';
+  // closeButton.innerHTML = '<span class="icon icon-close"></span>';
   closeButton.addEventListener('click', () => dialog.close());
-  dialog.prepend(closeButton);
+  // dialog.prepend(closeButton);
 
   const block = buildBlock('modal', '');
   document.querySelector('main').append(block);

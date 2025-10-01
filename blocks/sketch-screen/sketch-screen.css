@@ -23,6 +23,11 @@
   z-index: -1;
 }
 
+/** readd after adding polling */
+/* .sketch-screen-1 .button-container {
+  display: none;
+} */
+
 [class*=" sketch-screen"] .block>div {
   display: flex;
   justify-content: space-between;
