@@ -9,6 +9,7 @@ async function ensurePermission(handle, mode = 'readwrite') {
 }
 
 async function loadHandle() {
+  return;
   const db = await window.indexedDB.open('my-db', 1);
   return new Promise((resolve, reject) => {
     db.onsuccess = () => {

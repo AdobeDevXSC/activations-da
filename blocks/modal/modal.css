@@ -3,7 +3,7 @@ body.modal-open {
 }
 
 .modal dialog::backdrop {
-  background-color: rgb(19 19 19 / 75%);
+    background-color: rgba(0, 0, 0, 0.7);
 }
 
 .modal dialog {
@@ -90,3 +90,53 @@ body.modal-open {
 .modal dialog .section {
   padding: 0;
 }
+
+
+.modal-wrapper .modal-content{
+  text-align: center;
+}
+.modal dialog {
+  padding: 56px;
+gap: 40px;
+isolation: isolate;
+
+position: relative;
+width: 720px;
+min-width: 328px;
+max-width: 720px;
+height:auto;
+    max-height: fit-content;
+background: #FFFFFF;
+border-radius: 15px;
+}
+.modal dialog .modal-content { 
+  padding: 0;
+  margin: 0;
+}
+
+h4#upload-complete {
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 125%;
+    font-family: 'adobe-clean';
+    color: #2c2c2c;
+    margin: 0px 0px 16px;
+}
+h4#upload-complete +p{
+  font-family: 'adobe-clean';
+    color: #2c2c2c;
+font-weight: 400;
+font-size: 20px;
+line-height: 150%;
+margin: 0px;
+}
+h4#upload-complete +p+p a{
+  margin:35px 0px 0px;  
+}
+h4#upload-complete +p+p a.button  {
+    background-color: #3B63FB;
+    padding: 10px 15px;
+ }
+ h4#upload-complete +p+p a.button:hover {
+    background-color: #274DEA;
+ }
