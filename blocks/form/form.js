@@ -1,8 +1,11 @@
 import createField from './form-fields.js';
+import { saveHandle, loadHandle, dbExists } from '../../scripts/watcher.js';
 
 async function createForm(formHref, submitHref, confirmationHref) {
-  const { pathname } = new URL(formHref);
-  const resp = await fetch(pathname);
+  console.log(formHref, submitHref, confirmationHref); // eslint-disable-line no-console
+  const { pathname, search } = new URL(formHref);
+  console.log(pathname, search); // eslint-disable-line no-console
+  const resp = await fetch(`${pathname}${search}`);
   if (!resp.ok) {
     throw new Error(`Failed to fetch form JSON: ${resp.statusText}`);
   }
@@ -11,7 +14,7 @@ async function createForm(formHref, submitHref, confirmationHref) {
   const form = document.createElement('form');
   form.dataset.action = submitHref;
   form.dataset.confirmation = confirmationHref;
-
+  console.log(json); // eslint-disable-line no-console
   const fields = await Promise.all(json.data.map((fd) => createField(fd, form)));
   fields.forEach((field) => {
     if (field) {
@@ -103,14 +106,13 @@ export default async function decorate(block) {
 
   const links = [...block.querySelectorAll('a')].map((a) => a.href);
   console.log(links); // eslint-disable-line no-console
-  const formLink = links.find((link) => link.startsWith(window.location.origin) && link.endsWith('.json'));
+  const formLink = links.find((link) => link.startsWith(window.location.origin) && link.includes('.json'));
   const confirmationLink = links.find((link) => link.startsWith(window.location.origin) && link !== formLink); // eslint-disable-line max-len
 
   const submitLink = links.find((link) => link !== formLink);
 
-  if (!formLink || !submitLink) {
-    console.warn('Form JSON link or submit endpoint missing in block'); // eslint-disable-line no-console
-    return;
+  if (!formLink || !confirmationLink) {
+    console.warn('Form JSON link or confirmation link endpoint missing in block'); // eslint-disable-line no-console
   }
 
   try {
@@ -133,5 +135,32 @@ export default async function decorate(block) {
   } catch (error) {
     console.error('Error decorating form block:', error); // eslint-disable-line no-console
     block.textContent = 'Failed to load form. Please try again later.';
+  }
+
+  if (block.classList.contains('settings')) {
+    const handleSel = block.querySelector('.settings .handle > button');
+    handleSel.setAttribute('id', 'handle-select');
+    handleSel.setAttribute('class', 'handle-button');
+    const handleDisplay = document.createElement('label');
+    handleDisplay.setAttribute('id', 'handle-display-label');
+    handleDisplay.setAttribute('for', 'handle-select');
+    block.querySelector('.settings .handle').prepend(handleDisplay);
+
+    const db = await dbExists();
+    let handle;
+    if (db) {
+      handle = await loadHandle();
+      handleDisplay.textContent = `Folder selected: ${handle.name}`;
+    } else {
+      handleDisplay.textContent = 'No handle selected';
+    }
+    handleSel.addEventListener('click', async () => {
+      handle = await window.showDirectoryPicker();
+      await saveHandle(handle);
+      handleDisplay.textContent = `Folder selected: ${handle.name}`;
+    });
+
+    const wkSelect = block.querySelector('#form-workstation');
+    wkSelect.value = localStorage.getItem('sharpie-workstation') || '';
   }
 }
