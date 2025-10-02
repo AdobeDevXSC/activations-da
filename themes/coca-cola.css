@@ -263,9 +263,6 @@ main .custom-2-column-section {
   filter: brightness(0.3);
 }
  
-.custom-bg-video.home video {
-  filter: brightness(0.2);
-}
  
  
 @media(min-width:1921px) {
@@ -290,3 +287,85 @@ main .custom-2-column-section {
  
 /*track-landing-page css start*/
  
+
+/*completion page css start*/
+.completion-page .columns img {
+  max-height: 300px;
+}
+ 
+.completion-page .default-content-wrapper:nth-last-child(1) {
+  margin-top: 50px;
+}
+ 
+.completion-page .default-content-wrapper:nth-last-child(1) * {
+  text-align: center;
+}
+ 
+.completion-page .default-content-wrapper:nth-last-child(1) a {
+  border: 2px solid #fff;
+  background-color: transparent;
+}
+ 
+.custom-2-column-section a {
+  padding: 0.62em 1.2em !important;
+}
+ 
+.be-a-designer-module-disabled .columns-2-cols>div>div:nth-child(1) a,
+.be-a-marketer-module-disabled .columns-2-cols>div>div:nth-child(2) a {
+  pointer-events: none;
+  color: #8f8f8f;
+  background: #505050;
+}
+ 
+.be-a-designer-module-disabled .columns-2-cols>div>div:nth-child(1)::before,
+.be-a-marketer-module-disabled .columns-2-cols>div>div:nth-child(2)::before {
+  display: none;
+}
+ 
+.be-a-designer-module-disabled .columns-2-cols>div>div:nth-child(1):hover,
+.be-a-marketer-module-disabled .columns-2-cols>div>div:nth-child(2):hover {
+  background: #242424;
+  border-color: #444;
+}
+ 
+.be-a-designer-module-disabled .columns-2-cols>div>div:nth-child(1) *,
+.be-a-marketer-module-disabled .columns-2-cols>div>div:nth-child(2) * {
+  color: #505050;
+}
+ 
+.be-a-designer-module-disabled .columns-2-cols>div>div:nth-child(1) img,
+.be-a-marketer-module-disabled .columns-2-cols>div>div:nth-child(2) img {
+  filter: brightness(0.5);
+}
+ 
+.be-a-designer-module-disabled .columns-2-cols>div>div:nth-child(1),
+.be-a-marketer-module-disabled .columns-2-cols>div>div:nth-child(2) {
+  position: relative;
+}
+ 
+.be-a-designer-module-disabled .columns-2-cols>div>div:nth-child(1)::after,
+.be-a-marketer-module-disabled .columns-2-cols>div>div:nth-child(2)::after {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 40px;
+  background: url('https://main--activations-da--adobedevxsc.aem.live/coca-cola/assets/media_1ded921d97570617b0e062cd6f3ba34c48ea0cdd3.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  position: absolute;
+  top: -20px;
+  left: -20px;
+}
+ 
+@media(max-height:1000px) {
+  .completion-page h2 {
+    font-size: calc(45vw / 19.2);
+  }
+ 
+  .completion-page h3 {
+    font-size: calc(35vw / 19.2);
+  }
+}
+ 
+/*completion page css end*/
