@@ -4,7 +4,7 @@
 
 .form.block form {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 24px;
   justify-items: stretch;
 }
@@ -25,7 +25,7 @@
 .form.block form textarea {
   width: 100%;
   display: block;
-  padding: 12px;
+  padding: 0px 12px;
   border-radius: 10px;
   border: 2px solid #dadada;
   font-size: 18px;
@@ -53,10 +53,10 @@
   border: none;
   font-weight: 600;
   cursor: pointer;
-  grid-column: span 2;
+  grid-column: span 3;
   justify-self: center;
   width: 155px;
-  height: 59px;
+  height: 58px;
 }
 
 .form.block form button.button:hover {
@@ -64,19 +64,32 @@
 }
 
 input::placeholder,
-textarea::placeholder, select::placeholder {
+textarea::placeholder, select::placeholder, select:invalid {
   color: #909090;
   opacity: 1;
   font-size: 18px;
 }
-
+.intake-form .form.block form input, .intake-form .form.block form select {
+font-size: 18px;
+color: #909090;
+}
+.intake-form .form.block form select {
+  appearance: none;
+ -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url('/coca-cola/assets/media_10a2636634b2a3ea989210c46ce4d0a2b8059d912.png');  /* your arrow icon */
+  background-repeat: no-repeat;
+  background-position: center right 20px;  /* position on right with padding */
+  background-size: 8px 5px;
+  padding-right: 30px;
+}
 select option::selection  {
   color: #909090!important;
 }
 
 .field-wrapper.submit-class,
 .field-wrapper.selection-wrapper {
-  grid-column: span 2;
+  grid-column: span 3;
 }
 
 .field-wrapper.submit-button {
@@ -151,7 +164,7 @@ intake-form form input[type="checkbox"]:checked {
   border: none;
   font-weight: 600;
   cursor: pointer;
-  grid-column: span 2;
+  grid-column: span 3;
 
   /* Full width of the form */
   justify-self: center;

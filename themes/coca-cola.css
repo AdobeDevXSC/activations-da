@@ -62,10 +62,8 @@ main>.section {
 
 .intake-form {
   border-radius: 10px;
-  /* background-color: #fff; */
   padding: 0px 45px;
   margin: 0px;
-  /* border: 1px solid #dedede; */
 }
 
 .intake-form h2 {
@@ -87,23 +85,9 @@ line-height: 32px;
   font-weight: 400;
 }
 .intake-form .form.block form input, .intake-form .form.block form select {
-font-weight: 400;
-font-style: Regular;
 font-size: 14.78px;
-line-height: 20px;
-letter-spacing: 0%;
 }
-.intake-form .form.block form select {
-  appearance: none;
- -webkit-appearance: none;
-  -moz-appearance: none;
-  background-image: url('/coca-cola/assets/media_10a2636634b2a3ea989210c46ce4d0a2b8059d912.png');  /* your arrow icon */
-  background-repeat: no-repeat;
-  background-position: right 15px center;  /* position on right with padding */
-  background-size: 8px 5px;
-  padding-right: 30px;
-  
-}
+
 .adobecheckbox label#form-adobeupdate-label {
     font-size: 12px;
 }
@@ -116,10 +100,7 @@ input::placeholder, select::placeholder {
   font-size: 14.78px;
 line-height: 100%;
 }
-.intake-form .form.block form {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-}
+
 
 .intake-form  .field-wrapper label {
     font-size: 14.78px; font-weight: 400;letter-spacing: 0;}
