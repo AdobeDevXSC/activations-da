@@ -52,14 +52,14 @@ export default async function decorate(block) {
     }
   });
 
-  // dbExists().then(async (exists) => {
-  //   if (exists) {
-  //     const uploadButton = document.querySelector('.button-container a[title^="Upload "]');
-  //     uploadButton.classList.add('disabled');
-  //     startPolling(uploadButton);
-  //   } else {
-  //     console.log('No handle selected'); // eslint-disable-line no-console
-  //     window.location = `${window.hlx.codeBasePath}/sharpie/settings`;
-  //   }
-  // });
+  dbExists().then(async (exists) => {
+    if (exists) {
+      const uploadButton = document.querySelector('.button-container a[title^="Upload "]');
+      uploadButton.classList.add('disabled');
+      startPolling(uploadButton);
+    } else {
+      console.log('No handle selected'); // eslint-disable-line no-console
+      window.location = `${window.hlx.codeBasePath}/sharpie/settings`;
+    }
+  });
 }
