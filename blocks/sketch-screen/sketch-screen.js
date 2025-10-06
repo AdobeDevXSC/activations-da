@@ -2,9 +2,10 @@ import { fetchPlaceholders } from '../../scripts/placeholders.js';
 import { startPolling, dbExists } from '../../scripts/watcher.js';
 
 export default async function decorate(block) {
+  const experience = document.body.classList[0];
   let animationDiv;
-  const placeholders = await fetchPlaceholders('sharpie');
-  const workstation = placeholders[localStorage.getItem('sharpie-workstation') || 'workstation-01'];
+  const placeholders = await fetchPlaceholders(experience);
+
   if (!block.querySelector('div > div:nth-child(2)')) {
     animationDiv = block.querySelector('div > div:nth-child(1)');
   } else {
@@ -20,9 +21,9 @@ export default async function decorate(block) {
   const pics = animationDiv.querySelectorAll('picture');
   const placeholder = pics[pics.length - 1];
   if (pics.length > 1) pics[0].parentElement.classList.add('header-image');
-  const link = animationDiv.querySelector('a');
+  const link = animationDiv.querySelector('a[href*=".mp4"]');
 
-  if (placeholder) {
+  if (placeholder && link) {
     const videoWrapper = document.createElement('div');
     videoWrapper.className = 'video-placeholder';
     videoWrapper.append(placeholder);
@@ -47,19 +48,25 @@ export default async function decorate(block) {
   });
 
   block.querySelectorAll('a').forEach((a) => {
+    console.log(); // eslint-disable-line no-console
     if (new URL(a.href).hostname === 'next.frame.io') {
+      const workstation = placeholders[localStorage.getItem('sharpie-workstation') || 'workstation-01'];
       a.href = workstation;
+    } else if (a.href.startsWith('http')) {
+      a.href = placeholders[new URL(a.href).pathname.split('/').pop()];
     }
   });
 
-  dbExists().then(async (exists) => {
-    if (exists) {
-      const uploadButton = document.querySelector('.button-container a[title^="Upload "]');
-      uploadButton.classList.add('disabled');
-      startPolling(uploadButton);
-    } else {
-      console.log('No handle selected'); // eslint-disable-line no-console
-      window.location = `${window.hlx.codeBasePath}/sharpie/settings`;
-    }
-  });
+  if (experience === 'sharpie') {
+    dbExists().then(async (exists) => {
+      if (exists) {
+        const uploadButton = document.querySelector('.button-container a[title^="Upload "]');
+        uploadButton.classList.add('disabled');
+        startPolling(uploadButton);
+      } else {
+        console.log('No handle selected'); // eslint-disable-line no-console
+        window.location = `${window.hlx.codeBasePath}/sharpie/settings`;
+      }
+    });
+  }
 }
