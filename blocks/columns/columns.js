@@ -1,9 +1,25 @@
-import os from "os";
-import path from "path";
-import { pathToFileURL } from "url";
+import { fetchPlaceholders } from '../../scripts/placeholders.js';
 
-export default function decorate(block) {
+export default async function decorate(block) {
+  const activation = document.body.classList[0];
+  let session = localStorage.getItem(`${activation}-session`);
+  const placeholders = await fetchPlaceholders(activation);
 
+  block.querySelectorAll('a').forEach(async (a) => {
+    console.log(a); // eslint-disable-line no-console
+    const product = a.href.split('/').pop();
+    const link = placeholders[product.toLowerCase()];
+    a.href = link;
+    a.addEventListener('click', (event) => {
+      console.log(event); // eslint-disable-line no-console
+      session = session && JSON.parse(session);
+      session[product] = true;
+      localStorage.setItem(`${activation}-session`, JSON.stringify(session));
+      if (!link.startsWith('http')) {
+        window.location.href = placeholders[`${product}Complete`];
+      }
+    });
+  });
   const cols = [...block.firstElementChild.children];
   block.classList.add(`columns-${cols.length}-cols`);
 

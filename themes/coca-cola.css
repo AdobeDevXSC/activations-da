@@ -62,10 +62,8 @@ main>.section {
 
 .intake-form {
   border-radius: 10px;
-  /* background-color: #fff; */
   padding: 0px 45px;
   margin: 0px;
-  /* border: 1px solid #dedede; */
 }
 
 .intake-form h2 {
@@ -87,23 +85,9 @@ line-height: 32px;
   font-weight: 400;
 }
 .intake-form .form.block form input, .intake-form .form.block form select {
-font-weight: 400;
-font-style: Regular;
 font-size: 14.78px;
-line-height: 20px;
-letter-spacing: 0%;
 }
-.intake-form .form.block form select {
-  appearance: none;
- -webkit-appearance: none;
-  -moz-appearance: none;
-  background-image: url('/coca-cola/assets/media_10a2636634b2a3ea989210c46ce4d0a2b8059d912.png');  /* your arrow icon */
-  background-repeat: no-repeat;
-  background-position: right 15px center;  /* position on right with padding */
-  background-size: 8px 5px;
-  padding-right: 30px;
-  
-}
+
 .adobecheckbox label#form-adobeupdate-label {
     font-size: 12px;
 }
@@ -116,10 +100,7 @@ input::placeholder, select::placeholder {
   font-size: 14.78px;
 line-height: 100%;
 }
-.intake-form .form.block form {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-}
+
 
 .intake-form  .field-wrapper label {
     font-size: 14.78px; font-weight: 400;letter-spacing: 0;}
@@ -189,11 +170,11 @@ main .custom-2-column-section {
   padding: 0;
 }
  
-.custom-2-column-section .columns-2-cols>div {
+.custom-2-column-section .columns>div {
   gap: 50px;
 }
  
-.custom-2-column-section .columns-2-cols>div>div {
+.custom-2-column-section .columns>div>div {
   background: #242424;
   padding: 40px;
   border-radius: 16px;
@@ -202,13 +183,13 @@ main .custom-2-column-section {
   position: relative;
 }
  
-.custom-2-column-section .columns-2-cols>div>div:hover {
+.custom-2-column-section .columns>div>div:hover {
   border-color: #2C2C2C;
   background: #2C2C2C;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
 }
  
-.custom-2-column-section .columns-2-cols>div>div::before {
+.custom-2-column-section .columns>div>div::before {
   content: "";
   display: block;
   width: calc(100% + 7px);
@@ -224,11 +205,11 @@ main .custom-2-column-section {
   transition: all 0.4s ease;
 }
  
-.custom-2-column-section .columns-2-cols>div>div:hover::before {
+.custom-2-column-section .columns>div>div:hover::before {
   opacity: 1;
 }
  
-.custom-2-column-section .columns-2-cols>div>div:nth-child(2):before {
+.custom-2-column-section .columns>div>div:nth-child(2):before {
   background: #6C5EEE;
   background: linear-gradient(145deg, rgba(108, 94, 238, 1) 0%, rgba(197, 62, 112, 1) 100%, rgba(255, 86, 73, 1) 100%);
 }
@@ -239,29 +220,26 @@ main .custom-2-column-section {
   object-fit: contain;
   object-position: center;
 }
- 
-.custom-bg-video {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  max-width: unset;
-  background: #000000;
+ .custom-2-column-section.be-a-marketer-module-disabled .columns>div>div::before {
+  background: url('https://main--activations-da--adobedevxsc.aem.live/coca-cola/assets/media_173a58e111a1c3e1f8fc8453d319fb14f66f889cb.png') no-repeat;
+  background-size: cover;
+  width: calc(100% + 12px);
+  height: calc(100% + 12px);
+  left: -6px;
+  top: -6px;
+  background-position: center;
 }
  
-.custom-bg-video * {
-  margin: 0 !important;
-  padding: 0 !important;
+.custom-2-column-section.be-a-designer-module-disabled .columns>div>div::before {
+  background: url('https://main--activations-da--adobedevxsc.aem.live/coca-cola/assets/media_114daa25ded116ee560a9032294b531571c2289e4.png') no-repeat;
+  background-size: cover;
+  width: calc(100% + 12px);
+  height: calc(100% + 12px);
+  left: -6px;
+  top: -6px;
+  background-position: center;
 }
- 
-.custom-bg-video video {
-  object-fit: cover;
-  width: 100%;
-  height: 100%;
-  filter: brightness(0.3);
-}
+
  
  
  
@@ -310,41 +288,41 @@ main .custom-2-column-section {
   padding: 0.62em 1.2em !important;
 }
  
-.be-a-designer-module-disabled .columns-2-cols>div>div:nth-child(1) a,
-.be-a-marketer-module-disabled .columns-2-cols>div>div:nth-child(2) a {
+.be-a-designer-module-disabled .columns>div>div:nth-child(1) a,
+.be-a-marketer-module-disabled .columns>div>div:nth-child(2) a {
   pointer-events: none;
   color: #8f8f8f;
   background: #505050;
 }
  
-.be-a-designer-module-disabled .columns-2-cols>div>div:nth-child(1)::before,
-.be-a-marketer-module-disabled .columns-2-cols>div>div:nth-child(2)::before {
+.be-a-designer-module-disabled .columns>div>div:nth-child(1)::before,
+.be-a-marketer-module-disabled .columns>div>div:nth-child(2)::before {
   display: none;
 }
  
-.be-a-designer-module-disabled .columns-2-cols>div>div:nth-child(1):hover,
-.be-a-marketer-module-disabled .columns-2-cols>div>div:nth-child(2):hover {
+.be-a-designer-module-disabled .columns>div>div:nth-child(1):hover,
+.be-a-marketer-module-disabled .columns>div>div:nth-child(2):hover {
   background: #242424;
   border-color: #444;
 }
  
-.be-a-designer-module-disabled .columns-2-cols>div>div:nth-child(1) *,
-.be-a-marketer-module-disabled .columns-2-cols>div>div:nth-child(2) * {
+.be-a-designer-module-disabled .columns>div>div:nth-child(1) *,
+.be-a-marketer-module-disabled .columns>div>div:nth-child(2) * {
   color: #505050;
 }
  
-.be-a-designer-module-disabled .columns-2-cols>div>div:nth-child(1) img,
-.be-a-marketer-module-disabled .columns-2-cols>div>div:nth-child(2) img {
+.be-a-designer-module-disabled .columns>div>div:nth-child(1) img,
+.be-a-marketer-module-disabled .columns>div>div:nth-child(2) img {
   filter: brightness(0.5);
 }
  
-.be-a-designer-module-disabled .columns-2-cols>div>div:nth-child(1),
-.be-a-marketer-module-disabled .columns-2-cols>div>div:nth-child(2) {
+.be-a-designer-module-disabled .columns>div>div:nth-child(1),
+.be-a-marketer-module-disabled .columns>div>div:nth-child(2) {
   position: relative;
 }
  
-.be-a-designer-module-disabled .columns-2-cols>div>div:nth-child(1)::after,
-.be-a-marketer-module-disabled .columns-2-cols>div>div:nth-child(2)::after {
+.be-a-designer-module-disabled .columns>div>div:nth-child(1)::after,
+.be-a-marketer-module-disabled .columns>div>div:nth-child(2)::after {
   content: "";
   display: block;
   width: 40px;
@@ -369,3 +347,221 @@ main .custom-2-column-section {
 }
  
 /*completion page css end*/
+
+/* Thank you form css start */
+ 
+main div.completion-section {
+  max-width: 960px;
+  margin: 0 auto !important;
+  background: #fff;
+  border: 1px solid #DEDEDE;
+  padding: 50px 56px;
+  border-radius: 10px;
+}
+ 
+main div.completion-section>* {
+  padding: 0;
+}
+ 
+main .completion-section h2 strong,
+main .completion-section h2 {
+  font-weight: 800;
+}
+ 
+main .coca-cola-thank-you-section h2 {
+  font-size: 40px;
+  margin-top: 55px;
+}
+ 
+main .coca-cola-thank-you-section h2+p {
+  margin-top: 30px;
+  padding-top: 30px;
+  border-top: 1px solid #B6B6B6;
+  font-size: 20px;
+  font-family: "adobe-clean", Arial, Helvetica, sans-serif;
+  font-weight: 700;
+}
+ 
+main div.completion-section .default-content-wrapper p:nth-child(1) {
+  text-align: center;
+}
+ 
+.completion-section .form-wrapper .form>form {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: unset;
+  row-gap: 20px;
+}
+ 
+.completion-section .form-wrapper .form>form .field-wrapper {
+  grid-column: unset;
+  width: 25%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+ 
+.completion-section .form-wrapper .form>form .field-wrapper.hidden-wrapper {
+  display: none;
+}
+ 
+.completion-section .form-wrapper .form>form .field-wrapper.submit-wrapper {
+  grid-column: unset;
+  width: 100%;
+  margin-top: 30px;
+}
+ 
+.completion-section .form-wrapper .form>form button.button {
+  padding: 15px 30px;
+  width: unset;
+  height: unset;
+  margin: 0;
+  font-size: 18px;
+}
+ 
+.completion-section .form-wrapper .form>form .field-wrapper input[type="checkbox"] {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ffffff;
+  vertical-align: middle;
+  border-radius: 6px;
+  background-color: transparent;
+  cursor: pointer;
+  position: relative;
+  padding: 0;
+  display: inline-block;
+}
+ 
+.completion-section .form-wrapper .form>form .field-wrapper input[type="checkbox"]:checked {
+  background-color: #292929;
+}
+ 
+.completion-section .form-wrapper .form>form .field-wrapper input[type="checkbox"]:checked::after {
+  content: '\2713';
+  color: white;
+  font-weight: bold;
+  position: absolute;
+  top: -2px;
+  left: 3px;
+  font-size: 13px;
+}
+ 
+.completion-section .form-wrapper {
+  margin-top: 30px;
+}
+ 
+.completion-section .form-wrapper .form>form .field-wrapper label {
+  width: unset;
+  cursor: pointer;
+  font-size: 19.2px;
+  font-weight: 700;
+}
+ 
+main div.completion-section.coca-cola-thank-you-section {
+  background: #242424;
+  border-color: #444444;
+  max-width: 1042px;
+  border-radius: 16px;
+}
+ 
+.custom-video-image .default-content-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+}
+ 
+.custom-video-image * {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+ 
+.custom-video-image .default-content-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+ 
+@media(min-width:1440px) and (min-height:950px) {
+  main div.completion-section.coca-cola-thank-you-section {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+  }
+}
+ 
+/* Thank you form css end */
+
+/* thank you page */
+.cola-thank-you-wrapper {
+  padding: 0px!important;
+}
+.cola-thank-you > div {
+  display: grid;
+  grid-template-columns: 763px 684px;
+  align-items: center;
+  justify-content:space-between;  
+  height: 754px;
+  padding: 40px 55px;
+  background: #242424;
+border: 1.5px solid #444444;
+border-radius: 16.2px;
+position: relative;
+}
+
+.cola-thank-you h2 {
+   font-weight: 900;
+font-size: 73px;
+line-height: 95%;
+    padding: 54px 0px 25px;
+    margin: 0;
+}
+.cola-thank-you h2+p {
+   font-size: 22px;
+line-height: 30px;
+    margin: 0;
+    padding: 0px 0px 62px;
+    font-weight: 400;
+    width: 673px;
+}
+.cola-thank-you .button-container {
+    display: inline-flex;
+  
+}
+.cola-thank-you .button-container a{margin: 0px;
+    height: 48px;   margin-right: 30px;
+    font-size: 18.3215px;
+line-height: 23px;}
+ .cola-thank-you-container {
+  position: relative;
+ }
+.cola-thank-you p.button-container+ p.button-container a{background-color: transparent;border:2px solid #ffffff}
+/* .cola-thank-you p.button-container+ p.button-container a:hover{background-color: #00000;border:2px solid #3b63fb} */
+.video.thank-video {
+ position: absolute;
+    top: -13px;
+    width: 46%;
+    right: 40px;
+
+}
+
+
+  body:has(main .cola-thank-you-wrapper) {
+       display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+    body main:has( .cola-thank-you-wrapper) {
+
+      width: 100%;
+      max-width: 1690px;
+  }
+
+

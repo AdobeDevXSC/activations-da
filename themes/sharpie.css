@@ -15,8 +15,13 @@ body.sharpie {
   color: #222222 !important;
   position: relative;
   min-height: 100vh;
+  
 }
-
+body:has(main .completion-section) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 .intake-form::after {
   content: "";
   display: block;
@@ -141,11 +146,13 @@ main .completion-section h2+p {
 
 main .completion-section h3+p {
   font-size: 20px;
+line-height: 24px;
   font-weight: bold;
 }
 
 main .completion-section h3 {
   margin-top: 30px;
+  margin-bottom: 15px;
   padding-top: 30px;
   border-top: 1px solid #B6B6B6;
   font-size: 28px;
@@ -167,12 +174,12 @@ main div.completion-section .default-content-wrapper p:nth-child(1) {
   display: flex;
   flex-wrap: wrap;
   column-gap: unset;
-  row-gap: 20px;
+  row-gap: 30px;
 }
 
 .completion-section .form-wrapper .form>form .field-wrapper {
   grid-column: unset;
-  width: 33.33%;
+  width: 25%;
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -231,7 +238,10 @@ main div.completion-section .default-content-wrapper p:nth-child(1) {
 .completion-section .form-wrapper .form>form .field-wrapper label {
   width: unset;
   cursor: pointer;
-  font-size: 19.2px;
+  font-weight: 700;
+font-size: 19.2px;
+line-height: 24px;
+color: #292929;
 }
  
 /* completion page css end */

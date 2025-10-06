@@ -1,11 +1,8 @@
 import createField from './form-fields.js';
 import { saveHandle, loadHandle, dbExists } from '../../scripts/watcher.js';
-import { getMetadata } from '../../scripts/aem.js';
 
 async function createForm(formHref, submitHref, confirmationHref) {
-  console.log(formHref, submitHref, confirmationHref); // eslint-disable-line no-console
   const { pathname, search } = new URL(formHref);
-  console.log(pathname, search); // eslint-disable-line no-console
   const resp = await fetch(`${pathname}${search}`);
   if (!resp.ok) {
     throw new Error(`Failed to fetch form JSON: ${resp.statusText}`);
@@ -23,8 +20,9 @@ async function createForm(formHref, submitHref, confirmationHref) {
     }
   });
 
+  const activation = document.body.classList[0];
   const hiddenFields = form.querySelector('input[name="key"]');
-  const session = localStorage.getItem('sharpie-session');
+  const session = localStorage.getItem(`${activation}-session`);
   if (hiddenFields && session) {
     const { key } = JSON.parse(session);
     hiddenFields.value = key;
@@ -63,13 +61,16 @@ function generatePayload(form) {
 
 async function handleSubmit(form) {
   if (form.getAttribute('data-submitting') === 'true') return;
+  form.style.cursor = 'wait';
 
   const submit = form.querySelector('button[type="submit"]');
   try {
     form.setAttribute('data-submitting', 'true');
+    submit.style.cursor = 'wait';
     submit.disabled = true;
 
     const payload = generatePayload(form);
+    form.style.cursor = 'wait';
     const response = await fetch(form.dataset.action, {
       method: 'POST',
       body: JSON.stringify({ data: payload }),
@@ -78,9 +79,10 @@ async function handleSubmit(form) {
       },
     });
 
-    const activation = document.body.classList[0]; 
+    const activation = document.body.classList[0];
     console.log(activation); // eslint-disable-line no-console
     if (response.ok) {
+      form.style.cursor = 'default';
       if (form.dataset.confirmation && activation) {
         localStorage.setItem(`${activation}-session`, await response.text());
         window.location.href = form.dataset.confirmation;
@@ -89,6 +91,7 @@ async function handleSubmit(form) {
         console.log(form.dataset); // eslint-disable-line no-console
       }
     } else {
+      form.style.cursor = 'default';
       const error = await response.text();
       throw new Error(error);
     }
@@ -120,6 +123,8 @@ export default async function decorate(block) {
 
   try {
     const form = await createForm(formLink, submitLink, confirmationLink);
+    form.style.cursor = 'default';
+    form.querySelector('button[type="submit"]').style.cursor = 'default';
     block.replaceChildren(form);
 
     form.addEventListener('submit', (e) => {
