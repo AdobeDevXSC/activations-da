@@ -71,7 +71,9 @@ function buildAutoBlocks(main) {
 // eslint-disable-next-line import/prefer-default-export
 export function decorateMain(main) {
   // hopefully forward compatible button decoration
-  document.body.style.backgroundImage = `url(${getMetadata('background-image')}?width=2000&format=webply&optimize=medium)`;
+  if (getMetadata('background-image')) {
+    document.body.style.backgroundImage = `url(${getMetadata('background-image')}?width=2000&format=webply&optimize=medium)`;
+  }
 
   decorateButtons(main);
   decorateIcons(main);
