@@ -1,9 +1,4 @@
-import os from "os";
-import path from "path";
-import { pathToFileURL } from "url";
-
 export default function decorate(block) {
-
   const cols = [...block.firstElementChild.children];
   block.classList.add(`columns-${cols.length}-cols`);
 

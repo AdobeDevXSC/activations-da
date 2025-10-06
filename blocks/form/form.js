@@ -1,6 +1,5 @@
 import createField from './form-fields.js';
 import { saveHandle, loadHandle, dbExists } from '../../scripts/watcher.js';
-import { getMetadata } from '../../scripts/aem.js';
 
 async function createForm(formHref, submitHref, confirmationHref) {
   console.log(formHref, submitHref, confirmationHref); // eslint-disable-line no-console
@@ -78,7 +77,7 @@ async function handleSubmit(form) {
       },
     });
 
-    const activation = document.body.classList[0]; 
+    const activation = document.body.classList[0];
     console.log(activation); // eslint-disable-line no-console
     if (response.ok) {
       if (form.dataset.confirmation && activation) {
