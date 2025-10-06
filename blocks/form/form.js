@@ -1,6 +1,5 @@
 import createField from './form-fields.js';
 import { saveHandle, loadHandle, dbExists } from '../../scripts/watcher.js';
-import { getMetadata } from '../../scripts/aem.js';
 
 async function createForm(formHref, submitHref, confirmationHref) {
   console.log(formHref, submitHref, confirmationHref); // eslint-disable-line no-console
@@ -23,8 +22,9 @@ async function createForm(formHref, submitHref, confirmationHref) {
     }
   });
 
+  const activation = document.body.classList[0];
   const hiddenFields = form.querySelector('input[name="key"]');
-  const session = localStorage.getItem('sharpie-session');
+  const session = localStorage.getItem(`${activation}-session`);
   if (hiddenFields && session) {
     const { key } = JSON.parse(session);
     hiddenFields.value = key;
@@ -78,8 +78,8 @@ async function handleSubmit(form) {
       },
     });
 
-    const activation = document.body.classList[0]; 
-    console.log(activation); // eslint-disable-line no-console
+    const activation = document.body.classList[0];
+
     if (response.ok) {
       if (form.dataset.confirmation && activation) {
         localStorage.setItem(`${activation}-session`, await response.text());
