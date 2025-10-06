@@ -1,5 +1,6 @@
 import createField from './form-fields.js';
 import { saveHandle, loadHandle, dbExists } from '../../scripts/watcher.js';
+import { getMetadata } from '../../scripts/aem.js';
 
 async function createForm(formHref, submitHref, confirmationHref) {
   console.log(formHref, submitHref, confirmationHref); // eslint-disable-line no-console
@@ -14,7 +15,7 @@ async function createForm(formHref, submitHref, confirmationHref) {
   const form = document.createElement('form');
   form.dataset.action = submitHref;
   form.dataset.confirmation = confirmationHref;
-  console.log(json); // eslint-disable-line no-console
+
   const fields = await Promise.all(json.data.map((fd) => createField(fd, form)));
   fields.forEach((field) => {
     if (field) {
@@ -77,9 +78,11 @@ async function handleSubmit(form) {
       },
     });
 
+    const activation = document.body.classList[0]; 
+    console.log(activation); // eslint-disable-line no-console
     if (response.ok) {
-      if (form.dataset.confirmation) {
-        localStorage.setItem('sharpie-session', await response.text());
+      if (form.dataset.confirmation && activation) {
+        localStorage.setItem(`${activation}-session`, await response.text());
         window.location.href = form.dataset.confirmation;
       } else {
         console.log('Form submitted successfully!', await response.text()); // eslint-disable-line no-console
