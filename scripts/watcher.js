@@ -50,13 +50,10 @@ export async function loadHandle() {
         req.onsuccess = () => resolve(req.result);
         req.onerror = () => reject(req.error);
       } else {
-        // await window.indexedDB.deleteDatabase(DB_NAME);
-        resolve(
-          console.log('no object store') // eslint-disable-line no-console
-        );
+        resolve(console.error('no object store')); // eslint-disable-line no-console
       }
     };
-    db.onerror = () => reject(console.log(db.error));
+    db.onerror = () => reject(console.log(db.error)); // eslint-disable-line no-console
   });
 }
 
@@ -88,8 +85,8 @@ async function pollFolder(uploadButton) {
       stopPolling(); // eslint-disable-line no-use-before-define
       return;
     }
-
-    for await (const [name, handle] of dirHandle.entries()) { // eslint-disable-line no-restricted-syntax
+    // eslint-disable-line no-restricted-syntax
+    for await (const [name, handle] of dirHandle.entries()) {
       if (handle.kind !== 'file') continue; // eslint-disable-line no-continue
       if (name.startsWith('.')) continue; // eslint-disable-line no-continue
       if (inFlight.has(name)) continue; // eslint-disable-line no-continue

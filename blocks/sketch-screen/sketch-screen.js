@@ -21,7 +21,7 @@ export default async function decorate(block) {
   const pics = animationDiv.querySelectorAll('picture');
   const placeholder = pics[pics.length - 1];
   if (pics.length > 1) pics[0].parentElement.classList.add('header-image');
-  const link = animationDiv.querySelector('a[href*=".mp4"]');
+  const link = animationDiv.querySelector('a[href*=".mp4"]') || animationDiv.querySelector('a[href*=".webm"]');
 
   if (placeholder && link) {
     const videoWrapper = document.createElement('div');
@@ -48,7 +48,6 @@ export default async function decorate(block) {
   });
 
   block.querySelectorAll('a').forEach((a) => {
-    console.log(); // eslint-disable-line no-console
     if (new URL(a.href).hostname === 'next.frame.io') {
       const workstation = placeholders[localStorage.getItem('sharpie-workstation') || 'workstation-01'];
       a.href = workstation;
