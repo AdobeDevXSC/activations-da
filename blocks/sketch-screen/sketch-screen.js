@@ -64,7 +64,7 @@ export default async function decorate(block) {
         startPolling(uploadButton);
       } else {
         console.log('No handle selected'); // eslint-disable-line no-console
-        window.location = `${window.hlx.codeBasePath}/sharpie/settings`;
+        // window.location = `${window.hlx.codeBasePath}/sharpie/settings`;
       }
     });
   }
