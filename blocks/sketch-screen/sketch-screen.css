@@ -1,4 +1,4 @@
-.sketch-screen-wrapper>[class*="sketch-screen"]:not(.sketch-screen-1):not(.cola-thank-you) {
+.sketch-screen-wrapper>[class*="sketch-screen"]:not(.sketch-screen-1):not(.cola-thank-you) { /* eslint-disable-line */
   padding: 40px 56px !important;
   box-sizing: border-box;
   border-radius: 10px;
@@ -32,6 +32,7 @@
 } */
 
 /** readd after adding polling */
+
 /* .sketch-screen-1 .button-container {
   display: none;
 } */
@@ -43,14 +44,13 @@
 }
 
 
+.sketch-screen-3-container .block>div>div:first-child>p img {
+  padding-bottom: 60px;
+}
 
 [class*=" sketch-screen"] .block:not(.cola-thank-you)>div>div:first-child>p img {
   padding-bottom: 150px;
   padding-top: 20px;
-}
-
-.sketch-screen-3-container .block>div>div:first-child>p img {
-  padding-bottom: 60px;
 }
 
 [class*=" sketch-screen"] .block:not(.cola-thank-you) h2+p {
@@ -145,6 +145,7 @@
   background-repeat: no-repeat;
   background-position: bottom;
 }
+
 .sketch-screen-4 p:first-child img {
     padding-bottom: 70px!important;}
 /* div.sketch-screen-5 p.caption {
@@ -166,7 +167,7 @@
   height: 78px;
   background: linear-gradient(88.65deg, #FFF 30.5%, #E9E9E9 240.26%);
 border: 0.5px solid #C6C6C6;
-box-shadow: 0px 4.85156px 9.70312px rgba(0, 0, 0, 0.1);
+box-shadow: 0px 4.8516px 9.7031px rgba(0 0 0 / 10%);
   border-radius: 8px;
   color: #222;
   position: relative;
@@ -176,14 +177,6 @@ box-shadow: 0px 4.85156px 9.70312px rgba(0, 0, 0, 0.1);
 .sketch-screen-5 p:first-child img {
   padding-bottom: 30px !important;
 }
-
-
-
-/* .sketch-screen-5 {
-  position: relative;
-} */
-
-
 
 .sketch-screen-5 p.button-container,
 .sketch-screen-5.block>div>div::first-child>p:nth-child(3) {
