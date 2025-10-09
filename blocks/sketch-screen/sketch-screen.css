@@ -1,4 +1,4 @@
-.sketch-screen-wrapper>[class*="sketch-screen"]:not(.sketch-screen-1):not(.cola-thank-you) { /* eslint-disable-line */
+.sketch-screen-wrapper>[class*="sketch-screen"]:not(.sketch-screen-1):not(.cola-thank-you) {
   padding: 40px 56px !important;
   box-sizing: border-box;
   border-radius: 10px;
@@ -51,6 +51,10 @@
 [class*=" sketch-screen"] .block:not(.cola-thank-you)>div>div:first-child>p img {
   padding-bottom: 150px;
   padding-top: 20px;
+}
+
+.sketch-screen-3-container .block>div>div:first-child>p img {
+  padding-bottom: 60px;
 }
 
 [class*=" sketch-screen"] .block:not(.cola-thank-you) h2+p {
