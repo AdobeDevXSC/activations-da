@@ -69,6 +69,7 @@ main>.section {
 .intake-form h2 {
   font-size: 70px;
   line-height: 95%;
+  width: 95%;
   margin: 30px 0px 30px;
 }
 
@@ -369,8 +370,10 @@ main .completion-section h2 {
 }
  
 main .coca-cola-thank-you-section h2 {
-  font-size: 40px;
-  margin-top: 55px;
+    margin-top: 55px;
+    font-weight: 900;
+    font-size: 60px;
+    line-height: 100%;
 }
  
 main .coca-cola-thank-you-section h2+p {
@@ -381,7 +384,9 @@ main .coca-cola-thank-you-section h2+p {
   font-family: "adobe-clean", Arial, Helvetica, sans-serif;
   font-weight: 700;
 }
- 
+ .completion-section.coca-cola-thank-you-section  .form-wrapper .form>form .field-wrapper {
+  width: 50%;
+ }
 main div.completion-section .default-content-wrapper p:nth-child(1) {
   text-align: center;
 }
@@ -461,7 +466,7 @@ main div.completion-section .default-content-wrapper p:nth-child(1) {
 main div.completion-section.coca-cola-thank-you-section {
   background: #242424;
   border-color: #444444;
-  max-width: 1042px;
+  max-width: 940px;
   border-radius: 16px;
 }
  
@@ -544,21 +549,15 @@ line-height: 23px;}
  }
 .cola-thank-you p.button-container+ p.button-container a{background-color: transparent;border:2px solid #ffffff}
 /* .cola-thank-you p.button-container+ p.button-container a:hover{background-color: #00000;border:2px solid #3b63fb} */
-.video.thank-video {
- position: absolute;
-    top: -13px;
-    width: 46%;
-    right: 40px;
-
-}
 
 
-  body:has(main .cola-thank-you-wrapper) {
+
+  body:has(main .cola-thank-you) {
        display: flex;
     align-items: center;
     justify-content: center;
   }
-    body main:has( .cola-thank-you-wrapper) {
+    body main:has( .cola-thank-you) {
 
       width: 100%;
       max-width: 1690px;
