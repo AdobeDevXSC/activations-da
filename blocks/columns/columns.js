@@ -9,14 +9,29 @@ export default async function decorate(block) {
     console.log(a); // eslint-disable-line no-console
     const product = a.href.split('/').pop();
     const link = placeholders[product.toLowerCase()];
-    a.href = link;
-    a.addEventListener('click', (event) => {
+    a.href = 'javascript:return false;';//link;
+    a.addEventListener('click', async (event) => {
       console.log(event); // eslint-disable-line no-console
       session = session && JSON.parse(session);
       session[product] = true;
       localStorage.setItem(`${activation}-session`, JSON.stringify(session));
       if (!link.startsWith('http')) {
-        window.location.href = placeholders[`${product}Complete`];
+        // window.location.href = placeholders[`${product}Complete`];
+        const payload = { path: "/Users/Shared/coca-cola-illustrator.ai" };
+        try {
+          const res = await fetch("http://127.0.0.1:17821/open", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+            mode: 'cors',
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error);
+          console.log("✅ Sent to Illustrator");
+        } catch (err) {
+          console.log("⚠️ Failed: " + err.message);
+        }
+        return false;
       }
     });
   });
