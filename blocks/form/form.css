@@ -25,7 +25,7 @@
 .form.block form textarea {
   width: 100%;
   display: block;
-  padding: 0px 12px;
+  padding: 0 12px;
   border-radius: 10px;
   border: 2px solid #dadada;
   font-size: 18px;
@@ -69,20 +69,23 @@ textarea::placeholder, select::placeholder, select:invalid {
   opacity: 1;
   font-size: 18px;
 }
+
 .intake-form .form.block form input, .intake-form .form.block form select {
 font-size: 18px;
 color: #909090;
 }
+
 .intake-form .form.block form select {
   appearance: none;
- -webkit-appearance: none;
-  -moz-appearance: none;
+ -webkit-appearance: none; /* eslint-disable-line */
+  -moz-appearance: none; /* eslint-disable-line */
   background-image: url('/coca-cola/assets/media_10a2636634b2a3ea989210c46ce4d0a2b8059d912.png');  /* your arrow icon */
   background-repeat: no-repeat;
   background-position: center right 20px;  /* position on right with padding */
   background-size: 8px 5px;
   padding-right: 30px;
 }
+
 select option::selection  {
   color: #909090!important;
 }
