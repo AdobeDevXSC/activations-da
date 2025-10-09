@@ -28,7 +28,7 @@ async function createForm(formHref, submitHref, confirmationHref) {
       const { key } = JSON.parse(session);
       hiddenFields.value = key;
     } catch (e) {
-      console.log('error parsing session', e);
+      console.log('error parsing session', e); // eslint-disable-line no-console
     }
   }
 
