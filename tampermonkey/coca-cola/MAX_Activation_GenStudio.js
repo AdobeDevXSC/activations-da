@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Adobe Express "Complete the Experience" Button (page-context, stubborn nav)
-// @namespace    https://yourname.example
+// @namespace    http://tampermonkey.net/
 // @version      1.5.0
 // @description  Bottom-fixed button that opens the thank-you form in the SAME TAB; resilient to SPA click interception by injecting in page context and using capture-phase handlers + fallbacks.
 // @author       You
