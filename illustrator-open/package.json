@@ -1,0 +1,16 @@
+{
+  "name": "illustrator-open",
+  "version": "1.0.0",
+  "main": "ai-opener.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node illustrator-opener.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
