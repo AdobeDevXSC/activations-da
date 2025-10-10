@@ -1,23 +1,28 @@
 // ==UserScript==
-// @name         Adobe Express "Complete the Experience" Button (page-context, stubborn nav)
-// @namespace    http://tampermonkey.net/
+// @name         Adobe Express & GenStudio "Complete the Experience" Button (page-context, stubborn nav)
+// @namespace    https://yourname.example
 // @version      1.5.0
 // @description  Bottom-fixed button that opens the thank-you form in the SAME TAB; resilient to SPA click interception by injecting in page context and using capture-phase handlers + fallbacks.
 // @author       You
 // @match        https://express.adobe.com/*
 // @match        https://new.express.adobe.com/*
+// @match        https://experience.adobe.com/*
 // @run-at       document-idle
-// @inject-into  page
 // @noframes
 // @grant        none
 // ==/UserScript==
 
 (function () {
   'use strict';
+  const platform = window.location.hostname.startsWith('experience') ? 'genstudio' : 'express';
+  const BUTTON_ID = 'tmx-express-complete-btn';
+  const TARGET_URL = getTargetURL(platform);
+  let installed = false;
 
-  const BUTTON_ID  = 'tmx-genstudio-complete-btn';
-  const TARGET_URL = 'https://main--activations-da--adobedevxsc.aem.live/coca-cola/thankyou';
-  let installed    = false;
+  function getTargetURL(platform) {
+    if (platform == 'express') return 'https://main--activations-da--adobedevxsc.aem.live/coca-cola/thank-you-form';
+    else if (platform == 'genstudio') return 'https://main--activations-da--adobedevxsc.aem.page/coca-cola/completion-page-marketer';
+  }
 
   function findSpectrumButtonClassset() {
     const candidates = document.querySelectorAll('button.spectrum-Button, a.spectrum-Button');
@@ -32,18 +37,18 @@
   }
 
   function ensureStyles() {
-    if (document.getElementById('tmx-genstudio-complete-style')) return;
+    if (document.getElementById('tmx-express-complete-style')) return;
     const style = document.createElement('style');
-    style.id = 'tmx-genstudio-complete-style';
+    style.id = 'tmx-express-complete-style';
     style.textContent = `
-      .tmx-genstudio-bottom-bar {
+      .tmx-express-bottom-bar {
         position: fixed;
         left: 0; right: 0; bottom: 20px;
         display: flex; justify-content: center;
         pointer-events: none;
         z-index: 2147483647;
       }
-      .tmx-genstudio-bottom-bar > * { pointer-events: auto; }
+      .tmx-express-bottom-bar > * { pointer-events: auto; }
 
       /* Fallback look if Spectrum isn't available */
       #${BUTTON_ID} {
@@ -66,7 +71,7 @@
       #${BUTTON_ID}:active { transform: translateY(0); }
 
       /* Make absolutely sure nothing blocks clicks */
-      #${BUTTON_ID}, .tmx-genstudio-bottom-bar { pointer-events: auto !important; }
+      #${BUTTON_ID}, .tmx-express-bottom-bar { pointer-events: auto !important; }
     `;
     document.head.appendChild(style);
   }
@@ -100,7 +105,7 @@
     ensureStyles();
 
     const bar = document.createElement('div');
-    bar.className = 'tmx-genstudio-bottom-bar';
+    bar.className = 'tmx-express-bottom-bar';
 
     // Use <a> for native nav, but we’ll also bind multiple handlers
     const link = document.createElement('a');
@@ -124,7 +129,7 @@
         e.preventDefault();
         e.stopPropagation();
         e.stopImmediatePropagation();
-      } catch (_) {}
+      } catch (_) { }
       // Delay a tick to escape any app’s global click handler stacks
       setTimeout(forceNavigate, 0);
     };
@@ -157,6 +162,7 @@
 
   function installIfExpress() {
     if (/express\.adobe\.com$/.test(location.hostname)) createButton();
+    if (/experience\.adobe\.com$/.test(location.hostname)) createButton();
   }
 
   if (document.readyState === 'complete' || document.readyState === 'interactive') {

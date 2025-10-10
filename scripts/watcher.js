@@ -22,7 +22,6 @@ export async function dbExists() {
 
     let existed = true;
     req.onupgradeneeded = () => {
-      console.log('here'); // eslint-disable-line no-console
       // If this event fires, the DB didn’t exist before
       existed = false;
     };
