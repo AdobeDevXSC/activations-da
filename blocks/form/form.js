@@ -24,8 +24,12 @@ async function createForm(formHref, submitHref, confirmationHref) {
   const hiddenFields = form.querySelector('input[name="key"]');
   const session = localStorage.getItem(`${activation}-session`);
   if (hiddenFields && session) {
-    const { key } = JSON.parse(session);
-    hiddenFields.value = key;
+    try {
+      const { key } = JSON.parse(session);
+      hiddenFields.value = key;
+    } catch (e) {
+      console.log('error parsing session', e); // eslint-disable-line no-console
+    }
   }
 
   // group fields into fieldsets if any
@@ -111,7 +115,6 @@ export default async function decorate(block) {
   }
 
   const links = [...block.querySelectorAll('a')].map((a) => a.href);
-  console.log(links); // eslint-disable-line no-console
   const formLink = links.find((link) => link.startsWith(window.location.origin) && link.includes('.json'));
   const confirmationLink = links.find((link) => link.startsWith(window.location.origin) && link !== formLink); // eslint-disable-line max-len
 

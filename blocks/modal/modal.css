@@ -3,25 +3,33 @@ body.modal-open {
 }
 
 .modal dialog::backdrop {
-    background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0 0 0 / 70%);
 }
 
 .modal dialog {
   overscroll-behavior: none;
   overflow-y: hidden;
-  position: relative;
-  width: calc(100vw - 48px);
-  max-width: 900px;
-  max-height: calc(100dvh - (2 * var(--header-height)));
-  padding: 0;
   border: 1px solid var(--dark-color);
-  border-radius: 20px;
-  width: 720px;
-  height: 565px;
-  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  padding: 56px;
+  gap: 40px;
+  isolation: isolate;
+  position: relative;
+  width: 720px;
+  min-width: 328px;
+  max-width: 720px;
+  height: auto;
+  max-height: fit-content;
+  background: #FFF;
+  border-radius: 15px;
+}
+
+.modal-wrapper .modal-content {
+  text-align: center;
+  padding: 0;
+  margin: 0;
 }
 
 .modal dialog .modal-content {
@@ -91,52 +99,33 @@ body.modal-open {
   padding: 0;
 }
 
-
-.modal-wrapper .modal-content{
-  text-align: center;
+h4#upload-complete {
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 125%;
+  font-family: adobe-clean, arial, helvetica, sans-serif;
+  color: #2c2c2c;
+  margin: 0 0 16px;
 }
-.modal dialog {
-  padding: 56px;
-gap: 40px;
-isolation: isolate;
 
-position: relative;
-width: 720px;
-min-width: 328px;
-max-width: 720px;
-height:auto;
-    max-height: fit-content;
-background: #FFFFFF;
-border-radius: 15px;
-}
-.modal dialog .modal-content { 
-  padding: 0;
+h4#upload-complete+p {
+  font-family: adobe-clean, arial, helvetica, sans-serif;
+  color: #2c2c2c;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 150%;
   margin: 0;
 }
 
-h4#upload-complete {
-    font-weight: 700;
-    font-size: 36px;
-    line-height: 125%;
-    font-family: 'adobe-clean';
-    color: #2c2c2c;
-    margin: 0px 0px 16px;
+h4#upload-complete+p+p a {
+  margin: 35px 0 0;
 }
-h4#upload-complete +p{
-  font-family: 'adobe-clean';
-    color: #2c2c2c;
-font-weight: 400;
-font-size: 20px;
-line-height: 150%;
-margin: 0px;
+
+h4#upload-complete+p+p a.button {
+  background-color: #3B63FB;
+  padding: 10px 15px;
 }
-h4#upload-complete +p+p a{
-  margin:35px 0px 0px;  
+
+h4#upload-complete+p+p a.button:hover {
+  background-color: #274DEA;
 }
-h4#upload-complete +p+p a.button  {
-    background-color: #3B63FB;
-    padding: 10px 15px;
- }
- h4#upload-complete +p+p a.button:hover {
-    background-color: #274DEA;
- }
