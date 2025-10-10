@@ -222,7 +222,7 @@ main .custom-2-column-section {
   object-position: center;
 }
  .custom-2-column-section.be-a-marketer-module-disabled .columns>div>div::before {
-  background: url('https://main--activations-da--adobedevxsc.aem.live/coca-cola/assets/media_173a58e111a1c3e1f8fc8453d319fb14f66f889cb.png') no-repeat;
+  background: url('/coca-cola/assets/media_173a58e111a1c3e1f8fc8453d319fb14f66f889cb.png') no-repeat;
   background-size: cover;
   width: calc(100% + 12px);
   height: calc(100% + 12px);
@@ -232,7 +232,7 @@ main .custom-2-column-section {
 }
  
 .custom-2-column-section.be-a-designer-module-disabled .columns>div>div::before {
-  background: url('https://main--activations-da--adobedevxsc.aem.live/coca-cola/assets/media_114daa25ded116ee560a9032294b531571c2289e4.png') no-repeat;
+  background: url('/coca-cola/assets/media_114daa25ded116ee560a9032294b531571c2289e4.png') no-repeat;
   background-size: cover;
   width: calc(100% + 12px);
   height: calc(100% + 12px);
@@ -328,7 +328,7 @@ main .custom-2-column-section {
   display: block;
   width: 40px;
   height: 40px;
-  background: url('https://main--activations-da--adobedevxsc.aem.live/coca-cola/assets/media_1ded921d97570617b0e062cd6f3ba34c48ea0cdd3.png');
+  background: url('/coca-cola/assets/media_1ded921d97570617b0e062cd6f3ba34c48ea0cdd3.png');
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
