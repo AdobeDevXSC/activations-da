@@ -52,6 +52,7 @@ export default async function decorate(block) {
       const workstation = placeholders[localStorage.getItem('sharpie-workstation') || 'workstation-01'];
       a.href = workstation;
     } else if (a.href.startsWith('http')) {
+      console.log(placeholders[new URL(a.href).pathname.split('/').pop()]);
       a.href = placeholders[new URL(a.href).pathname.split('/').pop()] || a.href;
       if (a.title === 'Download' || a.title.startsWith('Install')) a.target = '_blank';
       if (a.title === 'Reset Experience') {
@@ -65,7 +66,7 @@ export default async function decorate(block) {
     }
   });
 
-  if (experience === 'sharpie') {
+  if (experience === 'sharpie' && block.classList.contains('sketch-screen-1')) {
     dbExists().then(async (exists) => {
       if (exists) {
         const uploadButton = document.querySelector('.button-container a[title^="Upload "]');
