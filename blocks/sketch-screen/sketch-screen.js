@@ -52,7 +52,16 @@ export default async function decorate(block) {
       const workstation = placeholders[localStorage.getItem('sharpie-workstation') || 'workstation-01'];
       a.href = workstation;
     } else if (a.href.startsWith('http')) {
-      a.href = placeholders[new URL(a.href).pathname.split('/').pop()];
+      a.href = placeholders[new URL(a.href).pathname.split('/').pop()] || a.href;
+      if (a.title === 'Download' || a.title.startsWith('Install')) a.target = '_blank';
+      if (a.title === 'Reset Experience') {
+        a.href = 'javascript:void(0)';
+        a.addEventListener('click', () => {
+          localStorage.removeItem(`${experience}-session`);
+          console.log('reset experience');
+          a.href = placeholders['start'];
+        });
+      };
     }
   });
 

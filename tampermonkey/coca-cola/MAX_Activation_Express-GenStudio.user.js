@@ -20,8 +20,9 @@
   let installed = false;
 
   function getTargetURL(platform) {
-    if (platform == 'express') return 'https://main--activations-da--adobedevxsc.aem.live/coca-cola/thank-you-form';
-    else if (platform == 'genstudio') return 'https://main--activations-da--adobedevxsc.aem.page/coca-cola/completion-page-marketer';
+    const ref = document.referrer || 'https://main--activations-da--adobedevxsc.aem.live/';
+    if (platform == 'express') return `${ref}coca-cola/thank-you-form`;
+    else if (platform == 'genstudio') return `${ref}coca-cola/completion-page-marketer`;
   }
 
   function findSpectrumButtonClassset() {
