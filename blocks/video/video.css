@@ -84,8 +84,8 @@
  position: absolute;
     bottom: 0;
     overflow: hidden;
-    right: 8%;
-    width: 30%;
+    right: 0;
+    width: 42%;
     z-index: 1;
 }
 
@@ -205,5 +205,5 @@ main div.custom-video {
   height: 100%;
 }
 .coca-cola .custom-bg-video video {
-  filter: brightness(0.3);
+  filter: brightness(0.4);
 }
