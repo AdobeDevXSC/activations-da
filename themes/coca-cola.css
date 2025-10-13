@@ -221,8 +221,13 @@ main .custom-2-column-section {
     background-size: cover;
     width: calc(100% + 12px);
     height: calc(100% + 12px);
+<<<<<<< HEAD
     left:calc(-6vw / var(--layout-size));
     top:calc(-6vw / var(--layout-size));
+=======
+    left: -6px;
+    top: -6px;
+>>>>>>> acf5577 (sharpie main video size increase and coco cola bg added for track landing page)
     background-position: center;
 }
 .custom-2-column-section .columns>div>div:nth-child(2):before {
@@ -232,8 +237,13 @@ main .custom-2-column-section {
     background-size: cover;
     width: calc(100% + 12px);
     height: calc(100% + 12px);
+<<<<<<< HEAD
    left:calc(-6vw / var(--layout-size));
     top:calc(-6vw / var(--layout-size));
+=======
+    left: -6px;
+    top: -6px;
+>>>>>>> acf5577 (sharpie main video size increase and coco cola bg added for track landing page)
     background-position: center;
 }
  
@@ -291,7 +301,11 @@ main .custom-2-column-section {
 
 /*completion page css start*/
 .completion-page .columns img {
+<<<<<<< HEAD
   max-height: calc(290vw / var(--layout-size));
+=======
+  max-height: 290px;
+>>>>>>> acf5577 (sharpie main video size increase and coco cola bg added for track landing page)
 }
  
 .completion-page .default-content-wrapper:nth-last-child(1) {
