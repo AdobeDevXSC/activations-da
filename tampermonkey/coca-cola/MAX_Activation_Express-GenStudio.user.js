@@ -19,6 +19,7 @@
   const TARGET_URL = getTargetURL(platform);
   let installed = false;
 
+  
   function getTargetURL(platform) {
     const ref = document.referrer || 'https://main--activations-da--adobedevxsc.aem.live/';
     if (platform == 'express') return `${ref}coca-cola/thank-you-form`;
@@ -44,8 +45,8 @@
     style.textContent = `
       .tmx-express-bottom-bar {
         position: fixed;
-        left: 0; right: 0; bottom: 20px;
-        display: flex; justify-content: center;
+        right: 20px; bottom: 20px;
+        display: flex; justify-content: flex-end;
         pointer-events: none;
         z-index: 2147483647;
       }
@@ -58,7 +59,7 @@
         background: var(--spectrum-global-color-blue-600, #1473e6);
         color: var(--spectrum-alias-text-on-color, #fff);
         padding: 12px 18px;
-        border-radius: var(--spectrum-alias-border-radius-regular, 12px);
+        border-radius: 2.4em;
         box-shadow: var(--spectrum-alias-elevation-3, 0 8px 24px rgba(0,0,0,.3));
         cursor: pointer;
         display: inline-flex; align-items: center; gap: 8px;
