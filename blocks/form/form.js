@@ -91,9 +91,15 @@ async function handleSubmit(form) {
         const responseText = await response.text();
         const responseJson = JSON.parse(responseText);
         console.log(payload); // eslint-disable-line no-console
-        responseJson['fn'] = `${payload.firstName.toLowerCase()}-${payload.lastName.toLowerCase()}-${responseJson.key}`;
-        console.log(responseJson); // eslint-disable-line no-console
-        localStorage.setItem(`${activation}-session`, JSON.stringify(responseJson));
+        if (payload && payload.firstName && payload.lastName) {
+          responseJson['fn'] = `${payload.firstName.toLowerCase()}-${payload.lastName.toLowerCase()}-${responseJson.key}`;
+          console.log(responseJson); // eslint-disable-line no-console
+          localStorage.setItem(`${activation}-session`, JSON.stringify(responseJson));
+        }
+        else {
+          responseJson.status = 'complete';
+          localStorage.setItem(`${activation}-session`, JSON.stringify(responseJson));
+        }
         window.location.href = form.dataset.confirmation;
       } else {
         console.log('Form submitted successfully!', await response.text()); // eslint-disable-line no-console
