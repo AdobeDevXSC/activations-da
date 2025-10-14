@@ -52,7 +52,12 @@ export default async function decorate(block) {
       const workstation = placeholders[localStorage.getItem('sharpie-workstation') || 'workstation-01'];
       a.href = workstation;
     } else if (a.href.startsWith('http')) {
-      console.log(placeholders[new URL(a.href).pathname.split('/').pop()]);
+      let ph = placeholders[new URL(a.href).pathname.split('/').pop()];
+      const {fn} = JSON.parse(localStorage.getItem(`${experience}-session`));
+      ph = ph.replace('${fn}', fn);
+      console.log(ph);
+      console.log(fn);
+      ph = ph.replace('{fn}', fn);
       a.href = placeholders[new URL(a.href).pathname.split('/').pop()] || a.href;
       if (a.title === 'Download' || a.title.startsWith('Install')) a.target = '_blank';
       if (a.title === 'Reset Experience') {
