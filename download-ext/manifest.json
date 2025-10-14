@@ -1,0 +1,23 @@
+{
+  "name": "Rename Express Downloads",
+  "version": "1.0",
+  "manifest_version": 3,
+  "permissions": ["downloads", "tabs"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "icon.png"
+  },
+  "icons": {
+    "16": "icon.png",
+    "32": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  },
+  "background": { "service_worker": "bg.js" },
+  "content_scripts": [
+    {
+      "matches": ["*://express.adobe.com/*", "*://*.adobe.com/*"],
+      "js": ["cs.js"]
+    }
+  ]
+}
