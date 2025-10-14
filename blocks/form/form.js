@@ -91,6 +91,7 @@ async function handleSubmit(form) {
         const responseText = await response.text();
         const responseJson = JSON.parse(responseText);
         console.log(payload); // eslint-disable-line no-console
+        console.log((payload && payload.firstName && payload.lastName)); // eslint-disable-line no-console
         if (payload && payload.firstName && payload.lastName) {
           responseJson['fn'] = `${payload.firstName.toLowerCase()}-${payload.lastName.toLowerCase()}-${responseJson.key}`;
           console.log(responseJson); // eslint-disable-line no-console
