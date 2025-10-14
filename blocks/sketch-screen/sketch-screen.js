@@ -54,11 +54,8 @@ export default async function decorate(block) {
     } else if (a.href.startsWith('http')) {
       let ph = placeholders[new URL(a.href).pathname.split('/').pop()];
       const {fn} = JSON.parse(localStorage.getItem(`${experience}-session`));
-      ph = ph.replace('${fn}', fn);
-      console.log(ph);
-      console.log(fn);
-      ph = ph.replace('{fn}', fn);
-      a.href = placeholders[new URL(a.href).pathname.split('/').pop()] || a.href;
+      if (fn) ph = ph.replace('${fn}', fn);
+      a.href = ph || a.href;
       if (a.title === 'Download' || a.title.startsWith('Install')) a.target = '_blank';
       if (a.title === 'Reset Experience') {
         a.href = 'javascript:void(0)';
