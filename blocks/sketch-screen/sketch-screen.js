@@ -1,8 +1,9 @@
 import { fetchPlaceholders } from '../../scripts/placeholders.js';
 import { startPolling, dbExists } from '../../scripts/watcher.js';
+import { getMetadata } from '../../scripts/aem.js';
 
 export default async function decorate(block) {
-  const experience = document.body.classList[0];
+  const experience = getMetadata('theme');
   let animationDiv;
   const placeholders = await fetchPlaceholders(experience);
 
@@ -53,18 +54,16 @@ export default async function decorate(block) {
       a.href = workstation;
     } else if (a.href.startsWith('http')) {
       let ph = placeholders[new URL(a.href).pathname.split('/').pop()];
-      const {fn} = JSON.parse(localStorage.getItem(`${experience}-session`));
-      if (fn) ph = ph.replace('${fn}', fn);
+      const { fn } = JSON.parse(localStorage.getItem(`${experience}-session`));
+      if (fn) ph = ph.replace('${fn}', fn); // eslint-disable-line no-template-curly-in-string
       a.href = ph || a.href;
       if (a.title === 'Download' || a.title.startsWith('Install')) a.target = '_blank';
       if (a.title === 'Reset Experience') {
-        a.href = 'javascript:void(0)';
+        a.href = placeholders.start;
         a.addEventListener('click', () => {
           localStorage.removeItem(`${experience}-session`);
-          console.log('reset experience');
-          a.href = placeholders['start'];
         });
-      };
+      }
     }
   });
 

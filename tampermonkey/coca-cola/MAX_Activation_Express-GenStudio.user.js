@@ -15,13 +15,13 @@
 (function () {
   'use strict';
   const platform = window.location.hostname.startsWith('experience') ? 'genstudio' : 'express';
+  const MESSAGE = 'Next step';
   const BUTTON_ID = 'tmx-express-complete-btn';
   const TARGET_URL = getTargetURL(platform);
   let installed = false;
 
-  
   function getTargetURL(platform) {
-    const ref = document.referrer || 'https://main--activations-da--adobedevxsc.aem.live/';
+    const ref = 'https://main--activations-da--adobedevxsc.aem.live/';
     if (platform == 'express') return `${ref}coca-cola/thank-you-form`;
     else if (platform == 'genstudio') return 'https://main--activations-da--adobedevxsc.aem.live/coca-cola/completion-page-marketer';
   }
@@ -117,7 +117,7 @@
     link.rel = 'nofollow';
     link.setAttribute('role', 'button');
     link.setAttribute('tabindex', '0');
-    link.innerHTML = `${makeIcon()}<span>Complete the experience</span>`;
+    link.innerHTML = `${makeIcon()}<span>${MESSAGE}</span>`;
 
     // Adopt Spectrum classes if present
     const spectrumClasses = findSpectrumButtonClassset();

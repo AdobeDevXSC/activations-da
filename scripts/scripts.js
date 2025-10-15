@@ -28,6 +28,11 @@ function buildHeroBlock(main) {
   }
 }
 
+function addEgg(main) {
+  const section = document.createElement('div');
+  section.append(buildBlock('egg', { elems: [] }));
+  main.prepend(section);
+}
 /**
  * load fonts.css and set a session storage flag
  */
@@ -58,6 +63,7 @@ function autolinkModals(element) {
 function buildAutoBlocks(main) {
   try {
     buildHeroBlock(main);
+    if (getMetadata('template') === 'egg') addEgg(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);

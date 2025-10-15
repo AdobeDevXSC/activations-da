@@ -1,5 +1,6 @@
 import createField from './form-fields.js';
 import { saveHandle, loadHandle, dbExists } from '../../scripts/watcher.js';
+import { getMetadata } from '../../scripts/aem.js';
 
 async function createForm(formHref, submitHref, confirmationHref) {
   const { pathname, search } = new URL(formHref);
@@ -83,21 +84,16 @@ async function handleSubmit(form) {
       },
     });
 
-    const activation = document.body.classList[0];
-    console.log(activation); // eslint-disable-line no-console
+    const activation = getMetadata('theme');
     if (response.ok) {
       form.style.cursor = 'default';
       if (form.dataset.confirmation && activation) {
         const responseText = await response.text();
         const responseJson = JSON.parse(responseText);
-        console.log(payload); // eslint-disable-line no-console
-        console.log((payload && payload.firstName && payload.lastName)); // eslint-disable-line no-console
         if (payload && payload.firstName && payload.lastName) {
-          responseJson['fn'] = `${payload.firstName.toLowerCase()}-${payload.lastName.toLowerCase()}-${responseJson.key}`;
-          console.log(responseJson); // eslint-disable-line no-console
+          responseJson.fn = `${payload.firstName.toLowerCase()}-${payload.lastName.toLowerCase()}-${responseJson.key}`;
           localStorage.setItem(`${activation}-session`, JSON.stringify(responseJson));
-        }
-        else {
+        } else {
           responseJson.status = 'complete';
           localStorage.setItem(`${activation}-session`, JSON.stringify(responseJson));
         }
