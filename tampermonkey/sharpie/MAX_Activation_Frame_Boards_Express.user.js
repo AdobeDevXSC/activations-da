@@ -6,7 +6,7 @@
 // @author       You
 // @match        https://express.adobe.com/*
 // @match        https://new.express.adobe.com/*
-// @match        https://experience.adobe.com/*
+// @match        https://firefly.adobe.com/*
 // @match        https://next.frame.io/*
 // @run-at       document-idle
 // @noframes
@@ -18,15 +18,27 @@
   const MESSAGE = 'Next step';
   const EXPERIENCE = 'sharpie';
   const BUTTON_ID = 'tmx-activation-complete-btn';
-  const TARGET_URL = getTargetURL();
-  let installed = false;
   const LIVE_URL = 'https://main--activations-da--adobedevxsc.aem.live/';
+  const TARGET_URL = getTargetURL()?.next;
+  let installed = false;
 
   function getTargetURL(platform) {
     if (window.location.hostname.startsWith('next.frame.io')) {
       return {
-        'platform': 'frameio', 
+        'platform': 'frameio',
         'next': `${LIVE_URL}${EXPERIENCE}/interstitial-screen-2`
+      };
+    }
+    else if (window.location.hostname.startsWith('firefly.adobe.com')) {
+      return {
+        'platform': 'firefly',
+        'next': `${LIVE_URL}${EXPERIENCE}/interstitial-screen-4`
+      };
+    }
+    else if (window.location.hostname.startsWith('express.adobe.com')) {
+      return {
+        'platform': 'express',
+        'next': `${LIVE_URL}${EXPERIENCE}/interstitial-screen-5`
       };
     }
   }
@@ -167,9 +179,16 @@
     installed = true;
   }
 
+  function renameDownloadButton() {
+    const downloadButton = document.querySelector('div.button-content.span');
+    downloadButton.textContent = 'Send for Review';
+  }
+
   function installIfExpress() {
     if (/express\.adobe\.com$/.test(location.hostname)) createButton();
     if (/experience\.adobe\.com$/.test(location.hostname)) createButton();
+    if (/next\.frame\.io$/.test(location.hostname)) createButton();
+    if (/firefly\.adobe\.com$/.test(location.hostname)) createButton();
   }
 
   if (document.readyState === 'complete' || document.readyState === 'interactive') {

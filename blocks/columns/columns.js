@@ -1,7 +1,8 @@
 import { fetchPlaceholders } from '../../scripts/placeholders.js';
+import { getMetadata } from '../../scripts/aem.js';
 
 export default async function decorate(block) {
-  const activation = document.body.classList[0];
+  const activation = getMetadata('theme');
   let session = localStorage.getItem(`${activation}-session`);
 
   try {
