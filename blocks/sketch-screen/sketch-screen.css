@@ -68,7 +68,7 @@
   padding: 40px 0 50px;
 }
 
-[class*=" sketch-screen"] .block::not(.cola-thank-you) h2 {
+[class*=" sketch-screen"] .block:not(.cola-thank-you) h2 {
   font-style: normal;
   font-weight: 900;
   font-size: 105px;
@@ -158,7 +158,7 @@
   top: 60px;
 } */
 
-.sketch-screen-wrapper>[class*="sketch-screen"]::not(.sketch-screen-1)::not(.sketch-screen-5)::not(.cola-thank-you) div div:last-child>p:first-child {
+.sketch-screen-wrapper>[class*="sketch-screen"]:not(.sketch-screen-1):not(.sketch-screen-5):not(.cola-thank-you) div div:last-child>p:first-child {
   text-align: left;
   font-weight: 400;
   font-size: 17.8561px;
@@ -183,12 +183,12 @@ box-shadow: 0px 4.8516px 9.7031px rgba(0 0 0 / 10%);
 }
 
 .sketch-screen-5 p.button-container,
-.sketch-screen-5.block>div>div::first-child>p:nth-child(3) {
+.sketch-screen-5.block>div>div:first-child>p:nth-child(3) {
   text-align: center;
 }
 
 /* .sketch-screen-5 p.caption::after, */
-.sketch-screen-wrapper>[class*="sketch-screen"]:not(.sketch-screen-1):not(.sketch-screen-5):not(.cola-thank-you) div div:last-child>p:first-child::after {
+.sketch-screen-wrapper>[class*="sketch-screen"]:not(.sketch-screen-1):not(.sketch-screen-5):not(.cola-thank-you) div div:last-child>p:first-child:after {
   content: '';
   width: 22px;
   height: 22px;
