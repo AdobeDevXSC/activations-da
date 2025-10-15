@@ -1,8 +1,9 @@
 import { fetchPlaceholders } from '../../scripts/placeholders.js';
 import { startPolling, dbExists } from '../../scripts/watcher.js';
+import { getMetadata } from '../../scripts/aem.js';
 
 export default async function decorate(block) {
-  const experience = document.body.classList[0];
+  const experience = getMetadata('theme');
   let animationDiv;
   const placeholders = await fetchPlaceholders(experience);
 
@@ -52,11 +53,21 @@ export default async function decorate(block) {
       const workstation = placeholders[localStorage.getItem('sharpie-workstation') || 'workstation-01'];
       a.href = workstation;
     } else if (a.href.startsWith('http')) {
-      a.href = placeholders[new URL(a.href).pathname.split('/').pop()];
+      let ph = placeholders[new URL(a.href).pathname.split('/').pop()];
+      const { fn } = JSON.parse(localStorage.getItem(`${experience}-session`));
+      if (fn) ph = ph.replace('${fn}', fn); // eslint-disable-line no-template-curly-in-string
+      a.href = ph || a.href;
+      if (a.title === 'Download' || a.title.startsWith('Install')) a.target = '_blank';
+      if (a.title === 'Reset Experience') {
+        a.href = placeholders.start;
+        a.addEventListener('click', () => {
+          localStorage.removeItem(`${experience}-session`);
+        });
+      }
     }
   });
 
-  if (experience === 'sharpie') {
+  if (experience === 'sharpie' && block.classList.contains('sketch-screen-1')) {
     dbExists().then(async (exists) => {
       if (exists) {
         const uploadButton = document.querySelector('.button-container a[title^="Upload "]');

@@ -1,5 +1,6 @@
 import createField from './form-fields.js';
 import { saveHandle, loadHandle, dbExists } from '../../scripts/watcher.js';
+import { getMetadata } from '../../scripts/aem.js';
 
 async function createForm(formHref, submitHref, confirmationHref) {
   const { pathname, search } = new URL(formHref);
@@ -83,12 +84,19 @@ async function handleSubmit(form) {
       },
     });
 
-    const activation = document.body.classList[0];
-    console.log(activation); // eslint-disable-line no-console
+    const activation = getMetadata('theme');
     if (response.ok) {
       form.style.cursor = 'default';
       if (form.dataset.confirmation && activation) {
-        localStorage.setItem(`${activation}-session`, await response.text());
+        const responseText = await response.text();
+        const responseJson = JSON.parse(responseText);
+        if (payload && payload.firstName && payload.lastName) {
+          responseJson.fn = `${payload.firstName.toLowerCase()}-${payload.lastName.toLowerCase()}-${responseJson.key}`;
+          localStorage.setItem(`${activation}-session`, JSON.stringify(responseJson));
+        } else {
+          responseJson.status = 'complete';
+          localStorage.setItem(`${activation}-session`, JSON.stringify(responseJson));
+        }
         window.location.href = form.dataset.confirmation;
       } else {
         console.log('Form submitted successfully!', await response.text()); // eslint-disable-line no-console

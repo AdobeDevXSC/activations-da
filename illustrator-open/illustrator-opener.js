@@ -10,7 +10,6 @@ const PORT = 17821;
 const ALLOWED_ORIGINS = [
   'http://localhost:3000',
   'http://127.0.0.1:3000',
-  'https://yourdomain.com',
   'https://main--activations-da--adobedevxsc.aem.page',
   'https://main--activations-da--adobedevxsc.aem.live'
 ];

@@ -1,6 +1,6 @@
 const STORE_NAME = 'handles';
 const DB_NAME = 'sharpie-db';
-
+let UPLOAD_BUTTON;
 export async function saveHandle(handle) {
   const db = await window.indexedDB.open(DB_NAME, 1);
   // basic wrapper for brevity
@@ -22,7 +22,6 @@ export async function dbExists() {
 
     let existed = true;
     req.onupgradeneeded = () => {
-      console.log('here'); // eslint-disable-line no-console
       // If this event fires, the DB didn’t exist before
       existed = false;
     };
@@ -74,7 +73,7 @@ let pollTimer = null;
 
 /** Core: list files and decide what to upload */
 
-async function pollFolder(uploadButton) {
+async function pollFolder() {
   const dirHandle = await loadHandle();
   if (!dirHandle) return;
   console.log('polling folder'); // eslint-disable-line no-console
@@ -92,7 +91,7 @@ async function pollFolder(uploadButton) {
       if (inFlight.has(name)) continue; // eslint-disable-line no-continue
       console.log('processing file', handle.kind, name); // eslint-disable-line no-console
 
-      uploadButton.classList.remove('disabled');
+      UPLOAD_BUTTON.classList.remove('disabled');
       stopPolling(); // eslint-disable-line no-use-before-define
 
       let file;
@@ -122,13 +121,14 @@ async function pollFolder(uploadButton) {
 }
 
 export async function startPolling(uploadButton) { // eslint-disable-line no-unused-vars
+  UPLOAD_BUTTON = uploadButton;
   const dirHandle = await loadHandle();
   if (!dirHandle) { console.log('Pick a folder first.'); return; } // eslint-disable-line no-console
   if (pollTimer) return;
   pollTimer = setInterval(pollFolder, POLL_MS);
   console.log(`▶️ Polling every ${POLL_MS}ms`); // eslint-disable-line no-console
   // kick once immediately
-  pollFolder(uploadButton);
+  pollFolder();
 }
 
 function stopPolling() {
