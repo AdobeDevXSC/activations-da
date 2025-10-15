@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Adobe MAX Coca-Cola Activation
+// @name         Adobe MAX Sharpie Activation
 // @namespace    https://yourname.example
 // @version      1.5.0
 // @description  Bottom-fixed button that opens the thank-you form in the SAME TAB; resilient to SPA click interception by injecting in page context and using capture-phase handlers + fallbacks.
@@ -7,6 +7,7 @@
 // @match        https://express.adobe.com/*
 // @match        https://new.express.adobe.com/*
 // @match        https://experience.adobe.com/*
+// @match        https://next.frame.io/*
 // @run-at       document-idle
 // @noframes
 // @grant        none
@@ -14,16 +15,20 @@
 
 (function () {
   'use strict';
-  const platform = window.location.hostname.startsWith('experience') ? 'genstudio' : 'express';
   const MESSAGE = 'Next step';
-  const BUTTON_ID = 'tmx-express-complete-btn';
-  const TARGET_URL = getTargetURL(platform);
+  const EXPERIENCE = 'sharpie';
+  const BUTTON_ID = 'tmx-activation-complete-btn';
+  const TARGET_URL = getTargetURL();
   let installed = false;
+  const LIVE_URL = 'https://main--activations-da--adobedevxsc.aem.live/';
 
   function getTargetURL(platform) {
-    const ref = 'https://main--activations-da--adobedevxsc.aem.live/';
-    if (platform == 'express') return `${ref}coca-cola/thank-you-form`;
-    else if (platform == 'genstudio') return 'https://main--activations-da--adobedevxsc.aem.live/coca-cola/completion-page-marketer';
+    if (window.location.hostname.startsWith('next.frame.io')) {
+      return {
+        'platform': 'frameio', 
+        'next': `${LIVE_URL}${EXPERIENCE}/interstitial-screen-2`
+      };
+    }
   }
 
   function findSpectrumButtonClassset() {
@@ -39,18 +44,18 @@
   }
 
   function ensureStyles() {
-    if (document.getElementById('tmx-express-complete-style')) return;
+    if (document.getElementById('tmx-activation-complete-style')) return;
     const style = document.createElement('style');
-    style.id = 'tmx-express-complete-style';
+    style.id = 'tmx-activation-complete-style';
     style.textContent = `
-      .tmx-express-bottom-bar {
+      .tmx-activation-bottom-bar {
         position: fixed;
         right: 20px; bottom: 20px;
         display: flex; justify-content: flex-end;
         pointer-events: none;
         z-index: 2147483647;
       }
-      .tmx-express-bottom-bar > * { pointer-events: auto; }
+      .tmx-activation-bottom-bar > * { pointer-events: auto; }
 
       /* Fallback look if Spectrum isn't available */
       #${BUTTON_ID} {
@@ -73,7 +78,7 @@
       #${BUTTON_ID}:active { transform: translateY(0); }
 
       /* Make absolutely sure nothing blocks clicks */
-      #${BUTTON_ID}, .tmx-express-bottom-bar { pointer-events: auto !important; }
+      #${BUTTON_ID}, .tmx-activation-bottom-bar { pointer-events: auto !important; }
     `;
     document.head.appendChild(style);
   }
@@ -107,7 +112,7 @@
     ensureStyles();
 
     const bar = document.createElement('div');
-    bar.className = 'tmx-express-bottom-bar';
+    bar.className = 'tmx-activation-bottom-bar';
 
     // Use <a> for native nav, but we’ll also bind multiple handlers
     const link = document.createElement('a');
