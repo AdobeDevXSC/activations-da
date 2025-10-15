@@ -11,10 +11,15 @@ p {
 body {
 
  font-family:"adobe-clean", Arial, Helvetica, sans-serif;
-  padding: 74px;
+  padding: calc(74vw / var(--layout-size));
   color: #ffffff !important;
   position: relative;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  background-size: cover;
+  font-size: calc(18 / var(--layout-size));
 }
 
 /* .intake-form::after {
@@ -55,22 +60,22 @@ main>.section {
 }
 
 .coca-cola main>.section.intake-form>div {
-  max-width: 890px !important;
+  max-width: calc(890vw / var(--layout-size)) !important;
   padding: 0 !important;
   margin: 0 !important;
 }
 
 .intake-form {
-  border-radius: 10px;
-  padding: 0px 45px;
+  border-radius: calc(10vw / var(--layout-size));
+  padding: 0px calc(45vw / var(--layout-size));
   margin: 0px;
 }
 
 .intake-form h2 {
-  font-size: 70px;
+  font-size: calc(70vw / var(--layout-size));
   line-height: 95%;
   width: 95%;
-  margin: 30px 0px 30px;
+  margin: calc(30vw / var(--layout-size)) 0px calc(30vw / var(--layout-size));
 }
 
 .intake-form h2 strong {
@@ -78,87 +83,87 @@ main>.section {
 }
 
 .intake-form h2+p {
- font-size: 28px;
-line-height: 32px;
-  border-top: 1px solid #686868;
+ font-size: calc(28vw / var(--layout-size));
+line-height: calc(32vw / var(--layout-size));
+  border-top: calc(1vw / var(--layout-size)) solid #686868;
   margin: 0;
-  padding: 30px 0px;
+  padding: calc(30vw / var(--layout-size)) 0px;
   font-weight: 400;
 }
 .intake-form .form.block form input, .intake-form .form.block form select {
-font-size: 14.78px;
+font-size: calc(14.78vw / var(--layout-size));
 }
 
 .adobecheckbox label#form-adobeupdate-label {
-    font-size: 12px;
+    font-size: calc(12vw / var(--layout-size));
 }
 .intake-form input:-internal-autofill-selected{background-color: #ffffff!important;}
-.intake-form .form.block form select { margin-right: 20px;}
+.intake-form .form.block form select { margin-right: calc(20vw / var(--layout-size));}
 select:invalid {
   color: #909090!important;  /* also affects the select if no valid value is chosen */
 }
 input::placeholder, select::placeholder {
-  font-size: 14.78px;
+  font-size: calc(14.78vw / var(--layout-size));
 line-height: 100%;
 }
 
 
 .intake-form  .field-wrapper label {
-    font-size: 14.78px; font-weight: 400;letter-spacing: 0;}
+    font-size: calc(14.78vw / var(--layout-size)); font-weight: 400;letter-spacing: 0;}
 
 .intake-form .submit-class {
     text-align: left;
 }
 .intake-form .submit-class button{ margin: 0!important;}
 .adobecheckbox  {
-    padding: 20px 0px;
+    padding: calc(20vw / var(--layout-size)) 0px;
 }
 .intake-form .field-wrapper.submit-class,  .intake-form .field-wrapper.selection-wrapper,  .intake-form .field-wrapper.html-wrapper  {grid-column: span 3;}   
 .intake-form .html-wrapper p{
-font-size: 11.59px;
+font-size: calc(11.59vw / var(--layout-size));
 line-height: 150%;
 letter-spacing: 0px;
-padding-bottom: 20px;
+padding-bottom: calc(20vw / var(--layout-size));
 }        
 .intake-form form input[type="checkbox"] {
-    border: 2px solid #ffffff;
+    border: calc(2vw / var(--layout-size)) solid #ffffff;
     background-color: transparent;
 }
 /* video for intake form */
 .coca-cola .intake-form .video-wrapper {
     bottom: 8%;
-    right: 40px;
+    right: calc(40vw / var(--layout-size));
     width: 42%;
 }
 
 /*track-landing-page css start*/
 main .custom-2-column-section {
-  max-width: 1670px;
+  max-width: calc(1670vw / var(--layout-size));
   margin: 0 auto !important;
 }
  
 .custom-2-column-section h2 {
   text-align: center;
-  margin: 0 0 40px 0;
+  margin: 0 0 calc(40vw / var(--layout-size)) 0;
 }
  
 .custom-2-column-section h3 {
-  margin: 0px 0 20px 0;
+  margin: 0px 0 calc(20vw / var(--layout-size)) 0;
 }
  
 .custom-2-column-section p:not(:first-child) {
-  font-size: 17px;
-  max-width: 635px;
+  font-size: calc(17vw / var(--layout-size));
+  max-width: calc(635vw / var(--layout-size));
   font-weight: 600;
 }
  
 .custom-2-column-section .button-container {
-  margin-top: 30px;
+  margin-top: calc(30vw / var(--layout-size));
 }
  
 .custom-2-column-section a.button {
   margin: 0;
-  font-size: 18px;
+  font-size: calc(18vw / var(--layout-size));
   font-weight: bold;
 }
  
@@ -172,13 +177,13 @@ main .custom-2-column-section {
 }
  
 .custom-2-column-section .columns>div {
-  gap: 50px;
+  gap: calc(50vw / var(--layout-size));
 }
  
 .custom-2-column-section .columns>div>div {
   background: #242424;
-  padding: 40px;
-  border-radius: 16px;
+  padding: calc(40vw / var(--layout-size));
+  border-radius: calc(16vw / var(--layout-size));
   border: 1.5px solid #444;
   transition: all 0.4s ease;
   position: relative;
@@ -197,10 +202,10 @@ main .custom-2-column-section {
   height: calc(100% + 7px);
   position: absolute;
   background: #FC7D00;
-  border-radius: 16px;
+  border-radius: calc(16vw / var(--layout-size));
   background: linear-gradient(145deg, rgba(252, 125, 0, 1) 0%, rgba(255, 72, 133, 1) 74%);
-  left: -3.5px;
-  top: -3.5px;
+  left: calc(-3.5vw / var(--layout-size));
+  top: calc(-3.5vw / var(--layout-size));
   z-index: -1;
   opacity: 0;
   transition: all 0.4s ease;
@@ -209,10 +214,37 @@ main .custom-2-column-section {
 .custom-2-column-section .columns>div>div:hover::before {
   opacity: 1;
 }
- 
+ .custom-2-column-section .columns>div>div:nth-child(1):before {
+  /* background: #6C5EEE;
+  background: linear-gradient(145deg, rgba(108, 94, 238, 1) 0%, rgba(197, 62, 112, 1) 100%, rgba(255, 86, 73, 1) 100%); */
+      background: url(/coca-cola/assets/media_173a58e111a1c3e1f8fc8453d319fb14f66f889cb.png) no-repeat;
+    background-size: cover;
+    width: calc(100% + 12px);
+    height: calc(100% + 12px);
+<<<<<<< HEAD
+    left:calc(-6vw / var(--layout-size));
+    top:calc(-6vw / var(--layout-size));
+=======
+    left: -6px;
+    top: -6px;
+>>>>>>> acf5577 (sharpie main video size increase and coco cola bg added for track landing page)
+    background-position: center;
+}
 .custom-2-column-section .columns>div>div:nth-child(2):before {
-  background: #6C5EEE;
-  background: linear-gradient(145deg, rgba(108, 94, 238, 1) 0%, rgba(197, 62, 112, 1) 100%, rgba(255, 86, 73, 1) 100%);
+  /* background: #6C5EEE;
+  background: linear-gradient(145deg, rgba(108, 94, 238, 1) 0%, rgba(197, 62, 112, 1) 100%, rgba(255, 86, 73, 1) 100%); */
+      background: url(/coca-cola/assets/media_114daa25ded116ee560a9032294b531571c2289e4.png) no-repeat;
+    background-size: cover;
+    width: calc(100% + 12px);
+    height: calc(100% + 12px);
+<<<<<<< HEAD
+   left:calc(-6vw / var(--layout-size));
+    top:calc(-6vw / var(--layout-size));
+=======
+    left: -6px;
+    top: -6px;
+>>>>>>> acf5577 (sharpie main video size increase and coco cola bg added for track landing page)
+    background-position: center;
 }
  
 .custom-2-column-section .columns img {
@@ -222,22 +254,22 @@ main .custom-2-column-section {
   object-position: center;
 }
  .custom-2-column-section.be-a-marketer-module-disabled .columns>div>div::before {
-  background: url('https://main--activations-da--adobedevxsc.aem.live/coca-cola/assets/media_173a58e111a1c3e1f8fc8453d319fb14f66f889cb.png') no-repeat;
+  background: url('/coca-cola/assets/media_173a58e111a1c3e1f8fc8453d319fb14f66f889cb.png') no-repeat;
   background-size: cover;
   width: calc(100% + 12px);
   height: calc(100% + 12px);
-  left: -6px;
-  top: -6px;
+   left:calc(-6vw / var(--layout-size));
+    top:calc(-6vw / var(--layout-size));
   background-position: center;
 }
  
 .custom-2-column-section.be-a-designer-module-disabled .columns>div>div::before {
-  background: url('https://main--activations-da--adobedevxsc.aem.live/coca-cola/assets/media_114daa25ded116ee560a9032294b531571c2289e4.png') no-repeat;
+  background: url('/coca-cola/assets/media_114daa25ded116ee560a9032294b531571c2289e4.png') no-repeat;
   background-size: cover;
   width: calc(100% + 12px);
   height: calc(100% + 12px);
-  left: -6px;
-  top: -6px;
+  left:calc(-6vw / var(--layout-size));
+    top:calc(-6vw / var(--layout-size));
   background-position: center;
 }
 
@@ -246,21 +278,21 @@ main .custom-2-column-section {
  
 @media(min-width:1921px) {
   .custom-2-column-section h2 {
-    font-size: 60px;
+    font-size: calc(60vw / var(--layout-size));
   }
  
   .custom-2-column-section h3 {
-    font-size: 50px;
+    font-size: calc(50vw / var(--layout-size));
   }
 }
  
 @media(max-width:1921px) and (min-width:992px) {
   .custom-2-column-section h2 {
-    font-size: calc(60vw / 19.2);
+    font-size: calc(60vw / var(--layout-size));
   }
  
   .custom-2-column-section h3 {
-    font-size: calc(40vw / 19.2);
+    font-size: calc(40vw / var(--layout-size));
   }
 }
  
@@ -269,11 +301,15 @@ main .custom-2-column-section {
 
 /*completion page css start*/
 .completion-page .columns img {
-  max-height: 300px;
+<<<<<<< HEAD
+  max-height: calc(290vw / var(--layout-size));
+=======
+  max-height: 290px;
+>>>>>>> acf5577 (sharpie main video size increase and coco cola bg added for track landing page)
 }
  
 .completion-page .default-content-wrapper:nth-last-child(1) {
-  margin-top: 50px;
+  margin-top:calc(50vw / var(--layout-size));
 }
  
 .completion-page .default-content-wrapper:nth-last-child(1) * {
@@ -281,10 +317,12 @@ main .custom-2-column-section {
 }
  
 .completion-page .default-content-wrapper:nth-last-child(1) a {
-  border: 2px solid #fff;
+  border: calc(2vw / var(--layout-size)) solid #fff;
   background-color: transparent;
 }
- 
+ .completion-page .default-content-wrapper:nth-last-child(1) a:hover, .cola-thank-you p.button-container+ p.button-container a:hover {
+  background-color: rgba(178, 178, 178, 0.15);
+}
 .custom-2-column-section a {
   padding: 0.62em 1.2em !important;
 }
@@ -326,24 +364,24 @@ main .custom-2-column-section {
 .be-a-marketer-module-disabled .columns>div>div:nth-child(2)::after {
   content: "";
   display: block;
-  width: 40px;
-  height: 40px;
-  background: url('https://main--activations-da--adobedevxsc.aem.live/coca-cola/assets/media_1ded921d97570617b0e062cd6f3ba34c48ea0cdd3.png');
+  width: calc(40vw / var(--layout-size));
+  height: calc(40vw / var(--layout-size));
+  background: url('/coca-cola/assets/media_1ded921d97570617b0e062cd6f3ba34c48ea0cdd3.png');
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
   position: absolute;
-  top: -20px;
-  left: -20px;
+  top: calc(-20vw / var(--layout-size));
+  left: calc(20vw / var(--layout-size));
 }
  
 @media(max-height:1000px) {
   .completion-page h2 {
-    font-size: calc(45vw / 19.2);
+    font-size: calc(45vw / var(--layout-size));
   }
  
   .completion-page h3 {
-    font-size: calc(35vw / 19.2);
+    font-size: calc(35vw / var(--layout-size));
   }
 }
  
@@ -352,12 +390,12 @@ main .custom-2-column-section {
 /* Thank you form css start */
  
 main div.completion-section {
-  max-width: 960px;
+  max-width: calc(960vw / var(--layout-size));
   margin: 0 auto !important;
   background: #fff;
-  border: 1px solid #DEDEDE;
-  padding: 50px 56px;
-  border-radius: 10px;
+  border: calc(1vw / var(--layout-size)) solid #DEDEDE;
+  padding: calc(50vw / var(--layout-size)) calc(56vw / var(--layout-size));
+  border-radius: calc(10vw / var(--layout-size));
 }
  
 main div.completion-section>* {
@@ -370,17 +408,17 @@ main .completion-section h2 {
 }
  
 main .coca-cola-thank-you-section h2 {
-    margin-top: 55px;
+    margin-top: calc(55vw / var(--layout-size));
     font-weight: 900;
-    font-size: 60px;
+    font-size: calc(60vw / var(--layout-size));
     line-height: 100%;
 }
  
 main .coca-cola-thank-you-section h2+p {
-  margin-top: 30px;
-  padding-top: 30px;
-  border-top: 1px solid #B6B6B6;
-  font-size: 20px;
+  margin-top: calc(30vw / var(--layout-size));
+  padding-top: calc(30vw / var(--layout-size));
+  border-top: calc(1vw / var(--layout-size)) solid #B6B6B6;
+  font-size: calc(20vw / var(--layout-size));
   font-family: "adobe-clean", Arial, Helvetica, sans-serif;
   font-weight: 700;
 }
@@ -395,7 +433,7 @@ main div.completion-section .default-content-wrapper p:nth-child(1) {
   display: flex;
   flex-wrap: wrap;
   column-gap: unset;
-  row-gap: 20px;
+  row-gap: calc(20vw / var(--layout-size));
 }
  
 .completion-section .form-wrapper .form>form .field-wrapper {
@@ -413,24 +451,24 @@ main div.completion-section .default-content-wrapper p:nth-child(1) {
 .completion-section .form-wrapper .form>form .field-wrapper.submit-wrapper {
   grid-column: unset;
   width: 100%;
-  margin-top: 30px;
+  margin-top: calc(30vw / var(--layout-size));
 }
  
 .completion-section .form-wrapper .form>form button.button {
-  padding: 15px 30px;
+  padding: calc(15vw / var(--layout-size)) calc(30vw / var(--layout-size));
   width: unset;
   height: unset;
   margin: 0;
-  font-size: 18px;
+  font-size: calc(18vw / var(--layout-size));
 }
  
 .completion-section .form-wrapper .form>form .field-wrapper input[type="checkbox"] {
   appearance: none;
-  width: 20px;
-  height: 20px;
-  border: 2px solid #ffffff;
+  width: calc(20vw / var(--layout-size));
+  height: calc(20vw / var(--layout-size));
+  border: calc(2vw / var(--layout-size)) solid #ffffff;
   vertical-align: middle;
-  border-radius: 6px;
+  border-radius: calc(6vw / var(--layout-size));
   background-color: transparent;
   cursor: pointer;
   position: relative;
@@ -447,27 +485,27 @@ main div.completion-section .default-content-wrapper p:nth-child(1) {
   color: white;
   font-weight: bold;
   position: absolute;
-  top: -2px;
-  left: 3px;
-  font-size: 13px;
+  top: calc(-2vw / var(--layout-size));
+  left: calc(3vw / var(--layout-size));
+  font-size: calc(13vw / var(--layout-size));
 }
  
 .completion-section .form-wrapper {
-  margin-top: 30px;
+  margin-top: calc(30vw / var(--layout-size));
 }
  
 .completion-section .form-wrapper .form>form .field-wrapper label {
   width: unset;
   cursor: pointer;
-  font-size: 19.2px;
+  font-size: calc(19.2vw / var(--layout-size));
   font-weight: 700;
 }
  
 main div.completion-section.coca-cola-thank-you-section {
   background: #242424;
   border-color: #444444;
-  max-width: 940px;
-  border-radius: 16px;
+  max-width: calc(940vw / var(--layout-size));
+  border-radius: calc(16vw / var(--layout-size));
 }
  
 .custom-video-image .default-content-wrapper {
@@ -510,40 +548,41 @@ main div.completion-section.coca-cola-thank-you-section {
 }
 .cola-thank-you > div {
   display: grid;
-  grid-template-columns: 763px 684px;
+  grid-template-columns: calc(763vw / var(--layout-size)) calc(684vw / var(--layout-size));
   align-items: center;
   justify-content:space-between;  
-  height: 754px;
-  padding: 40px 55px;
+  height: calc(754vw / var(--layout-size));
+  padding: calc(40vw / var(--layout-size)) calc(55vw / var(--layout-size));
   background: #242424;
 border: 1.5px solid #444444;
-border-radius: 16.2px;
+border-radius: calc(16.2vw / var(--layout-size));
 position: relative;
 }
 
 .cola-thank-you h2 {
    font-weight: 900;
-font-size: 73px;
+font-size: calc(73vw / var(--layout-size));
 line-height: 95%;
-    padding: 54px 0px 25px;
+    padding: calc(54vw / var(--layout-size)) 0px calc(25vw / var(--layout-size));
     margin: 0;
 }
 .cola-thank-you h2+p {
-   font-size: 22px;
-line-height: 30px;
+   font-size: calc(22vw / var(--layout-size));
+line-height: calc(30vw / var(--layout-size));
     margin: 0;
-    padding: 0px 0px 62px;
+    padding: 0px 0px calc(62vw / var(--layout-size));
     font-weight: 400;
-    width: 673px;
+    width: calc(673vw / var(--layout-size));
 }
 .cola-thank-you .button-container {
     display: inline-flex;
   
 }
 .cola-thank-you .button-container a{margin: 0px;
-    height: 48px;   margin-right: 30px;
-    font-size: 18.3215px;
-line-height: 23px;}
+    height: calc(48vw / var(--layout-size));   margin-right: calc(30vw / var(--layout-size));
+    font-size: calc(18.3215vw / var(--layout-size));
+line-height: calc(23vw / var(--layout-size));
+font-weight: 700;}
  .cola-thank-you-container {
   position: relative;
  }
@@ -560,7 +599,7 @@ line-height: 23px;}
     body main:has( .cola-thank-you) {
 
       width: 100%;
-      max-width: 1690px;
+      max-width: calc(1690vw / var(--layout-size));
   }
 
 

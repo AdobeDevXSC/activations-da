@@ -60,7 +60,9 @@ async function ensurePermission(handle, mode = 'readwrite') {
   if (!handle) return false;
   const opts = { mode };
   if (await handle.queryPermission(opts) === 'granted') return true;
+  console.log('query permission', handle); // eslint-disable-line no-console
   const requested = await handle.requestPermission(opts);
+  console.log('requesting permission', requested); // eslint-disable-line no-console
   return requested === 'granted';
 }
 
@@ -117,6 +119,7 @@ async function pollFolder() {
     }
   } catch (err) {
     console.log('Poll error:', err?.message || err); // eslint-disable-line no-console
+    stopPolling(); // eslint-disable-line no-use-before-define
   }
 }
 

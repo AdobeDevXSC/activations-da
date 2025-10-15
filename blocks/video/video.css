@@ -1,6 +1,6 @@
 .video {
   text-align: center;
-  margin: 24px auto;
+  margin: calc(24vw / var(--layout-size)) auto;
   margin: 0 !important;
   max-width: 100% !important;
 }
@@ -66,12 +66,12 @@
 .video .video-placeholder-play button {
   position: relative;
   display: block;
-  width: 75px;
-  height: 75px;
+  width: calc(75vw / var(--layout-size));
+  height: calc(75vw / var(--layout-size));
   border-radius: 50%;
   padding: 0;
   background: rgba(0 0 0 / 60%);
-  margin-left: -2px;
+  margin-left: calc(-2vw / var(--layout-size));;
 }
  
 .video .video-placeholder-play button::before {
@@ -83,8 +83,8 @@
   box-sizing: border-box;
   position: absolute;
   background-position: center;
-  width: 25px;
-  height: 27px;
+  width: calc(25vw / var(--layout-size));
+  height: calc(27vw / var(--layout-size));
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -95,13 +95,17 @@
  position: absolute;
     bottom: 0;
     overflow: hidden;
-    right: 8%;
-    width: 30%;
+    right: 0;
+    width: 42%;
     z-index: 1;
 }
 
-.intake-form .video-wrapper video {
+/* .intake-form .video-wrapper video {
   margin-bottom: -8px;
+} */
+.intake-form .video-wrapper video {
+    margin-bottom: calc(-8vw / 19.2);
+     width: calc(805vw / 19.2);
 }
 
 .intake-form video::-webkit-media-controls {
@@ -123,9 +127,9 @@ main div.custom-video {
   /* background-image: url("../../icons/Interstitial-Before-Adobe-Express.jpg");
   background-size: cover;
   height: 100vh; */
-  padding-top: 40px;
+  padding-top: calc(40vw / var(--layout-size));
   box-sizing: border-box;
-  margin: -74px!important;
+  margin: calc(-74vw / var(--layout-size))!important;
 }
 
 .custom-video .video-wrapper {
@@ -133,8 +137,8 @@ main div.custom-video {
   padding: 40px 40px 0;
   max-width: 80%;
   width: 100%;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+  border-top-left-radius: calc(10vw / var(--layout-size));
+  border-top-right-radius: calc(10vw / var(--layout-size));
   height: calc(100vh - 204px);
   margin: auto;
 }
@@ -154,11 +158,11 @@ main div.custom-video {
 .custom-video>.default-content-wrapper {
   background: #fff;
   text-align: center;
-  padding: 32px 40px 40px;
+  padding: calc(32vw / var(--layout-size)) calc(40vw / var(--layout-size)) calc(40vw / var(--layout-size));
   width: 100%;
   max-width: 80%;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: calc(10vw / var(--layout-size));
+  border-bottom-right-radius: calc(10vw / var(--layout-size));
   margin: auto;
 
 }
@@ -167,7 +171,7 @@ main div.custom-video {
   text-decoration: none;
   opacity: 0.5;
   pointer-events: none;
-  border-radius: 40px;
+  border-radius: calc(40vw / var(--layout-size));;
   transition: opacity 0.3s;
   background: #B6B6B6;
   font-size: 22px;
@@ -206,5 +210,5 @@ main div.custom-video {
 }
   
 .coca-cola .custom-bg-video video {
-  filter: brightness(0.3);
+  filter: brightness(0.4);
 }
