@@ -1,11 +1,11 @@
 .sketch-screen-wrapper>[class*="sketch-screen"]:not(.sketch-screen-1):not(.cola-thank-you) {
-  padding: 40px 56px !important;
+  padding: calc(40vw / var(--layout-size)) calc(40vw / var(--layout-size))!important;
   box-sizing: border-box;
-  border-radius: 10px;
-  border: 1px solid #DEDEDE;
+  border-radius: calc(10vw / var(--layout-size));
+  border: calc(1vw / var(--layout-size)) solid #DEDEDE;
   background: #FFF;
   box-shadow: 0 0 2px rgb(0 0 0 / 12%), 0 2px 6px rgb(0 0 0 / 4%), 0 4px 12px rgb(0 0 0 / 8%);
-  height: 800px;
+  height: calc(100vh - 148px);
 }
 
 .sketch-screen-wrapper .sketch-screen-1 {
@@ -43,35 +43,40 @@
   margin: 0;
 }
 
-
+[class*=" sketch-screen"] .block.sketch-screen-5>div {
+  align-items: center;
+}
+[class*=" sketch-screen"] .block.sketch-screen-5>div>div:first-child {
+  width: 100%;
+}
 .sketch-screen-3-container .block>div>div:first-child>p img {
-  padding-bottom: 60px;
+  padding-bottom: calc(60vw / var(--layout-size));
 }
 
 [class*=" sketch-screen"] .block:not(.cola-thank-you)>div>div:first-child>p img {
-  padding-bottom: 150px;
-  padding-top: 20px;
+  padding-bottom: calc(150vw / var(--layout-size));
+  padding-top: calc(20vw / var(--layout-size));;
 }
 
 .sketch-screen-3-container .block>div>div:first-child>p img {
-  padding-bottom: 60px;
+  padding-bottom: calc(60vw / var(--layout-size));
 }
 
 [class*=" sketch-screen"] .block:not(.cola-thank-you) h2+p {
-  width: 720px;
+  width: calc(720vw / var(--layout-size));
   /* font-family: 'Adobe Clean', Arial, Helvetica, sans-serif; */
   font-style: normal;
   font-weight: 400;
-  font-size: 24px;
+  font-size: calc(24vw / var(--layout-size));
   line-height: 120%;
   color: #000;
-  padding: 40px 0 50px;
+  padding: calc(40vw / var(--layout-size)) 0 calc(50vw / var(--layout-size));
 }
 
 [class*=" sketch-screen"] .block:not(.cola-thank-you) h2 {
   font-style: normal;
   font-weight: 900;
-  font-size: 105px;
+  font-size: calc(105vw / var(--layout-size));
   line-height: 95%;
   margin: 0;
   letter-spacing: -0.01em;
@@ -81,10 +86,10 @@
 [class*=" sketch-screen"] .block:not(.cola-thank-you) .button-container a.button {
   margin: 0;
   font-weight: 600;
-  font-size: 22.1212px;
-  line-height: 27px;
+  font-size: calc(22.1212vw / var(--layout-size));
+  line-height: calc(27vw / var(--layout-size));
   display: inline-flex;
-  gap: 11px;
+  gap: calc(11vw / var(--layout-size));;
   align-items: center;
   height: 59px;
 }
@@ -107,13 +112,13 @@
 
 .sketch-screen-1 .button-container a.button::before {
   content: '';
-  width: 28px;
-  height: 28px;
+  width: calc(28vw / var(--layout-size));
+  height: calc(28vw / var(--layout-size));
   display: inline-block;
   background-image: url("/sharpie/assets/media_1aad7609e4630c128b47c030995c6a270a9c8187d.png");
   background-repeat: no-repeat;
   background-size: contain;
-  margin-top: 3px;
+  margin-top: calc(3vw / var(--layout-size));
 }
 
 .sketch-screen-1 div>div:last-child {
@@ -129,7 +134,7 @@
   height: 179px;
   z-index: 2;
   right: 0;
-  width: 346px;
+  width: calc(346vw / var(--layout-size));;
   bottom: 0;
   background-repeat: no-repeat;
   background-position: bottom;
@@ -144,14 +149,14 @@
   height: 301px;
   z-index: 2;
   top: 0;
-  width: 201px;
+  width: calc(201vw / var(--layout-size));
   right: 0;
   background-repeat: no-repeat;
   background-position: bottom;
 }
 
 .sketch-screen-4 p:first-child img {
-    padding-bottom: 70px!important;}
+    padding-bottom: calc(70vw / var(--layout-size))!important;}
 /* div.sketch-screen-5 p.caption {
   position: absolute;
   right: 56px;
@@ -161,13 +166,13 @@
 .sketch-screen-wrapper>[class*="sketch-screen"]:not(.sketch-screen-1):not(.sketch-screen-5):not(.cola-thank-you) div div:last-child>p:first-child {
   text-align: left;
   font-weight: 400;
-  font-size: 17.8561px;
+  font-size: calc(17.8561vw / var(--layout-size));;
   line-height: 130%;
-  padding: 16px 45px 16px 16px;
-  margin-bottom: 20px;
+  padding: calc(16vw / var(--layout-size)) calc(45vw / var(--layout-size)) calc(16vw / var(--layout-size)) calc(16vw / var(--layout-size));
+  margin-bottom: calc(20vw / var(--layout-size));
   margin-left: auto;
-  width: 697px;
-  min-width: 346.92px;
+  width: calc(697vw / var(--layout-size));
+  min-width: calc(346.92vw / var(--layout-size));
   height: 78px;
   background: linear-gradient(88.65deg, #FFF 30.5%, #E9E9E9 240.26%);
 border: 0.5px solid #C6C6C6;
@@ -179,7 +184,7 @@ box-shadow: 0px 4.8516px 9.7031px rgba(0 0 0 / 10%);
 }
 
 .sketch-screen-5 p:first-child img {
-  padding-bottom: 30px !important;
+  padding-bottom: calc(30vw / var(--layout-size)) !important;
 }
 
 .sketch-screen-5 p.button-container,
@@ -190,8 +195,8 @@ box-shadow: 0px 4.8516px 9.7031px rgba(0 0 0 / 10%);
 /* .sketch-screen-5 p.caption::after, */
 .sketch-screen-wrapper>[class*="sketch-screen"]:not(.sketch-screen-1):not(.sketch-screen-5):not(.cola-thank-you) div div:last-child>p:first-child:after {
   content: '';
-  width: 22px;
-  height: 22px;
+  width: calc(22vw / var(--layout-size));
+  height: calc(22vw / var(--layout-size));
   display: inline-block;
   background-image: url("/sharpie/assets/tooltip.svg");
   background-repeat: no-repeat;
@@ -199,7 +204,7 @@ box-shadow: 0px 4.8516px 9.7031px rgba(0 0 0 / 10%);
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  right: 13.5px;
+  right: calc(13.5vw / var(--layout-size));
 }
 
 .sketch-screen>video {
@@ -236,7 +241,7 @@ box-shadow: 0px 4.8516px 9.7031px rgba(0 0 0 / 10%);
 .sketch-screen {
   position: relative;
   overflow: hidden;
-  border-radius: 12px;
+  border-radius: calc(12vw / var(--layout-size));
 }
 
 /* Insterstitial pages css end   */
@@ -244,16 +249,26 @@ box-shadow: 0px 4.8516px 9.7031px rgba(0 0 0 / 10%);
 .sketch-screen .video-placeholder {
   position: relative;
   width: auto;
-  max-width: 700px;
+  max-width: calc(700vw / var(--layout-size));
   height: auto;
 }
 
 .sketch-screen.sketch-screen-3 .video-placeholder,
 .sketch-screen.sketch-screen-4 .video-placeholder {
-  max-width: 655px;
+  max-width: calc(635vw / var(--layout-size));
 }
 
+
 .sketch-screen.sketch-screen-5 .video-placeholder {
-  max-width: 83%;
+    max-width: calc(1300vw / var(--layout-size));
+    margin: auto;
+}
+@media (min-width: 1650px) and (max-width: 1740px) {
+  .sketch-screen.sketch-screen-1::before {
+        top: -28px;
+  }
+  .sketch-screen.sketch-screen-5 .video-placeholder {
+  max-width:  calc(1250vw / var(--layout-size));
   margin: auto;
+}
 }
