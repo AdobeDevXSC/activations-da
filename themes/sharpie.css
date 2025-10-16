@@ -241,12 +241,19 @@ main div.completion-section .default-content-wrapper p:nth-child(1) {
 }
 
 .completion-section .form-wrapper .form>form .field-wrapper input[type="checkbox"]:checked::after {
-  content: '\2713';
+  content: '';
+  display: block;
+  background: url('https://main--activations-da--adobedevxsc.aem.live/sharpie/assets/media_1faf147dde39382c94f14a7750775daee26a1e471.png') no-repeat;
+  background-size: contain;
+  background-position: center;
+  width: calc(12vw / var(--layout-size));
+  height: calc(12vw / var(--layout-size));
   color: white;
   font-weight: bold;
   position: absolute;
-  top: calc(-2vw / var(--layout-size));
-  left: calc(3vw / var(--layout-size));
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   font-size: calc(13vw / var(--layout-size));
 }
 

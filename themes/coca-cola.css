@@ -398,6 +398,22 @@ main .custom-2-column-section {
   left: calc(-18vw / var(--layout-size));
 }
 
+
+body main .be-a-designer-module-disabled h2,
+body main .be-a-marketer-module-disabled h2 {
+  margin: 0 0 calc(50vw / var(--layout-size)) 0;
+}
+
+.completion-page.be-a-designer-module-disabled .default-content-wrapper:nth-last-child(1),
+.completion-page.be-a-marketer-module-disabled .default-content-wrapper:nth-last-child(1) {
+  margin-top: calc(55vw / var(--layout-size));
+}
+
+.completion-page.be-a-designer-module-disabled .default-content-wrapper:nth-last-child(1) .button-container,
+.completion-page.be-a-marketer-module-disabled .default-content-wrapper:nth-last-child(1) .button-container {
+  margin-top: 0;
+}
+
 @media(max-height:1000) {
   .completion-page h2 {
     font-size: calc(45vw / var(--layout-size));
@@ -534,12 +550,19 @@ main div.completion-section .default-content-wrapper p:nth-child(1) {
 }
 
 .completion-section .form-wrapper .form>form .field-wrapper input[type="checkbox"]:checked::after {
-  content: '\2713';
+  content: '';
+  display: block;
+  background: url('https://main--activations-da--adobedevxsc.aem.live/sharpie/assets/media_1faf147dde39382c94f14a7750775daee26a1e471.png') no-repeat;
+  background-size: contain;
+  background-position: center;
+  width: calc(12vw / var(--layout-size));
+  height: calc(12vw / var(--layout-size));
   color: white;
   font-weight: bold;
   position: absolute;
-  top: calc(-2vw / var(--layout-size));
-  left: calc(3vw / var(--layout-size));
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   font-size: calc(13vw / var(--layout-size));
 }
 
