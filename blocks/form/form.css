@@ -147,10 +147,9 @@ intake-form form input[type="checkbox"]:checked {
   color: white;
   font-weight: bold;
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: calc(13vw / var(--layout-size));
+  top: -2px;
+  left: 3px;
+  font-size: 13px;
 }
 
 /* When the checkbox is checked, add custom styles */
