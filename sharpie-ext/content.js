@@ -98,7 +98,6 @@
         document.body.style.overflow = '';
       }, 300);
       markModalAsShown();
-      miniPicker();
       createButton();
     }
 
