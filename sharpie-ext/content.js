@@ -1,3 +1,15 @@
+(function injectExtensionId() {
+  // Simple message listener to send extension ID
+  window.addEventListener('message', (event) => {
+    if (event.data.type === 'GET_EXTENSION_ID') {
+      window.postMessage({
+        type: 'EXTENSION_ID',
+        id: chrome.runtime.id
+      }, '*');
+    }
+  });
+})();
+
 (function () {
   'use strict';
 
@@ -13,9 +25,10 @@
     if (liveUrl.endsWith('/')) {
       liveUrl = liveUrl.slice(0, -1);
     }
-    const domains = placeholders.filter(item => window.location.hostname.startsWith(item.Key));
-    return `${liveUrl}${domains[0].Text}`;
 
+    const domain = placeholders.find(item => window.location.hostname.startsWith(item.Key))?.Text;
+    if (domain && domain.startsWith('http')) return domain;
+    else return `${liveUrl}${domain}`;
   }
 
   // Check if modal has already been shown in this session
@@ -630,10 +643,10 @@
     const mainBtnWrap = document.createElement("div");
     mainBtnWrap.id = "ae-place-mini-main";
     Object.assign(mainBtnWrap.style, {
-      position:"fixed",
-      right:"calc(50% - 263px)",
-      top:"calc(50% - 40px)",
-      transform:"translateY(-50%)",
+      position: "fixed",
+      right: "calc(50% - 263px)",
+      top: "calc(50% - 40px)",
+      transform: "translateY(-50%)",
       zIndex: 9e6,
       pointerEvents: "none" // Allow clicks to pass through container
     });
@@ -712,11 +725,19 @@
 
       placeholders = data.data;
 
-      if (window.location.hostname.startsWith('next.frame.io') || window.location.hostname.startsWith('firefly.adobe.com')) {
+      if (window.location.hostname.includes('localhost') || window.location.hostname.includes('aem.live') || window.location.hostname.includes('aem.page')) {
+        console.log('Express Modal: Not supported on this platform');
+        return;
+      }
+
+      if (!window.location.hostname.includes('express.adobe.com')) {
         console.log('Express Modal: Not supported on this platform');
         createButton();
         return;
       }
+
+      console.log(window.location.search);
+
       // Check if user has permanently dismissed
       if (localStorage.getItem('expressModalDismissed') === 'true') {
         console.log('Express Modal: User has permanently dismissed');
@@ -761,3 +782,25 @@
   }
 
 })();
+
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    // 'request' contains the message data sent by chrome.runtime.sendMessage
+    // 'sender' contains information about the sender of the message (e.g., tab ID, URL)
+    // 'sendResponse' is a function to send a response back to the sender (optional)
+
+    console.log("Message received:", request);
+
+    // Example: Check the message type and perform an action
+    if (request.type === "myCustomMessage") {
+      console.log("Custom message received:", request.data);
+      // Perform actions based on the message content
+      chrome.storage.local.set('activationSession', request.data);
+      sendResponse({ status: "Message processed successfully" }); // Send a response
+    }
+
+    // If you need to send an asynchronous response, return true from the listener
+    // This indicates that sendResponse will be called later.
+    // return true;
+  }
+);

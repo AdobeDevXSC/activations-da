@@ -3,7 +3,17 @@
   "version": "1.0",
   "manifest_version": 3,
   "description": "Opens a modal on Express pages at the beginning of the session",
-  "permissions": ["storage"],
+  "permissions": ["storage", "downloads"],
+  "externally_connectable": {
+    "matches": [
+      "https://main--activations-da--adobedevxsc.aem.live/*",
+      "https://ext--activations-da--adobedevxsc.aem.live/*",
+      "http://localhost:3000/*"
+    ]
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
   "icons": {
     "16": "icon.png",
     "32": "icon.png",
@@ -12,7 +22,14 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://new.express.adobe.com/*", "*://next.frame.io/*", "*://firefly.adobe.com/*"],
+      "matches": [
+        "*://new.express.adobe.com/*",
+        "*://next.frame.io/*", 
+        "*://firefly.adobe.com/*",
+        "https://main--activations-da--adobedevxsc.aem.live/*",
+        "https://ext--activations-da--adobedevxsc.aem.live/*",
+        "http://localhost:3000/*"
+      ],
       "js": ["content.js"],
       "css": ["modal.css"],
       "run_at": "document_end"
