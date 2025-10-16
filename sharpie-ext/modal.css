@@ -20,8 +20,6 @@
 
 /* Modal Content */
 .express-modal-content {
-  /* background: transparent; */
-  background-color:red;
   border-radius: 12px;
   width: 95vw;
   /* max-width: 1200px; */
@@ -32,6 +30,19 @@
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
   transform: scale(0.9);
   transition: transform 0.3s ease;
+
+  box-sizing: border-box;
+  border-radius: calc(10vw / 19.2);
+  border: calc(1vw / 19.2) solid #DEDEDE;
+  box-shadow: 0 0 2px rgb(0 0 0 / 12%), 0 2px 6px rgb(0 0 0 / 4%), 0 4px 12px rgb(0 0 0 / 8%);
+  height: calc(100vh - 148px);
+}
+
+.express-modal-content iframe {
+  box-sizing: border-box;
+  border-radius: calc(10vw / 19.2);
+  border: calc(1vw / 19.2) solid #DEDEDE;
+  box-shadow: 0 0 2px rgb(0 0 0 / 12%), 0 2px 6px rgb(0 0 0 / 4%), 0 4px 12px rgb(0 0 0 / 8%);
 }
 
 .express-modal-overlay.show .express-modal-content {
@@ -171,6 +182,38 @@
 
 .express-modal-body::-webkit-scrollbar-thumb:hover {
   background: #a8a8a8;
+}
+/* Close Button - positioned absolutely over iframe */
+.express-modal-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid #e0e0e0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  font-size: 32px;
+  line-height: 1;
+  color: #666;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.express-modal-close-btn:hover {
+  background: white;
+  color: #2c2c2c;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.express-modal-close-btn:active {
+  transform: scale(0.95);
 }
 
 /* Responsive design */

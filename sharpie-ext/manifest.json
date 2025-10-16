@@ -12,7 +12,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://new.express.adobe.com/*"],
+      "matches": ["*://new.express.adobe.com/*", "*://next.frame.io/*", "*://firefly.adobe.com/*"],
       "js": ["content.js"],
       "css": ["modal.css"],
       "run_at": "document_end"
