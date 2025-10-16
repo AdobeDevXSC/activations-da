@@ -9,11 +9,11 @@
 }
 
 .sketch-screen-wrapper .sketch-screen-4 {
-  height: unset;
-  border-radius: unset;
-  border:unset;
-  box-shadow: unset;
-  height: unset;
+  height: unset !important;
+  border-radius: unset !important;
+  border:unset !important;
+  box-shadow: unset !important;
+  height: unset !important;
 }
 
 .sketch-screen-wrapper .sketch-screen-1 {
