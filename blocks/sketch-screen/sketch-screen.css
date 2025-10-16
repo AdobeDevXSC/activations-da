@@ -8,7 +8,7 @@
   height: calc(100vh - 148px);
 }
 
-iframe .sketch-screen-wrapper .sketch-screen-4 {
+.sketch-screen-wrapper .sketch-screen-4 {
   height: unset;
   border-radius: unset;
   border:unset;

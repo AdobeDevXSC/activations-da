@@ -32,7 +32,7 @@
     
     // Add your content here
     modalContent.innerHTML = `
-      <iframe src="https://main--activations-da--adobedevxsc.aem.live/sharpie/fragments/express-modal" width="100%" height="100%" credentialless></iframe>
+      <iframe src="https://ext--activations-da--adobedevxsc.aem.live/sharpie/fragments/express-modal" width="100%" height="100%" credentialless></iframe>
     `;
     
     modalOverlay.appendChild(modalContent);
