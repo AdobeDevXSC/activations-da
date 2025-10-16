@@ -1,7 +1,7 @@
 import createField from './form-fields.js';
 import { saveHandle, loadHandle, dbExists } from '../../scripts/watcher.js';
 import { getMetadata } from '../../scripts/aem.js';
-
+let extensionId = null;
 async function createForm(formHref, submitHref, confirmationHref) {
   const { pathname, search } = new URL(formHref);
   const resp = await fetch(`${pathname}${search}`);
@@ -92,6 +92,18 @@ async function handleSubmit(form) {
         const responseJson = JSON.parse(responseText);
         if (payload && payload.firstName && payload.lastName) {
           responseJson.fn = `${payload.firstName.toLowerCase()}-${payload.lastName.toLowerCase()}-${responseJson.key}`;
+
+          try {
+            const response = await sendToExtension({
+              type: 'activationSession',
+              payload: responseJson.fn
+            });
+            console.log('Response:', response);
+          } catch (error) {
+            console.error('Error:', error);
+            console.error('Extension ID', extensionId);
+          }
+
           localStorage.setItem(`${activation}-session`, JSON.stringify(responseJson));
         } else {
           responseJson.status = 'complete';
@@ -116,7 +128,38 @@ async function handleSubmit(form) {
   }
 }
 
+// Helper function to send messages (waits for extension ID if needed)
+async function sendToExtension(message) {
+  // Wait for extension ID if not yet available
+  while (!extensionId) {
+    await new Promise(resolve => setTimeout(resolve, 100));
+  }
+
+  return new Promise((resolve, reject) => {
+    chrome.runtime.sendMessage(extensionId, message, (response) => {
+      if (chrome.runtime.lastError) {
+        reject(chrome.runtime.lastError);
+      } else {
+        resolve(response);
+      }
+    });
+  });
+}
+
 export default async function decorate(block) {
+  // Request the extension ID
+  window.postMessage({ type: 'GET_EXTENSION_ID' }, '*');
+
+  window.addEventListener('message', (event) => {
+    if (event.data.type === 'EXTENSION_ID') {
+      extensionId = event.data.id;
+      console.log('Extension ID:', extensionId);
+
+      // Use it here
+      // chrome.runtime.sendMessage(extensionId, { ... });
+    }
+  });
+
   if (!block) {
     console.error('No block provided to decorate function'); // eslint-disable-line no-console
     return;
@@ -181,5 +224,8 @@ export default async function decorate(block) {
 
     const wkSelect = block.querySelector('#form-workstation');
     wkSelect.value = localStorage.getItem('sharpie-workstation') || '';
+    wkSelect.addEventListener('change', (e) => {
+      localStorage.setItem('sharpie-workstation', e.target.value);
+    });
   }
 }

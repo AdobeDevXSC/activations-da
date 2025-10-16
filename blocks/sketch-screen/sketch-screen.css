@@ -8,6 +8,14 @@
   height: calc(100vh - 148px);
 }
 
+.sketch-screen-wrapper .sketch-screen-4 {
+  height: unset !important;
+  border-radius: unset !important;
+  border:unset !important;
+  box-shadow: unset !important;
+  height: unset !important;
+}
+
 .sketch-screen-wrapper .sketch-screen-1 {
   height: 740px;
 }
