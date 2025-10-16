@@ -1,0 +1,21 @@
+{
+  "name": "Express Modal",
+  "version": "1.0",
+  "manifest_version": 3,
+  "description": "Opens a modal on Express pages at the beginning of the session",
+  "permissions": ["storage"],
+  "icons": {
+    "16": "icon.png",
+    "32": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://new.express.adobe.com/*"],
+      "js": ["content.js"],
+      "css": ["modal.css"],
+      "run_at": "document_end"
+    }
+  ]
+}
