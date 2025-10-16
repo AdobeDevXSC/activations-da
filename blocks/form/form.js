@@ -224,5 +224,8 @@ export default async function decorate(block) {
 
     const wkSelect = block.querySelector('#form-workstation');
     wkSelect.value = localStorage.getItem('sharpie-workstation') || '';
+    wkSelect.addEventListener('change', (e) => {
+      localStorage.setItem('sharpie-workstation', e.target.value);
+    });
   }
 }
