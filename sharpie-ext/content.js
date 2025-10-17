@@ -329,6 +329,8 @@
     bar.className = 'tmx-activation-bottom-bar';
 
     const targetUrl = getTargetURL();
+    console.log('targetUrl:', targetUrl);
+    if (targetUrl.includes('[no button]')) return;
     MESSAGE = placeholders.find(item => item.Key === 'button_text').Text || MESSAGE;
 
     // Use <a> for native nav, but we’ll also bind multiple handlers
@@ -999,29 +1001,34 @@
       }
 
       // Update storage or state
-      chrome.storage.local.set({
-        lastWorkflowStatus: 'success',
-        lastWorkflowTime: Date.now()
-      });
+      if (typeof chrome !== 'undefined' && chrome.storage) {
+        chrome.storage.local.set({
+          lastWorkflowStatus: 'success',
+          lastWorkflowTime: Date.now()
+        }).catch(err => console.error('Failed to save status:', err));
+      }
 
       // Notify user
       createFireflyModal({
         title: '🎉 Success!',
         content: '<p>Image placed successfully on the board.</p>',
-        autoDismiss: true,
+        autoDismiss: false,
         dismissAfter: 4000,
         onClose: () => {
           console.log('User acknowledged success');
         }
       });
+      createButton();
     }
     // Handle error
     else {
-      chrome.storage.local.set({
-        lastWorkflowStatus: 'error',
-        lastWorkflowTime: Date.now(),
-        lastWorkflowError: error
-      });
+      if (typeof chrome !== 'undefined' && chrome.storage) {
+        chrome.storage.local.set({
+          lastWorkflowStatus: 'error',
+          lastWorkflowTime: Date.now(),
+          lastWorkflowError: error
+        }).catch(err => console.error('Failed to save error:', err));
+      }
 
       // Show error with more detail
       createFireflyModal({
@@ -1055,7 +1062,16 @@
       if (window.location.hostname.includes('firefly.adobe.com') && window.location.pathname.startsWith('/boards/id/')) {
         console.log('Express Modal: Not supported on this platform');
         console.log('Board ID:', window.location.pathname);
+
+        // DECLARE intervalId FIRST
+        let intervalId = null;
+        let modalShown = false; // Flag to prevent showing modal multiple times
+
         window.addEventListener('boardsReady', (event) => {
+          // Only show modal once
+          if (modalShown) return;
+          modalShown = true;
+
           console.log('Boards are ready');
 
           let content = '<p>Loading your creative assets...</p>';
@@ -1068,52 +1084,60 @@
           });
 
 
-          chrome.storage.local.get('sharpieWorkstation')
-            .then(result => {
-              console.log('=== DEBUG START ===');
-              console.log('Storage result:', result);
-              console.log('Has result?', !!result);
-              console.log('Has sharpieWorkstation?', !!result?.sharpieWorkstation);
-              console.log('sharpieWorkstation value:', result?.sharpieWorkstation);
+          if (typeof chrome !== 'undefined' && chrome.storage) {
+            chrome.storage.local.get(['sharpieWorkstation'])
+              .then(result => {
+                console.log('=== DEBUG START ===');
+                console.log('Storage result:', result);
+                console.log('Has result?', !!result);
+                console.log('Has sharpieWorkstation?', !!result?.sharpieWorkstation);
+                console.log('sharpieWorkstation value:', result?.sharpieWorkstation);
 
-              if (result && result.sharpieWorkstation) {
-                console.log('✓ Inside IF block - has workstation');
-                console.log('Workstation::', result.sharpieWorkstation);
-                console.log('Placeholders:', placeholders);
-                console.log('data.data:', data.data);
+                if (result && result.sharpieWorkstation) {
+                  console.log('✓ Inside IF block - has workstation');
+                  console.log('Workstation::', result.sharpieWorkstation);
+                  console.log('Placeholders:', placeholders);
+                  console.log('data.data:', data.data);
 
-                let workstation = placeholders.find(item => item.Key.toLowerCase() === result.sharpieWorkstation.toLowerCase());
-                console.log('Found workstation:', workstation);
+                  let workstation = placeholders.find(item => item.Key.toLowerCase() === result.sharpieWorkstation.toLowerCase());
+                  console.log('Found workstation:', workstation);
 
-                if (!workstation) {
-                  console.error('❌ Workstation not found in placeholders!');
-                  return;
+                  if (!workstation) {
+                    console.error('❌ Workstation not found in placeholders!');
+                    return;
+                  }
+
+                  const url = workstation.Text;
+                  console.log('Workstation URL:', url);
+
+                  const match = url.split('/').pop();
+                  const projectId = match || null;
+                  console.log('Regex match:', match);
+                  console.log('Project ID extracted:', projectId);
+
+                  window.dispatchEvent(new CustomEvent('executeSharpieWorkflow', {
+                    detail: { workstationId: projectId }
+                  }));
+                } else {
+                  console.warn('⚠️ sharpieWorkstation not found in storage');
+                  alert('Boards are ready but no workstation data found');
                 }
+              })
+              .catch(error => {
+                console.error('❌ Error reading from storage:', error);
+              });
+          } else {
+            console.error('❌ Chrome storage API is not available');
+            alert('Extension error: Chrome storage not available');
+          }
 
-                const url = workstation.Text;
-                console.log('Workstation URL:', url);
-
-                const match = url.split('/').pop();
-                const projectId = match || null; // Note: Changed from match[2] to match[1]
-                console.log('Regex match:', match);
-                console.log('Project ID extracted:', projectId);
-
-                window.dispatchEvent(new CustomEvent('executeSharpieWorkflow', {
-                  detail: { workstationId: projectId }
-                }));
-              } else {
-                console.warn('⚠️ sharpieWorkstation not found in storage');
-                alert('Boards are ready but no workstation data found');
-              }
-            })
-            .catch(error => {
-              console.error('❌ Error reading from storage:', error);
-            });
-
-          clearInterval(intervalId);
+          // NOW clear the interval
+          if (intervalId) {
+            clearInterval(intervalId);
+            console.log('✅ Interval cleared');
+          }
         });
-        const intervalId = setInterval(boardsReadyCheck, 1000);
-        createButton();
+        intervalId = setInterval(boardsReadyCheck, 1000);
         return;
       }
 

@@ -19,7 +19,7 @@ window.addEventListener('executeSharpieWorkflow', async (event) => {
       return;
     }
     
-    console.log('[Page Context] Executing sharpie-retrieve-image workflow...');
+    console.log('[Ext: Page Context] Executing sharpie-retrieve-image workflow...');
     const result = await window.DEBUG.executeWorkflow(
       "sharpie-retrieve-image", 
       { 
