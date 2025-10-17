@@ -85,67 +85,72 @@ function generatePayload(form) {
   return payload;
 }
 
+function generateUUID() {
+  return 'xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    var r = Math.random() * 16 | 0,
+      v = c == 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+
 async function handleSubmit(form) {
   if (form.getAttribute('data-submitting') === 'true') return;
   form.style.cursor = 'wait';
 
   const submit = form.querySelector('button[type="submit"]');
-  try {
-    form.setAttribute('data-submitting', 'true');
-    submit.style.cursor = 'wait';
-    submit.disabled = true;
 
-    const payload = generatePayload(form);
-    form.style.cursor = 'wait';
-    const response = await fetch(form.dataset.action, {
-      method: 'POST',
-      body: JSON.stringify({ data: payload }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+  form.setAttribute('data-submitting', 'true');
+  submit.style.cursor = 'wait';
+  submit.disabled = true;
 
-    const activation = getMetadata('theme');
-    if (response.ok) {
-      form.style.cursor = 'default';
-      if (form.dataset.confirmation && activation) {
-        const responseText = await response.text();
-        const responseJson = JSON.parse(responseText);
-        if (payload && payload.firstName && payload.lastName) {
-          responseJson.fn = `${payload.firstName.toLowerCase()}-${payload.lastName.toLowerCase()}-${responseJson.key}`;
+  const payload = generatePayload(form);
+  payload.key = generateUUID();
+  form.style.cursor = 'wait';
 
-          try {
-            const res = await sendToExtension({
-              type: 'activationSession',
-              payload: responseJson.fn,
-            });
-            console.log('Response:', res); // eslint-disable-line no-console
-          } catch (error) {
-            console.error('Error:', error); // eslint-disable-line no-console
-            console.error('Extension ID', extensionId); // eslint-disable-line no-console
-          }
+  // not waiting for response
+  fetch(form.dataset.action, {
+    method: 'POST',
+    body: JSON.stringify({ data: payload }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    keepalive: true,
+  });
 
-          localStorage.setItem(`${activation}-session`, JSON.stringify(responseJson));
-        } else {
-          responseJson.status = 'complete';
-          localStorage.setItem(`${activation}-session`, JSON.stringify(responseJson));
-        }
-        window.location.href = form.dataset.confirmation;
-      } else {
-        console.log('Form submitted successfully!', await response.text()); // eslint-disable-line no-console
-        console.log(form.dataset); // eslint-disable-line no-console
+  const activation = getMetadata('theme');
+
+  form.style.cursor = 'default';
+  if (form.dataset.confirmation && activation) {
+    let responseJson = {
+      fn: '',
+      key: payload.key,
+      status: 'ini',
+    };
+    if (payload && payload.firstName && payload.lastName) {
+      responseJson.fn = `${payload.firstName.toLowerCase()}-${payload.lastName.toLowerCase()}-${payload.key}`;
+
+      try {
+        const res = await sendToExtension({
+          type: 'activationSession',
+          payload: responseJson.fn,
+        });
+        console.log('Response:', res); // eslint-disable-line no-console
+      } catch (error) {
+        console.error('Error:', error); // eslint-disable-line no-console
+        console.error('Extension ID', extensionId); // eslint-disable-line no-console
       }
+
+      localStorage.setItem(`${activation}-session`, JSON.stringify(responseJson));
     } else {
-      form.style.cursor = 'default';
-      const error = await response.text();
-      throw new Error(error);
+      responseJson.status = 'complete';
+      localStorage.setItem(`${activation}-session`, JSON.stringify(responseJson));
     }
-  } catch (e) {
-    console.error('Form submission error:', e); // eslint-disable-line no-console
-    alert(`Submission failed: ${e.message}`); // eslint-disable-line no-alert
-  } finally {
-    form.setAttribute('data-submitting', 'false');
-    submit.disabled = false;
+    setTimeout(function() {
+      window.location.href = form.dataset.confirmation;
+    }, 1000);
+  } else {
+    console.log('Form submitted successfully!', await response.text()); // eslint-disable-line no-console
+    console.log(form.dataset); // eslint-disable-line no-console
   }
 }
 
