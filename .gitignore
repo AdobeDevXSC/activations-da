@@ -9,7 +9,3 @@ helix-importer-ui
 .idea
 
 illustrator-open/node_modules/*
-
-*.zip
-*.pem
-*.crt
