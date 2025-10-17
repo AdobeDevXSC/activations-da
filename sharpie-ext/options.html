@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Extension Settings</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      padding: 40px;
+      background: #f5f5f5;
+      color: #333;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 30px;
+      color: #1473e6;
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #555;
+    }
+
+    input[type="text"],
+    input[type="url"] {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+      transition: border-color 0.2s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #1473e6;
+    }
+
+    .help-text {
+      font-size: 12px;
+      color: #888;
+      margin-top: 4px;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    button {
+      padding: 10px 24px;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-save {
+      background: #1473e6;
+      color: white;
+    }
+
+    .btn-save:hover {
+      background: #0f5cc0;
+    }
+
+    .btn-reset {
+      background: #e8e8e8;
+      color: #333;
+    }
+
+    .btn-reset:hover {
+      background: #d8d8d8;
+    }
+
+    .status {
+      margin-top: 16px;
+      padding: 12px;
+      border-radius: 4px;
+      font-size: 14px;
+      display: none;
+    }
+
+    .status.success {
+      background: #e7f7ed;
+      color: #0f6e33;
+      border: 1px solid #c3e8d1;
+    }
+
+    .status.error {
+      background: #fef0f0;
+      color: #c5221f;
+      border: 1px solid #f9d7d7;
+    }
+
+    .status.show {
+      display: block;
+    }
+
+    .icon-selector {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .icon-option {
+      position: relative;
+    }
+
+    .icon-option input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .icon-option label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: white;
+    }
+
+    .icon-option label:hover {
+      border-color: #1473e6;
+      background: #f8f9fa;
+    }
+
+    .icon-option input[type="radio"]:checked+label {
+      border-color: #1473e6;
+      background: #e8f3ff;
+      box-shadow: 0 0 0 2px rgba(20, 115, 230, 0.2);
+    }
+
+    .icon-option img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+    }
+
+    .icon-option span {
+      font-size: 12px;
+      font-weight: 500;
+      color: #555;
+    }
+
+    .icon-option input[type="radio"]:checked+label span {
+      color: #1473e6;
+      font-weight: 600;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>⚙️ Extension Settings</h1>
+
+    <form id="settingsForm">
+      <div class="form-group">
+        <label for="targetUrl">Target URL</label>
+        <input type="url" id="targetUrl" name="targetUrl" placeholder="https://example.com/path" required>
+        <div class="help-text">The URL to navigate to after completion</div>
+      </div>
+
+      <div class="form-group">
+        <label for="experienceName">Experience Name</label>
+        <input type="text" id="experienceName" name="experienceName" placeholder="My Experience" required>
+        <div class="help-text">The name of the experience or project</div>
+      </div>
+      <div class="form-group">
+        <label>Extension Icon</label>
+        <div class="icon-selector">
+          <div class="icon-option" data-icon="default">
+            <input type="radio" name="iconChoice" id="icon-sharpie" value="sharpie">
+            <label for="icon-sharpie">
+              <img src="icons/sharpie-icon.png" alt="Sharpie Icon">
+              <span>Sharpie</span>
+            </label>
+          </div>
+          <div class="icon-option" data-icon="blue">
+            <input type="radio" name="iconChoice" id="icon-coca-cola" value="coca-cola">
+            <label for="icon-coca-cola">
+              <img src="icons/coca-cola-icon.png" alt="Coca-Cola Icon">
+              <span>Coca-Cola</span>
+            </label>
+          </div>
+        </div>
+        <div class="help-text">Select an icon for the extension toolbar</div>
+      </div>
+      <div class="button-group">
+        <button type="submit" class="btn-save">Save Settings</button>
+        <button type="button" class="btn-reset" id="resetBtn">Reset to Defaults</button>
+      </div>
+
+      <div id="status" class="status"></div>
+    </form>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+
+</html>
