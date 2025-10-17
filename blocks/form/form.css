@@ -5,7 +5,7 @@
 .form.block form {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: 24px;
+  gap: calc(24vw / var(--layout-size));
   justify-items: stretch;
 }
 
@@ -14,8 +14,8 @@
 }
 
 .field-wrapper label {
-  font-size: 18px;
-  padding-bottom: 13px;
+  font-size: calc(18vw / var(--layout-size));
+  padding-bottom: calc(13vw / var(--layout-size));
   display: block;
   font-weight: 500;
 }
@@ -25,16 +25,16 @@
 .form.block form textarea {
   width: 100%;
   display: block;
-  padding: 0 12px;
-  border-radius: 10px;
-  border: 2px solid #dadada;
-  font-size: 18px;
+  padding: 0 calc(12vw / var(--layout-size));
+  border-radius: calc(10vw / var(--layout-size));
+  border: calc(2vw / var(--layout-size)) solid #dadada;
+  font-size: calc(18vw / var(--layout-size));
   margin-bottom: 0;
   background: #fff;
   color: #171536;
   box-sizing: border-box;
   transition: border-color 0.2s;
-  height: 48px;
+  height: calc(48vw / var(--layout-size));
 }
 
 .form.block form input:focus,
@@ -44,10 +44,10 @@
 }
 
 .form.block form button.button {
-  margin: 20px;
-  padding: 10px 0;
-  font-size: 22.5px;
-  border-radius: 100px;
+  margin: calc(20vw / var(--layout-size));
+  padding: calc(10vw / var(--layout-size)) 0;
+  font-size: calc(22.5vw / var(--layout-size));
+  border-radius: calc(100vw / var(--layout-size));
   background: #3B63FB;
   color: #fff;
   border: none;
@@ -55,8 +55,8 @@
   cursor: pointer;
   grid-column: span 3;
   justify-self: center;
-  width: 155px;
-  height: 58px;
+  width: calc(155vw / var(--layout-size));
+  height: calc(58vw / var(--layout-size));
 }
 
 .form.block form button.button:hover {
@@ -64,30 +64,37 @@
 }
 
 input::placeholder,
-textarea::placeholder, select::placeholder, select:invalid {
+textarea::placeholder,
+select::placeholder,
+select:invalid {
   color: #909090;
   opacity: 1;
-  font-size: 18px;
+  font-size: calc(18vw / var(--layout-size));
 }
 
-.intake-form .form.block form input, .intake-form .form.block form select {
-font-size: 18px;
-color: #909090;
+.intake-form .form.block form input,
+.intake-form .form.block form select {
+  font-size: calc(18vw / var(--layout-size));
+  color: #909090;
 }
 
 .intake-form .form.block form select {
   appearance: none;
- -webkit-appearance: none; /* eslint-disable-line */
-  -moz-appearance: none; /* eslint-disable-line */
-  background-image: url('/coca-cola/assets/media_10a2636634b2a3ea989210c46ce4d0a2b8059d912.png');  /* your arrow icon */
+  -webkit-appearance: none;
+  /* eslint-disable-line */
+  -moz-appearance: none;
+  /* eslint-disable-line */
+  background-image: url('/coca-cola/assets/media_10a2636634b2a3ea989210c46ce4d0a2b8059d912.png');
+  /* your arrow icon */
   background-repeat: no-repeat;
-  background-position: center right 20px;  /* position on right with padding */
-  background-size: 8px 5px;
-  padding-right: 30px;
+  background-position: center right calc(20vw / var(--layout-size));
+  /* position on right with padding */
+  background-size: calc(8vw / var(--layout-size)) calc(5vw / var(--layout-size));
+  padding-right: calc(30vw / var(--layout-size));
 }
 
-select option::selection  {
-  color: #909090!important;
+select option::selection {
+  color: #909090 !important;
 }
 
 .field-wrapper.submit-class,
@@ -100,9 +107,9 @@ select option::selection  {
 }
 
 .field-wrapper.selection-wrapper label {
-  font-size: 15px;
+  font-size: calc(15vw / var(--layout-size));
   font-weight: 400;
-  padding-left: 13px;
+  padding-left: calc(13vw / var(--layout-size));
   margin: 0;
   padding-bottom: 0;
   width: 95%;
@@ -115,11 +122,11 @@ select option::selection  {
   appearance: none;
 
   /* Remove default checkbox styling */
-  width: 20px;
-  height: 20px;
-  border: 2px solid #292929;
+  width: calc(20vw / var(--layout-size));
+  height: calc(20vw / var(--layout-size));
+  border: calc(2vw / var(--layout-size)) solid #292929;
   vertical-align: middle;
-  border-radius: 6px;
+  border-radius: calc(6vw / var(--layout-size));
   background-color: #fff;
   cursor: pointer;
   position: relative;
@@ -136,15 +143,15 @@ intake-form form input[type="checkbox"]:checked {
   color: white;
   font-weight: bold;
   position: absolute;
-  top: -2px;
-  left: 3px;
-  font-size: 13px;
+  top: calc(-2vw / var(--layout-size));
+  left: calc(3vw / var(--layout-size));
+  font-size: calc(13vw / var(--layout-size));
 }
 
 /* When the checkbox is checked, add custom styles */
 .intake-form form input[type="checkbox"]:checked {
   background-color: #292929;
-  
+
   /* Custom background color */
 }
 
@@ -158,10 +165,10 @@ intake-form form input[type="checkbox"]:checked {
 }
 
 .submit-class button {
-  margin: 10px 0 20px;
-  padding: 10px 0;
-  font-size: 22.5px;
-  border-radius: 100px;
+  margin: calc(10vw / var(--layout-size)) 0 calc(20vw / var(--layout-size));
+  padding: calc(10vw / var(--layout-size)) 0;
+  font-size: calc(22.5vw / var(--layout-size));
+  border-radius: calc(100vw / var(--layout-size));
   background: #3B63FB;
   color: #fff;
   border: none;
@@ -171,8 +178,8 @@ intake-form form input[type="checkbox"]:checked {
 
   /* Full width of the form */
   justify-self: center;
-  width: 155px;
-  height: 59px;
+  width: calc(155vw / var(--layout-size));
+  height: calc(59vw / var(--layout-size));
 }
 
 .submit-class {
@@ -186,12 +193,12 @@ intake-form form input[type="checkbox"]:checked {
 
 @media (width <=900px) {
   .form.block {
-    padding: 30px;
+    padding: calc(30vw / var(--layout-size));
   }
 
   .form.block form {
     grid-template-columns: 1fr;
-    gap: 25px 0;
+    gap: calc(25vw / var(--layout-size));
   }
 
   .form.block form button.button,
