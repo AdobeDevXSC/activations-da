@@ -187,18 +187,18 @@
       gap: 12px;
       margin-top: 12px;
     }
-    
+
     .experience-option {
       position: relative;
       flex: 1;
     }
-    
+
     .experience-option input[type="radio"] {
       position: absolute;
       opacity: 0;
       pointer-events: none;
     }
-    
+
     .experience-option label {
       display: flex;
       align-items: center;
@@ -211,26 +211,104 @@
       background: white;
       min-height: 60px;
     }
-    
+
     .experience-option label:hover {
       border-color: #1473e6;
       background: #f8f9fa;
     }
-    
-    .experience-option input[type="radio"]:checked + label {
+
+    .experience-option input[type="radio"]:checked+label {
       border-color: #1473e6;
       background: #e8f3ff;
       box-shadow: 0 0 0 2px rgba(20, 115, 230, 0.2);
     }
-    
+
     .experience-label {
       font-size: 16px;
       font-weight: 600;
       color: #555;
     }
-    
-    .experience-option input[type="radio"]:checked + label .experience-label {
+
+    .experience-option input[type="radio"]:checked+label .experience-label {
       color: #1473e6;
+    }
+
+    /* Brand-specific sections */
+    .brand-sections {
+      margin-top: 30px;
+    }
+
+    .brand-section {
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      background: #fafafa;
+    }
+
+    .brand-section.active {
+      border-color: #1473e6;
+      background: #f8fbff;
+    }
+
+    .brand-section h3 {
+      margin: 0 0 16px 0;
+      color: #333;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-section h3::before {
+      content: '';
+      width: 4px;
+      height: 24px;
+      background: #1473e6;
+      border-radius: 2px;
+    }
+
+    .brand-section .form-group {
+      margin-bottom: 16px;
+    }
+
+    .brand-section .form-group:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Brand action buttons */
+    .brand-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid #e0e0e0;
+    }
+
+    .btn-brand-action {
+      flex: 1;
+      padding: 10px 16px;
+      border: 1px solid #1473e6;
+      background: white;
+      color: #1473e6;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn-brand-action:hover {
+      background: #1473e6;
+      color: white;
+    }
+
+    .btn-brand-action:active {
+      transform: scale(0.98);
     }
   </style>
 </head>
@@ -240,13 +318,9 @@
     <h1>⚙️ Extension Settings</h1>
 
     <form id="settingsForm">
+      <!-- Experience Selection -->
       <div class="form-group">
-        <label for="targetUrl">Target URL</label>
-        <input type="url" id="targetUrl" name="targetUrl" placeholder="https://example.com/path" required>
-        <div class="help-text">The URL to navigate to after completion</div>
-      </div>
-      <div class="form-group">
-        <label>Experience Name</label>
+        <label>Select Experience</label>
         <div class="experience-selector">
           <div class="experience-option">
             <input type="radio" name="experienceName" id="exp-sharpie" value="sharpie" checked>
@@ -263,33 +337,82 @@
         </div>
         <div class="help-text">Select the experience or brand</div>
       </div>
-      <div class="form-group">
-        <label>Extension Icon</label>
-        <div class="icon-selector">
-          <div class="icon-option" data-icon="default">
-            <input type="radio" name="iconChoice" id="icon-sharpie" value="sharpie">
-            <label for="icon-sharpie">
-              <img src="icons/sharpie-icon.png" alt="Sharpie Icon">
-              <span>Sharpie</span>
-            </label>
-          </div>
-          <div class="icon-option" data-icon="blue">
-            <input type="radio" name="iconChoice" id="icon-coca-cola" value="coca-cola">
-            <label for="icon-coca-cola">
-              <img src="icons/coca-cola-icon.png" alt="Coca-Cola Icon">
-              <span>Coca-Cola</span>
-            </label>
-          </div>
-        </div>
-        <div class="help-text">Select an icon for the extension toolbar</div>
-      </div>
-      <div class="button-group">
-        <button type="submit" class="btn-save">Save Settings</button>
-        <button type="button" class="btn-reset" id="resetBtn">Reset to Defaults</button>
-      </div>
 
-      <div id="status" class="status"></div>
-    </form>
+      <!-- Sharpie Section -->
+      <div class="brand-section" id="sharpie-section">
+        <h3>🖊️ Sharpie Configuration</h3>
+
+        <div class="form-group">
+          <label for="sharpie-url">Sharpie Target URL</label>
+          <input type="url" id="sharpie-url" name="sharpieUrl" placeholder="https://example.com/sharpie" required>
+          <div class="help-text">URL for Sharpie experience</div>
+        </div>
+
+        <div class="form-group">
+          <label for="sharpie-workstation">Sharpie Workstation ID</label>
+          <input type="text" id="sharpie-workstation" name="sharpieWorkstation" placeholder="workstation-id">
+          <div class="help-text">Frame.io workstation identifier for Sharpie</div>
+        </div>
+
+        <!-- Action buttons -->
+        <div class="brand-actions">
+          <button type="button" class="btn-brand-action" id="sharpie-goto-experience">
+            <span>🚀</span>
+            <span>Go to Experience</span>
+          </button>
+          <button type="button" class="btn-brand-action" id="sharpie-open-settings">
+            <span>⚙️</span>
+            <span>Open Settings</span>
+          </button>
+        </div>
+      </div>
+      <!-- Coca-Cola Section -->
+      <div class="brand-section" id="cocacola-section">
+        <h3>🥤 Coca-Cola Configuration</h3>
+
+        <div class="form-group">
+          <label for="cocacola-url">Coca-Cola Target URL</label>
+          <input type="url" id="cocacola-url" name="cocacolaUrl" placeholder="https://example.com/coca-cola" required>
+          <div class="help-text">URL for Coca-Cola experience</div>
+        </div>
+
+        <div class="form-group">
+          <label for="cocacola-workstation">Coca-Cola Workstation ID</label>
+          <input type="text" id="cocacola-workstation" name="cocacolaWorkstation" placeholder="workstation-id">
+          <div class="help-text">Frame.io workstation identifier for Coca-Cola</div>
+        </div>
+      </div>
+  </div>
+
+  <!-- Icon Selection -->
+  <div class="form-group">
+    <label>Extension Icon</label>
+    <div class="icon-selector">
+      <div class="icon-option">
+        <input type="radio" name="iconChoice" id="icon-sharpie" value="sharpie" checked>
+        <label for="icon-sharpie">
+          <img src="icons/sharpie-icon.png" alt="Sharpie Icon">
+          <span>Sharpie</span>
+        </label>
+      </div>
+      <div class="icon-option">
+        <input type="radio" name="iconChoice" id="icon-coca-cola" value="coca-cola">
+        <label for="icon-coca-cola">
+          <img src="icons/coca-cola-icon.png" alt="Coca-Cola Icon">
+          <span>Coca-Cola</span>
+        </label>
+      </div>
+    </div>
+    <div class="help-text">Select an icon for the extension toolbar</div>
+  </div>
+
+  <div class="button-group">
+    <button type="submit" class="btn-save">Save Settings</button>
+    <button type="button" class="btn-reset" id="resetBtn">Reset to Defaults</button>
+  </div>
+
+  <div id="status" class="status"></div>
+  </form>
   </div>
 
   <script src="options.js"></script>

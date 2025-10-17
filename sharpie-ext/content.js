@@ -734,8 +734,9 @@
         return;
       }
 
-      if (window.location.hostname.includes('firefly.adobe.com')) {
+      if (window.location.hostname.includes('firefly.adobe.com') && window.location.pathname.startsWith('/boards/id/')) {
         console.log('Express Modal: Not supported on this platform');
+        console.log('Board ID:', window.location.pathname);
         window.addEventListener('boardsReady', (event) => {
           console.log('Boards are ready');
           chrome.storage.local.get('sharpieWorkstation')
