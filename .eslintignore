@@ -2,4 +2,4 @@ helix-importer-ui
 scripts/watcher.js
 illustrator-open/*
 tampermonkey/*
-download-ext/*
+sharpie-ext/*
