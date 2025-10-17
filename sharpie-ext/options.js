@@ -1,7 +1,6 @@
 // options.js - Settings page logic
 const form = document.getElementById('settingsForm');
 const targetUrlInput = document.getElementById('targetUrl');
-const experienceNameInput = document.getElementById('experienceName');
 const resetBtn = document.getElementById('resetBtn');
 const statusDiv = document.getElementById('status');
 
@@ -22,7 +21,13 @@ const ICON_PATHS = {
 function loadSettings() {
   chrome.storage.local.get(['targetUrl', 'experienceName', 'iconChoice'], (result) => {
     targetUrlInput.value = result.targetUrl || DEFAULTS.targetUrl;
-    experienceNameInput.value = result.experienceName || DEFAULTS.experienceName;
+    
+    // Set selected experience
+    const experienceName = result.experienceName || DEFAULTS.experienceName;
+    const experienceRadio = document.querySelector(`input[name="experienceName"][value="${experienceName}"]`);
+    if (experienceRadio) {
+      experienceRadio.checked = true;
+    }
     
     // Set selected icon
     const iconChoice = result.iconChoice || DEFAULTS.iconChoice;
@@ -39,12 +44,15 @@ function loadSettings() {
 function saveSettings(e) {
   e.preventDefault();
   
+  // Get selected experience
+  const selectedExperience = document.querySelector('input[name="experienceName"]:checked');
+  
   // Get selected icon
   const selectedIcon = document.querySelector('input[name="iconChoice"]:checked');
   
   const settings = {
     targetUrl: targetUrlInput.value.trim(),
-    experienceName: experienceNameInput.value.trim(),
+    experienceName: selectedExperience ? selectedExperience.value : DEFAULTS.experienceName,
     iconChoice: selectedIcon ? selectedIcon.value : DEFAULTS.iconChoice
   };
   
@@ -56,9 +64,9 @@ function saveSettings(e) {
     return;
   }
   
-  // Validate experience name
+  // Validate experience selection
   if (!settings.experienceName) {
-    showStatus('Please enter an experience name', 'error');
+    showStatus('Please select an experience', 'error');
     return;
   }
   

@@ -227,7 +227,7 @@ export default async function decorate(block) {
     const wkSelect = block.querySelector('#form-workstation');
     wkSelect.value = localStorage.getItem('sharpie-workstation') || '';
     wkSelect.addEventListener('change', async (e) => {
-      localStorage.setItem('sharpie-workstationh', e.target.value);
+      localStorage.setItem('sharpie-workstation', e.target.value);
       console.log('Sending workstation to extension', e.target.value);
       const response = await sendToExtension({
         type: 'sharpie-workstation',

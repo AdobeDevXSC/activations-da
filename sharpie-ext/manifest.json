@@ -1,5 +1,5 @@
 {
-  "name": "Express Modal",
+  "name": "Adobe MAX 2025 Activations",
   "version": "1.0",
   "manifest_version": 3,
   "description": "Opens a modal on Express pages at the beginning of the session",
@@ -9,7 +9,12 @@
   ],
   "options_page": "options.html",
   "action": {
-    "default_icon": "icons/sharpie-icon.png",
+    "default_icon": {
+      "16": "icons/sharpie-icon.png",
+      "32": "icons/sharpie-icon.png",
+      "48": "icons/sharpie-icon.png",
+      "128": "icons/sharpie-icon.png"
+    },
     "default_title": "2025 MAX Activations"
   },
   "externally_connectable": {

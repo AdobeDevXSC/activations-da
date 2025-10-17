@@ -740,17 +740,34 @@
           console.log('Boards are ready');
           chrome.storage.local.get('sharpieWorkstation')
             .then(result => {
+              console.log('=== DEBUG START ===');
               console.log('Storage result:', result);
+              console.log('Has result?', !!result);
+              console.log('Has sharpieWorkstation?', !!result?.sharpieWorkstation);
+              console.log('sharpieWorkstation value:', result?.sharpieWorkstation);
+
               if (result && result.sharpieWorkstation) {
-                console.log('Workstation:', result.sharpieWorkstation);
-                // Send workstation data to page context
+                console.log('✓ Inside IF block - has workstation');
+                console.log('Workstation::', result.sharpieWorkstation);
                 console.log('Placeholders:', placeholders);
+                console.log('data.data:', data.data);
+
                 let workstation = placeholders.find(item => item.Key.toLowerCase() === result.sharpieWorkstation.toLowerCase());
+                console.log('Found workstation:', workstation);
+
+                if (!workstation) {
+                  console.error('❌ Workstation not found in placeholders!');
+                  return;
+                }
+
                 const url = workstation.Text;
-                const match = url.match(/\/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})\/[^/]+\/?$/i);
-                const projectId = match ? match[2] : null;
-                console.log(projectId);
-                console.log('Workstation:', projectId);
+                console.log('Workstation URL:', url);
+
+                const match = url.split('/').pop();
+                const projectId = match || null; // Note: Changed from match[2] to match[1]
+                console.log('Regex match:', match);
+                console.log('Project ID extracted:', projectId);
+
                 window.dispatchEvent(new CustomEvent('executeSharpieWorkflow', {
                   detail: { workstationId: projectId }
                 }));
