@@ -1,6 +1,7 @@
 import createField from './form-fields.js';
 import { saveHandle, loadHandle, dbExists } from '../../scripts/watcher.js';
 import { getMetadata } from '../../scripts/aem.js';
+
 let extensionId = null;
 async function createForm(formHref, submitHref, confirmationHref) {
   const { pathname, search } = new URL(formHref);
@@ -131,6 +132,7 @@ async function handleSubmit(form) {
 // Helper function to send messages (waits for extension ID if needed)
 async function sendToExtension(message) {
   // Wait for extension ID if not yet available
+  console.log('Waiting for extension ID', extensionId);
   while (!extensionId) {
     await new Promise(resolve => setTimeout(resolve, 100));
   }
@@ -224,8 +226,14 @@ export default async function decorate(block) {
 
     const wkSelect = block.querySelector('#form-workstation');
     wkSelect.value = localStorage.getItem('sharpie-workstation') || '';
-    wkSelect.addEventListener('change', (e) => {
-      localStorage.setItem('sharpie-workstation', e.target.value);
+    wkSelect.addEventListener('change', async (e) => {
+      localStorage.setItem('sharpie-workstationh', e.target.value);
+      console.log('Sending workstation to extension', e.target.value);
+      const response = await sendToExtension({
+        type: 'sharpie-workstation',
+        payload: e.target.value
+      });
+      console.log('Response:', response);
     });
   }
 }

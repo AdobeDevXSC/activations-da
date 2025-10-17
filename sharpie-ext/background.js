@@ -13,12 +13,29 @@ chrome.runtime.onMessageExternal.addListener(
 
       // Save to storage
       chrome.storage.local.set({
-        activationSession: request.payload
+        activationSessions: request.payload
       }, () => {
         console.log('✅ Session saved successfully');
         sendResponse({
           status: 'success',
           message: 'Session saved successfully'
+        });
+      });
+
+      return true; // Required for async sendResponse
+    }
+
+    if (request.type === 'sharpie-workstation') {
+      console.log('💾 Saving workstation:', request.payload);
+
+      // Save to storage
+      chrome.storage.local.set({
+        sharpieWorkstation: request.payload
+      }, () => {
+        console.log('✅ Session saved successfully');
+        sendResponse({
+          status: 'success',
+          message: 'Workstation saved successfully'
         });
       });
 
