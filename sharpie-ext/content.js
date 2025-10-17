@@ -18,6 +18,8 @@
   let MESSAGE = 'Next step';
   const BUTTON_ID = 'tmx-activation-complete-btn';
   let installed = false;
+  let lastProjectId = null; // Add this to store project ID for retry
+  let showWorkflowModals = true; // Add this flag
 
   function getTargetURL() {
 
@@ -864,6 +866,7 @@
     const {
       title = '🎨 Firefly Boards',
       content = '<p>Notification content</p>',
+      buttons = [], // Add this
       autoDismiss = false,
       dismissAfter = 5000,
       onClose = null
@@ -875,7 +878,7 @@
       existingModal.remove();
     }
 
-    // Inject styles (keep the injectFireflyModalStyles function but update its CSS content)
+    // Inject styles
     injectFireflyModalStyles();
 
     // Create modal overlay
@@ -883,7 +886,23 @@
     modalOverlay.id = 'firefly-custom-modal';
     modalOverlay.className = 'firefly-modal-overlay';
 
-    // Create modal structure (simplified - no footer)
+    // Build buttons HTML
+    let buttonsHtml = '';
+    if (buttons.length > 0) {
+      buttonsHtml = '<div class="firefly-modal-actions">';
+      buttons.forEach((btn, index) => {
+        const primaryClass = btn.primary ? ' primary' : '';
+        buttonsHtml += `
+        <button class="firefly-modal-action-btn${primaryClass}" data-btn-index="${index}">
+          ${btn.icon ? `<span>${btn.icon}</span>` : ''}
+          <span>${btn.text}</span>
+        </button>
+      `;
+      });
+      buttonsHtml += '</div>';
+    }
+
+    // Create modal structure
     modalOverlay.innerHTML = `
     <div class="firefly-modal-content">
       <div class="firefly-modal-header">
@@ -892,6 +911,7 @@
       </div>
       <div class="firefly-modal-body">
         ${content}
+        ${buttonsHtml}
       </div>
       ${autoDismiss ? '<div class="firefly-modal-progress"><div class="firefly-modal-progress-bar"></div></div>' : ''}
     </div>
@@ -913,6 +933,19 @@
     closeBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       closeModal();
+    });
+
+    // Action button events
+    const actionButtons = modalOverlay.querySelectorAll('.firefly-modal-action-btn');
+    actionButtons.forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const index = parseInt(btn.getAttribute('data-btn-index'));
+        const buttonConfig = buttons[index];
+        if (buttonConfig && buttonConfig.onClick) {
+          buttonConfig.onClick(closeModal);
+        }
+      });
     });
 
     // Optional: ESC key to dismiss
@@ -993,6 +1026,13 @@
     console.log('  - Result:', result);
     console.log('  - Error:', error);
 
+    // Check if we should show modals
+    if (!showWorkflowModals) {
+      console.log('Skipping modal display (retry in progress)');
+      showWorkflowModals = true; // Reset for next time
+      return;
+    }
+
     // Handle success
     if (success) {
       // Extract any useful data from the result
@@ -1032,16 +1072,42 @@
 
       // Show error with more detail
       createFireflyModal({
-        title: '⚠️ Workflow Error',
-        content: `
-        <p><strong>Something went wrong:</strong></p>
-        <p style="font-size: 14px; opacity: 0.9;">${error || 'Unknown error'}</p>
-        <p style="font-size: 13px; margin-top: 12px;">Please try again or check your settings.</p>
-      `,
+        title: '🎉 Success!',
+        content: '<p>Image placed successfully on the board.</p>',
         autoDismiss: false,
+        buttons: [
+          {
+            text: 'Retry',
+            icon: '',
+            primary: true,
+            onClick: (close) => {
+              if (lastProjectId) {
+                console.log('Retrying workflow with projectId:', lastProjectId);
+
+                // Disable workflow modals for this retry
+                showWorkflowModals = false;
+
+                window.dispatchEvent(new CustomEvent('executeSharpieWorkflow', {
+                  detail: { workstationId: lastProjectId }
+                }));
+                close();
+              } else {
+                console.error('No project ID available for retry');
+                alert('Unable to retry - no project ID found');
+              }
+            }
+          },
+          {
+            text: 'Dismiss',
+            icon: '',
+            onClick: (close) => {
+              console.log('User dismissed error');
+              close();
+            }
+          }
+        ],
         onClose: () => {
-          // Maybe open settings page or retry
-          console.log('User dismissed error');
+          console.log('Error modal closed');
         }
       });
     }
@@ -1114,6 +1180,9 @@
                   const projectId = match || null;
                   console.log('Regex match:', match);
                   console.log('Project ID extracted:', projectId);
+
+                  // Store for retry
+                  lastProjectId = projectId;
 
                   window.dispatchEvent(new CustomEvent('executeSharpieWorkflow', {
                     detail: { workstationId: projectId }
