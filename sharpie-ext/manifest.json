@@ -7,17 +7,10 @@
     "storage",
     "downloads"
   ],
-  "options_page": "options.html",
-  "action": {
-    "default_icon": "icons/sharpie-icon.png",
-    "default_title": "2025 MAX Activations"
-  },
   "externally_connectable": {
     "matches": [
       "https://main--activations-da--adobedevxsc.aem.live/*",
       "https://ext--activations-da--adobedevxsc.aem.live/*",
-      "https://main--activations-da--adobedevxsc.aem.page/*",
-      "https://ext--activations-da--adobedevxsc.aem.page/*",
       "http://localhost:3000/*"
     ]
   },
@@ -25,22 +18,11 @@
     "service_worker": "background.js"
   },
   "icons": {
-    "16": "icons/sharpie-icon.png",
-    "32": "icons/sharpie-icon.png",
-    "48": "icons/sharpie-icon.png",
-    "128": "icons/sharpie-icon.png"
+    "16": "icon.png",
+    "32": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
   },
-  "web_accessible_resources": [
-    {
-      "resources": [
-        "injected.js",
-        "icons/*.png"
-      ],
-      "matches": [
-        "*://firefly.adobe.com/*"
-      ]
-    }
-  ],
   "content_scripts": [
     {
       "matches": [
@@ -58,16 +40,6 @@
         "modal.css"
       ],
       "run_at": "document_end"
-    },
-    {
-      "matches": [
-        "*://firefly.adobe.com/*"
-      ],
-      "js": [
-        "page-context.js"
-      ],
-      "run_at": "document_end",
-      "world": "MAIN"
     }
   ]
 }

@@ -13,29 +13,12 @@ chrome.runtime.onMessageExternal.addListener(
 
       // Save to storage
       chrome.storage.local.set({
-        activationSessions: request.payload
+        activationSession: request.payload
       }, () => {
         console.log('✅ Session saved successfully');
         sendResponse({
           status: 'success',
           message: 'Session saved successfully'
-        });
-      });
-
-      return true; // Required for async sendResponse
-    }
-
-    if (request.type === 'sharpie-workstation') {
-      console.log('💾 Saving workstation:', request.payload);
-
-      // Save to storage
-      chrome.storage.local.set({
-        sharpieWorkstation: request.payload
-      }, () => {
-        console.log('✅ Session saved successfully');
-        sendResponse({
-          status: 'success',
-          message: 'Workstation saved successfully'
         });
       });
 
@@ -188,52 +171,3 @@ try {
 // Add the listener
 chrome.downloads.onDeterminingFilename.addListener(handleDownload);
 console.log('📥 Download listener registered');
-// Add this listener to handle icon updates
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.type === 'updateIcon') {
-    chrome.action.setIcon({
-      path: {
-        16: request.iconPath,
-        32: request.iconPath,
-        48: request.iconPath,
-        128: request.iconPath
-      }
-    }, () => {
-      if (chrome.runtime.lastError) {
-        console.error('Failed to update icon:', chrome.runtime.lastError);
-        sendResponse({ success: false, error: chrome.runtime.lastError.message });
-      } else {
-        console.log('✓ Extension icon updated to:', request.iconPath);
-        sendResponse({ success: true });
-      }
-    });
-    return true; // Keep channel open for async response
-  }
-
-  // ... rest of your existing message handlers
-});
-
-// Load saved icon on extension startup
-chrome.runtime.onStartup.addListener(() => {
-  chrome.storage.local.get(['iconChoice'], (result) => {
-    if (result.iconChoice) {
-      const ICON_PATHS = {
-        default: 'icon.png',
-        blue: 'icons/icon-blue.png',
-        green: 'icons/icon-green.png',
-        red: 'icons/icon-red.png',
-        purple: 'icons/icon-purple.png'
-      };
-
-      const iconPath = ICON_PATHS[result.iconChoice] || ICON_PATHS.default;
-      chrome.action.setIcon({
-        path: {
-          16: iconPath,
-          32: iconPath,
-          48: iconPath,
-          128: iconPath
-        }
-      });
-    }
-  });
-});

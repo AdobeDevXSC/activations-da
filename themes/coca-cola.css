@@ -398,7 +398,6 @@ main .custom-2-column-section {
   left: calc(-18vw / var(--layout-size));
 }
 
-
 body main .be-a-designer-module-disabled h2,
 body main .be-a-marketer-module-disabled h2 {
   margin: 0 0 calc(50vw / var(--layout-size)) 0;
@@ -413,6 +412,7 @@ body main .be-a-marketer-module-disabled h2 {
 .completion-page.be-a-marketer-module-disabled .default-content-wrapper:nth-last-child(1) .button-container {
   margin-top: 0;
 }
+
 
 @media(max-height:1000) {
   .completion-page h2 {
