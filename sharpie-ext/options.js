@@ -13,9 +13,9 @@ const cocacolaWorkstationInput = document.getElementById('cocacola-workstation')
 const DEFAULTS = {
   experienceName: 'sharpie',
   iconChoice: 'sharpie',
-  sharpieUrl: 'https://main--activations-da--adobedevxsc.aem.live/sharpie',
+  sharpieUrl: 'https://main--activations-da--adobedevxsc.aem.live/sharpie/',
   sharpieWorkstation: '',
-  cocacolaUrl: 'https://main--activations-da--adobedevxsc.aem.live/coca-cola',
+  cocacolaUrl: 'https://main--activations-da--adobedevxsc.aem.live/coca-cola/',
   cocacolaWorkstation: ''
 };
 
@@ -178,7 +178,7 @@ document.getElementById('sharpie-open-settings')?.addEventListener('click', () =
   chrome.storage.local.get(['sharpieUrl'], (result) => {
     const baseUrl = result.sharpieUrl || DEFAULTS.sharpieUrl;
     // Assuming settings page is at /settings or similar
-    const settingsUrl = `${baseUrl}/settings`;
+    const settingsUrl = `${baseUrl}/settings/`;
     chrome.tabs.create({ url: settingsUrl }, () => {
       showStatus('✓ Opened Sharpie settings', 'success');
     });
