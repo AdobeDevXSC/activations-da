@@ -1,11 +1,11 @@
 .sketch-screen-wrapper>[class*="sketch-screen"]:not(.sketch-screen-1):not(.cola-thank-you) {
-  padding: calc(40vw / var(--layout-size)) calc(40vw / var(--layout-size)) !important;
+  padding: calc(40vw / var(--layout-size)) calc(40vw / var(--layout-size))!important;
   box-sizing: border-box;
   border-radius: calc(10vw / var(--layout-size));
   border: calc(1vw / var(--layout-size)) solid #DEDEDE;
   background: #FFF;
-  box-shadow: 0 0 calc(2vw / var(--layout-size)) rgb(0 0 0 / 12%), 0 calc(2vw / var(--layout-size)) calc(2vw / var(--layout-size)) rgb(0 0 0 / 4%), 0 calc(2vw / var(--layout-size)) calc(2vw / var(--layout-size)) rgb(0 0 0 / 8%);
-  height: calc(100vh - (148vw / var(--layout-size)));
+  box-shadow: 0 0 2px rgb(0 0 0 / 12%), 0 2px 6px rgb(0 0 0 / 4%), 0 4px 12px rgb(0 0 0 / 8%);
+  height: calc(100vh - 148px);
 }
 
 .sketch-screen-wrapper .sketch-screen-4 {
@@ -17,7 +17,7 @@
 }
 
 .sketch-screen-wrapper .sketch-screen-1 {
-  height: calc(740vw / var(--layout-size));
+  height: 740px;
 }
 
 .sketch-screen-wrapper .sketch-screen-1>div {
@@ -54,19 +54,16 @@
 [class*=" sketch-screen"] .block.sketch-screen-5>div {
   align-items: center;
 }
-
 [class*=" sketch-screen"] .block.sketch-screen-5>div>div:first-child {
   width: 100%;
 }
-
 .sketch-screen-3-container .block>div>div:first-child>p img {
   padding-bottom: calc(60vw / var(--layout-size));
 }
 
 [class*=" sketch-screen"] .block:not(.cola-thank-you)>div>div:first-child>p img {
   padding-bottom: calc(150vw / var(--layout-size));
-  padding-top: calc(20vw / var(--layout-size));
-  width: calc(350vw / var(--layout-size));
+  padding-top: calc(20vw / var(--layout-size));;
 }
 
 .sketch-screen-3-container .block>div>div:first-child>p img {
@@ -100,10 +97,9 @@
   font-size: calc(22.1212vw / var(--layout-size));
   line-height: calc(27vw / var(--layout-size));
   display: inline-flex;
-  gap: calc(11vw / var(--layout-size));
-  ;
+  gap: calc(11vw / var(--layout-size));;
   align-items: center;
-  height: calc(59vw / var(--layout-size));
+  height: 59px;
 }
 
 [class*=" sketch-screen"] .block:not(.cola-thank-you) .button-container a.disabled {
@@ -143,11 +139,10 @@
   position: fixed;
   background-size: contain;
   background-image: url('/sharpie/assets/media_13ac0c3dbf2c9e43f4718d88fdf8e3a9abc504175.png');
-  height: calc(179vw / var(--layout-size));
+  height: 179px;
   z-index: 2;
   right: 0;
-  width: calc(346vw / var(--layout-size));
-  ;
+  width: calc(346vw / var(--layout-size));;
   bottom: 0;
   background-repeat: no-repeat;
   background-position: bottom;
@@ -159,7 +154,7 @@
   position: fixed;
   background-size: contain;
   background-image: url('/sharpie/assets/media_119a7549bb108840ba1dd065d43ba8c8109ffcb37.png');
-  height: calc(301vw / var(--layout-size));
+  height: 301px;
   z-index: 2;
   top: 0;
   width: calc(201vw / var(--layout-size));
@@ -169,9 +164,7 @@
 }
 
 .sketch-screen-4 p:first-child img {
-  padding-bottom: calc(70vw / var(--layout-size)) !important;
-}
-
+    padding-bottom: calc(70vw / var(--layout-size))!important;}
 /* div.sketch-screen-5 p.caption {
   position: absolute;
   right: 56px;
@@ -181,19 +174,18 @@
 .sketch-screen-wrapper>[class*="sketch-screen"]:not(.sketch-screen-1):not(.sketch-screen-5):not(.cola-thank-you) div div:last-child>p:first-child {
   text-align: left;
   font-weight: 400;
-  font-size: calc(17.8561vw / var(--layout-size));
-  ;
+  font-size: calc(17.8561vw / var(--layout-size));;
   line-height: 130%;
   padding: calc(16vw / var(--layout-size)) calc(45vw / var(--layout-size)) calc(16vw / var(--layout-size)) calc(16vw / var(--layout-size));
   margin-bottom: calc(20vw / var(--layout-size));
   margin-left: auto;
   width: calc(697vw / var(--layout-size));
   min-width: calc(346.92vw / var(--layout-size));
-  height: calc(78vw / var(--layout-size));
+  height: 78px;
   background: linear-gradient(88.65deg, #FFF 30.5%, #E9E9E9 240.26%);
-  border: calc(0.5vw / var(--layout-size)) solid #C6C6C6;
-  box-shadow: 0px calc(4.8vw / var(--layout-size)) calc(9.7031vw / var(--layout-size)) rgba(0 0 0 / 10%);
-  border-radius: calc(8vw / var(--layout-size));
+border: 0.5px solid #C6C6C6;
+box-shadow: 0px 4.8516px 9.7031px rgba(0 0 0 / 10%);
+  border-radius: 8px;
   color: #222;
   position: relative;
   z-index: 1;
@@ -248,15 +240,10 @@
 }
 
 .sketch-screen .video-placeholder video {
+  max-width: 100%;
+  width: auto;
   height: auto;
-  width: calc(700vw / var(--layout-size));
 }
-
-.sketch-screen.sketch-screen-5 .video-placeholder video {
-  width: 100%;
-  height: 59vh;
-}
-
 
 /* Generic "screen" container helper (if your markup uses a class like .sketch-screen) */
 .sketch-screen {
@@ -269,6 +256,8 @@
 
 .sketch-screen .video-placeholder {
   position: relative;
+  width: auto;
+  max-width: calc(700vw / var(--layout-size));
   height: auto;
 }
 
@@ -278,14 +267,16 @@
 }
 
 
-/* .sketch-screen.sketch-screen-5 .video-placeholder {
-  max-width: calc(1300vw / var(--layout-size));
+.sketch-screen.sketch-screen-5 .video-placeholder {
+    max-width: calc(1300vw / var(--layout-size));
+    margin: auto;
+}
+@media (min-width: 1650px) and (max-width: 1740px) {
+  .sketch-screen.sketch-screen-1::before {
+        top: -28px;
+  }
+  .sketch-screen.sketch-screen-5 .video-placeholder {
+  max-width:  calc(1250vw / var(--layout-size));
   margin: auto;
-} */
-
-
-
-
-.sketch-screen-container>.default-content-wrapper>p>picture>img {
-  width: calc(350vw / var(--layout-size));
+}
 }
