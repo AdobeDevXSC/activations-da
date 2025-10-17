@@ -54,7 +54,8 @@ export default async function decorate(block) {
       a.href = workstation;
     } else if (a.href.startsWith('http')) {
       let ph = placeholders[new URL(a.href).pathname.split('/').pop()];
-      const { fn } = JSON.parse(localStorage.getItem(`${experience}-session`));
+      let { fn } = JSON.parse(localStorage.getItem(`${experience}-session`));
+      if (!fn) fn = 'Untitled';
       if (fn && ph && ph.includes('${fn}')) ph = ph.replace('${fn}', fn); // eslint-disable-line no-template-curly-in-string
       a.href = ph || a.href;
       if (a.title === 'Download' || a.title.startsWith('Install')) a.target = '_blank';
