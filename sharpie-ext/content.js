@@ -717,11 +717,6 @@
     // });
   }
 
-  async function boardsReadyCheck() {
-    console.log('[Content Script] Requesting boards ready check');
-    window.dispatchEvent(new CustomEvent('checkBoardsReady'));
-  }
-
   // Initialize
   function init() {
 
@@ -734,47 +729,13 @@
         return;
       }
 
-      if (window.location.hostname.includes('firefly.adobe.com')) {
-        console.log('Express Modal: Not supported on this platform');
-        window.addEventListener('boardsReady', (event) => {
-          console.log('Boards are ready');
-          chrome.storage.local.get('sharpieWorkstation')
-            .then(result => {
-              console.log('Storage result:', result);
-              if (result && result.sharpieWorkstation) {
-                console.log('Workstation:', result.sharpieWorkstation);
-                // Send workstation data to page context
-                console.log('Placeholders:', placeholders);
-                let workstation = placeholders.find(item => item.Key.toLowerCase() === result.sharpieWorkstation.toLowerCase());
-                const url = workstation.Text;
-                const match = url.match(/\/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})\/[^/]+\/?$/i);
-                const projectId = match ? match[2] : null;
-                console.log(projectId);
-                console.log('Workstation:', projectId);
-                window.dispatchEvent(new CustomEvent('executeSharpieWorkflow', {
-                  detail: { workstationId: projectId }
-                }));
-              } else {
-                console.warn('⚠️ sharpieWorkstation not found in storage');
-                alert('Boards are ready but no workstation data found');
-              }
-            })
-            .catch(error => {
-              console.error('❌ Error reading from storage:', error);
-            });
-
-          clearInterval(intervalId);
-        });
-        const intervalId = setInterval(boardsReadyCheck, 1000);
-        createButton();
-        return;
-      }
-
       if (!window.location.hostname.includes('express.adobe.com')) {
         console.log('Express Modal: Not supported on this platform');
         createButton();
         return;
       }
+
+      console.log(window.location.search);
 
       // Check if user has permanently dismissed
       if (localStorage.getItem('expressModalDismissed') === 'true') {
@@ -821,24 +782,24 @@
 
 })();
 
-// chrome.runtime.onMessage.addListener(
-//   function (request, sender, sendResponse) {
-//     // 'request' contains the message data sent by chrome.runtime.sendMessage
-//     // 'sender' contains information about the sender of the message (e.g., tab ID, URL)
-//     // 'sendResponse' is a function to send a response back to the sender (optional)
+chrome.runtime.onMessage.addListener(
+  function (request, sender, sendResponse) {
+    // 'request' contains the message data sent by chrome.runtime.sendMessage
+    // 'sender' contains information about the sender of the message (e.g., tab ID, URL)
+    // 'sendResponse' is a function to send a response back to the sender (optional)
 
-//     console.log("Message received:", request);
+    console.log("Message received:", request);
 
-//     // Example: Check the message type and perform an action
-//     if (request.type === "myCustomMessage") {
-//       console.log("Custom message received:", request.data);
-//       // Perform actions based on the message content
-//       chrome.storage.local.set('activationSession', request.data);
-//       sendResponse({ status: "Message processed successfully" }); // Send a response
-//     }
+    // Example: Check the message type and perform an action
+    if (request.type === "myCustomMessage") {
+      console.log("Custom message received:", request.data);
+      // Perform actions based on the message content
+      chrome.storage.local.set('activationSession', request.data);
+      sendResponse({ status: "Message processed successfully" }); // Send a response
+    }
 
-//     // If you need to send an asynchronous response, return true from the listener
-//     // This indicates that sendResponse will be called later.
-//     // return true;
-//   }
-// );
+    // If you need to send an asynchronous response, return true from the listener
+    // This indicates that sendResponse will be called later.
+    // return true;
+  }
+);
