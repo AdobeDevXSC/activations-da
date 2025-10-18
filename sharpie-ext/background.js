@@ -115,17 +115,27 @@ function getDownloadFilename(item) {
  * Uses synchronous return to prevent multiple calls
  */
 
+
 function handleDownload(item, suggest) {
-  console.log('⬇️ Download started:', item.filename, 'ID:', item.id);
-  console.log('🔗 From URL:', item.finalUrl || item.url);
+  console.log('[Ext: Background] === DOWNLOAD DEBUG START ===');
+  console.log('[Ext: Background] ⬇️ Download started:', item.filename, 'ID:', item.id);
+  console.log('[Ext: Background] 🔗 From URL:', item.finalUrl || item.url);
+  console.log('[Ext: Background] Item object:', JSON.stringify(item, null, 2));
 
   const url = item.finalUrl || item.url;
 
   // Only rename downloads from Express
-  if (!url.includes('express.adobe.com') && !url.includes('adobeaemcloud.com')) {
-    console.log('ℹ️ Not from Express, keeping original filename');
-    return false; // Use default filename synchronously
-  }
+  const isFromExpress = url.includes('express.adobe.com');
+  const isFromAEM = url.includes('adobeaemcloud.com');
+
+  console.log('[Ext: Background] Is from Express?', isFromExpress);
+  console.log('[Ext: Background] Is from AEM Cloud?', isFromAEM);
+
+  // if (!isFromExpress && !isFromAEM) {
+  //   console.log('[Ext: Background] ℹ️ Not from Express/AEM, keeping original filename');
+  //   console.log('[Ext: Background] === DOWNLOAD DEBUG END (not express) ===');
+  //   return false; // Use default filename synchronously
+  // }
 
   // For Express downloads, handle asynchronously
   console.log('🔄 Processing Express download...');
@@ -133,7 +143,7 @@ function handleDownload(item, suggest) {
   chrome.storage.local.get(['downloadFilename', 'activationSession'], (result) => {
     try {
       let newFilename;
-
+      console.log('[Ext: Background] Result:', result);
       if (result.downloadFilename) {
         console.log('📦 Using stored filename:', result.downloadFilename);
 
@@ -187,7 +197,11 @@ try {
 
 // Add the listener
 chrome.downloads.onDeterminingFilename.addListener(handleDownload);
-console.log('📥 Download listener registered');
+console.log('[Ext: Background] 📥 Download listener registered');
+chrome.downloads.onDeterminingFilename.addListener(handleDownload);
+console.log('[Ext: Background] 📥 Download listener registered');
+console.log('[Ext: Background] Function defined?', typeof handleDownload); // Should be 'function'
+console.log('[Ext: Background] Has listener?', chrome.downloads.onDeterminingFilename.hasListener(handleDownload)); // Should be true
 // Add this listener to handle icon updates
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.type === 'updateIcon') {
@@ -289,7 +303,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.type === 'updateIcon') {
     console.log('🎨 Updating icon to:', request.iconPath);
-    
+
     // Test if file exists first by fetching it
     fetch(chrome.runtime.getURL(request.iconPath))
       .then(response => {
@@ -297,7 +311,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           throw new Error(`Icon file not found: ${request.iconPath}`);
         }
         console.log('✓ Icon file found, attempting to set...');
-        
+
         // Now set the icon
         return chrome.action.setIcon({
           path: request.iconPath
@@ -312,17 +326,17 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         console.error('   Attempted path:', request.iconPath);
         sendResponse({ success: false, error: error.message });
       });
-    
+
     return true; // Keep channel open for async response
   }
-  
+
   // Handle other message types...
   if (request.type === 'myCustomMessage') {
     console.log("Custom message received:", request.data);
-    chrome.storage.local.set({'activationSession': request.data});
+    chrome.storage.local.set({ 'activationSession': request.data });
     sendResponse({ status: "Message processed successfully" });
   }
-  
+
   if (request.payload) {
     console.log('💾 Session data received:', request.payload);
     chrome.storage.local.set({
