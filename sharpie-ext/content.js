@@ -392,6 +392,7 @@
 
   // ---------- Replace text content ----------
   function replaceDownloadText() {
+    const replacementText = placeholders.find(item => item.Key === 'express_replacement_text').Text;
     console.log("🔍 Looking for Download text to replace...");
 
     // Find all elements that might contain "Download"
@@ -424,7 +425,7 @@
         const originalText = textNode.textContent;
         if (originalText && originalText.toLowerCase().includes('download')) {
           // Replace "Download" with "Send For Review" (case-insensitive)
-          const newText = originalText.replace(/download/gi, 'Send For Review');
+          const newText = originalText.replace(/download/gi, replacementText);
           if (newText !== originalText) {
             textNode.textContent = newText;
             replacementCount++;
@@ -437,7 +438,7 @@
       ['aria-label', 'title', 'alt'].forEach(attr => {
         const value = element.getAttribute(attr);
         if (value && value.toLowerCase().includes('download')) {
-          const newValue = value.replace(/download/gi, 'Send For Review');
+          const newValue = value.replace(/download/gi, replacementText);
           element.setAttribute(attr, newValue);
           replacementCount++;
           console.log(`📝 Replaced ${attr}: "${value}" → "${newValue}" in ${element.tagName}`);
@@ -1114,9 +1115,13 @@
   });
 
   // Initialize
-  function init() {
+  async function init() {
 
-    fetch('https://main--activations-da--adobedevxsc.aem.live/sharpie/placeholders.json').then(response => response.json()).then(data => {
+    let experienceName = await chrome.storage.local.get(['experienceName']);
+    experienceName = experienceName.experienceName.replace(/-/g, '');
+    const url = await chrome.storage.local.get([`${experienceName}Url`]).then(result => result[`${experienceName}Url`]);
+    console.log('URL:', url);
+    fetch(url + 'placeholders.json').then(response => response.json()).then(data => {
 
       placeholders = data.data;
 
@@ -1216,6 +1221,14 @@
         return;
       }
 
+      if (window.location.hostname.includes('express.adobe.com') && experienceName === 'cocacola') {
+        console.log('Express Modal: Not supported on this platform');
+        // Set up continuous replacement
+        setupContinuousReplacement();
+        createButton();
+        return;
+      }
+
       // Check if user has permanently dismissed
       if (localStorage.getItem('expressModalDismissed') === 'true') {
         console.log('Express Modal: User has permanently dismissed');
@@ -1243,7 +1256,9 @@
 
       // Wait a moment for page to load
       setTimeout(() => {
-        createModal();
+        if (experienceName === 'sharpie') {
+          createModal();
+        }
       }, 500);
 
     }).catch(error => {

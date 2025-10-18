@@ -13,7 +13,7 @@ chrome.runtime.onMessageExternal.addListener(
 
       // Save to storage
       chrome.storage.local.set({
-        activationSessions: request.payload
+        activationSession: request.payload
       }, () => {
         console.log('✅ Session saved successfully');
         sendResponse({
@@ -140,32 +140,27 @@ function handleDownload(item, suggest) {
   // For Express downloads, handle asynchronously
   console.log('🔄 Processing Express download...');
 
-  chrome.storage.local.get(['downloadFilename', 'activationSession'], (result) => {
+  chrome.storage.local.get(['activationSession'], (result) => {
     try {
       let newFilename;
-      console.log('[Ext: Background] Result:', result);
-      if (result.downloadFilename) {
-        console.log('📦 Using stored filename:', result.downloadFilename);
+      console.log('[Ext: Background] Result:', result.activationSession);
+      if (result.activationSession) {
+        console.log('[Ext: Background]📦 Using stored activation session:', result.activationSession);
 
         const ext = (item.filename.split('.').pop() || 'bin').toLowerCase();
-        const storedExt = result.downloadFilename.split('.').pop();
-        const hasExtension = result.downloadFilename.includes('.') &&
-          storedExt.length <= 4 &&
-          storedExt.length >= 2;
 
-        newFilename = hasExtension ? result.downloadFilename : `${result.downloadFilename}.${ext}`;
-      } else {
-        const userName = result.activationSession || 'User';
+        newFilename = `${result.activationSession}.${ext}`;
+      
         const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
-        const ext = (item.filename.split('.').pop() || 'bin').toLowerCase();
+       
 
-        const cleanUserName = userName
+        const cleanUserName = newFilename
           .replace(/[\/\\?%*:|"<>]/g, '-')
           .replace(/\s+/g, '_')
           .slice(0, 40);
 
         newFilename = `${cleanUserName}_${timestamp}.${ext}`;
-        console.log('⚠️ No stored filename, using fallback:', newFilename);
+        console.log('[Ext: Background] ⚠️ No stored filename, using fallback:', newFilename);
       }
 
       newFilename = newFilename

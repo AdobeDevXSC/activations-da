@@ -2,21 +2,21 @@
   "name": "Adobe MAX 2025 Activations",
   "version": "1.0",
   "manifest_version": 3,
-  "description": "Opens a modal on Express pages at the beginning of the session",
+  "description": "Extension to manage the Sharpie and Coca-Cola activations at Adobe MAX 2025",
   "permissions": [
     "storage",
     "downloads"
   ],
-  "options_page": "options.html",
   "action": {
     "default_icon": {
-      "16": "icons/sharpie-icon.png",
-      "32": "icons/sharpie-icon.png",
-      "48": "icons/sharpie-icon.png",
-      "128": "icons/sharpie-icon.png"
+      "16": "sharpie-icon.png",
+      "32": "sharpie-icon.png",
+      "48": "sharpie-icon.png",
+      "128": "sharpie-icon.png"
     },
-    "default_title": "2025 MAX Activations"
+    "default_title": "Adobe MAX 2025 Activations"
   },
+  "options_page": "options.html",
   "externally_connectable": {
     "matches": [
       "https://main--activations-da--adobedevxsc.aem.live/*",
@@ -30,10 +30,10 @@
     "service_worker": "background.js"
   },
   "icons": {
-    "16": "icons/sharpie-icon.png",
-    "32": "icons/sharpie-icon.png",
-    "48": "icons/sharpie-icon.png",
-    "128": "icons/sharpie-icon.png"
+    "16": "sharpie-icon.png",
+    "32": "sharpie-icon.png",
+    "48": "sharpie-icon.png",
+    "128": "sharpie-icon.png"
   },
   "web_accessible_resources": [
     {
@@ -50,11 +50,15 @@
     {
       "matches": [
         "*://new.express.adobe.com/*",
+        "*://express.adobe.com/*",
         "*://next.frame.io/*",
         "*://firefly.adobe.com/*",
         "https://main--activations-da--adobedevxsc.aem.live/*",
         "https://ext--activations-da--adobedevxsc.aem.live/*",
-        "http://localhost:3000/*"
+        "https://main--activations-da--adobedevxsc.aem.page/*",
+        "https://ext--activations-da--adobedevxsc.aem.page/*",
+        "http://localhost:3000/*",
+        "https://experience.adobe.com/*"
       ],
       "js": [
         "content.js"
