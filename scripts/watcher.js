@@ -169,7 +169,7 @@ async function pollFolder() {
       
           if (granted) {
             console.log('Permission granted! Resuming polling...');
-            UPLOAD_BUTTON.textContent = 'Upload';
+            UPLOAD_BUTTON.textContent = 'Upload to Frame.io';
             UPLOAD_BUTTON.classList.remove('permission-needed');
             UPLOAD_BUTTON.classList.add('disabled');
             startPolling(UPLOAD_BUTTON); // eslint-disable-line no-use-before-define
