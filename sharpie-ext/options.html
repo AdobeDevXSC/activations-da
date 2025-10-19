@@ -72,6 +72,38 @@
       margin-top: 30px;
     }
 
+    .settings-footer {
+      display: flex;
+      gap: 30px;
+      align-items: flex-start;
+      margin-top: 30px;
+      padding-top: 30px;
+      border-top: 2px solid #e0e0e0;
+    }
+
+    .icon-group {
+      flex: 1;
+      margin-bottom: 0;
+    }
+
+    .button-group-wrapper {
+      display: flex;
+      align-items: flex-end;
+      min-width: 400px;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 0;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .button-group button {
+      width: 100%;
+    }
+
     button {
       padding: 10px 24px;
       border: none;
@@ -153,6 +185,24 @@
       transition: all 0.2s;
       background: white;
     }
+    .icon-option.highlighted {
+      animation: pulse 1s ease-in-out;
+    }
+    
+    .icon-option.highlighted label {
+      border-color: #1473e6;
+      background: #e8f3ff;
+      box-shadow: 0 0 0 3px rgba(20, 115, 230, 0.2);
+    }
+    
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+    }
 
     .icon-option label:hover {
       border-color: #1473e6;
@@ -210,6 +260,14 @@
       transition: all 0.2s;
       background: white;
       min-height: 60px;
+    }
+
+    .brand-section h3 img {
+      width: 28px;
+      height: 28px;
+      vertical-align: middle;
+      margin-right: 8px;
+      object-fit: contain;
     }
 
     .experience-option label:hover {
@@ -340,7 +398,7 @@
 
       <!-- Sharpie Section -->
       <div class="brand-section" id="sharpie-section">
-        <h3>🖊️ Sharpie Configuration</h3>
+        <h3><img src="icons/sharpie-icon.png" alt="Sharpie Icon"> Sharpie Configuration</h3>
 
         <div class="form-group">
           <label for="sharpie-url">Sharpie Target URL</label>
@@ -368,47 +426,54 @@
       </div>
       <!-- Coca-Cola Section -->
       <div class="brand-section" id="cocacola-section">
-        <h3>🥤 Coca-Cola Configuration</h3>
+        <h3><img src="icons/coca-cola-icon.png" alt="Coca-Cola Icon"> Coca-Cola Configuration</h3>
 
         <div class="form-group">
           <label for="cocacola-url">Coca-Cola Target URL</label>
           <input type="url" id="cocacola-url" name="cocacolaUrl" placeholder="https://example.com/coca-cola" required>
           <div class="help-text">URL for Coca-Cola experience</div>
         </div>
-
-        <div class="form-group">
-          <label for="cocacola-workstation">Coca-Cola Workstation ID</label>
-          <input type="text" id="cocacola-workstation" name="cocacolaWorkstation" placeholder="workstation-id">
-          <div class="help-text">Frame.io workstation identifier for Coca-Cola</div>
+        <!-- Action buttons -->
+        <div class="brand-actions">
+          <button type="button" class="btn-brand-action" id="cocacola-goto-experience">
+            <span>🚀</span>
+            <span>Go to Experience</span>
+          </button>
+          <button type="button" class="btn-brand-action" id="cocacola-open-settings">
+            <span>⚙️</span>
+            <span>Open Settings</span>
+          </button>
         </div>
       </div>
-  </div>
-
-  <!-- Icon Selection -->
-  <div class="form-group">
-    <label>Extension Icon</label>
-    <div class="icon-selector">
-      <div class="icon-option">
-        <input type="radio" name="iconChoice" id="icon-sharpie" value="sharpie" checked>
-        <label for="icon-sharpie">
-          <img src="icons/sharpie-icon.png" alt="Sharpie Icon">
-          <span>Sharpie</span>
-        </label>
+      <!-- Icon Selection -->
+      <div class="form-group icon-group">
+        <label>Extension Icon</label>
+        <div class="icon-selector">
+          <div class="icon-option">
+            <input type="radio" name="iconChoice" id="icon-sharpie" value="sharpie" checked>
+            <label for="icon-sharpie">
+              <img src="icons/sharpie-icon.png" alt="Sharpie Icon">
+              <span>Sharpie</span>
+            </label>
+          </div>
+          <div class="icon-option">
+            <input type="radio" name="iconChoice" id="icon-coca-cola" value="coca-cola">
+            <label for="icon-coca-cola">
+              <img src="icons/coca-cola-icon.png" alt="Coca-Cola Icon">
+              <span>Coca-Cola</span>
+            </label>
+          </div>
+        </div>
+        <div class="help-text">Select an icon for the extension toolbar</div>
       </div>
-      <div class="icon-option">
-        <input type="radio" name="iconChoice" id="icon-coca-cola" value="coca-cola">
-        <label for="icon-coca-cola">
-          <img src="icons/coca-cola-icon.png" alt="Coca-Cola Icon">
-          <span>Coca-Cola</span>
-        </label>
-      </div>
-    </div>
-    <div class="help-text">Select an icon for the extension toolbar</div>
-  </div>
 
-  <div class="button-group">
-    <button type="submit" class="btn-save">Save Settings</button>
-    <button type="button" class="btn-reset" id="resetBtn">Reset to Defaults</button>
+      <!-- Buttons -->
+      <div class="button-group-wrapper">
+        <div class="button-group">
+          <button type="submit" class="btn-save">Save Settings</button>
+          <button type="button" class="btn-reset" id="resetBtn">Reset to Defaults</button>
+        </div>
+      </div>
   </div>
 
   <div id="status" class="status"></div>

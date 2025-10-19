@@ -5,44 +5,50 @@ console.log('[Page Context] DEBUG available:', typeof window.DEBUG !== 'undefine
 // Listen for workflow execution request from content script
 window.addEventListener('executeSharpieWorkflow', async (event) => {
   console.log('[Page Context] Received workflow execution request:', event.detail);
-  
+
   try {
     const { workstationId } = event.detail;
-    
+
     if (!workstationId) {
       console.error('[Page Context] No workstation ID provided');
       return;
     }
-    
+
     if (typeof window.DEBUG === 'undefined' || typeof window.DEBUG.executeWorkflow !== 'function') {
       console.error('[Page Context] DEBUG.executeWorkflow is not available');
       return;
     }
-    
+
     console.log('[Page Context] Executing sharpie-retrieve-image workflow...');
     const result = await window.DEBUG.executeWorkflow(
-      "sharpie-retrieve-image", 
-      { 
-        x: { value: -2541 }, 
-        y: { value: -1550 }, 
-        height: { value: 800 }, 
-        width: { value: 800 }, 
-        workstationId: { value: workstationId } 
-      }, 
+      "sharpie-retrieve-image",
+      {
+        x: { value: -2541 },
+        y: { value: -1550 },
+        height: { value: 800 },
+        width: { value: 800 },
+        workstationId: { value: workstationId }
+      },
       "main"
     );
-    
-    console.log('[Page Context] Workflow executed successfully:', result);
-    
-    // Notify content script of success
-    window.dispatchEvent(new CustomEvent('sharpieWorkflowComplete', { 
-      detail: { success: true, result } 
-    }));
-    
+
+    console.log('[Page Context] Workflow result:', result);
+
+    // Check if the workflow actually succeeded
+    if (result && result.success !== false) {
+      console.log('[Page Context] Workflow completed successfully');
+      // Notify content script of success
+      window.dispatchEvent(new CustomEvent('sharpieWorkflowComplete', {
+        detail: { success: true, result }
+      }));
+    } else {
+      console.warn('[Page Context] Workflow returned but may not have succeeded:', result);
+      throw new Error(result?.error || result?.message || 'Workflow execution failed');
+    }
   } catch (error) {
     console.error('[Page Context] Error executing workflow:', error);
-    window.dispatchEvent(new CustomEvent('sharpieWorkflowComplete', { 
-      detail: { success: false, error: error.message } 
+    window.dispatchEvent(new CustomEvent('sharpieWorkflowComplete', {
+      detail: { success: false, error: error.message }
     }));
   }
 });

@@ -18,6 +18,8 @@
   let MESSAGE = 'Next step';
   const BUTTON_ID = 'tmx-activation-complete-btn';
   let installed = false;
+  let lastProjectId = null; // Add this to store project ID for retry
+  let showWorkflowModals = true; // Add this flag
 
   function getTargetURL() {
 
@@ -329,6 +331,8 @@
     bar.className = 'tmx-activation-bottom-bar';
 
     const targetUrl = getTargetURL();
+    console.log('targetUrl:', targetUrl);
+    if (targetUrl.includes('[no button]')) return;
     MESSAGE = placeholders.find(item => item.Key === 'button_text').Text || MESSAGE;
 
     // Use <a> for native nav, but we’ll also bind multiple handlers
@@ -388,6 +392,7 @@
 
   // ---------- Replace text content ----------
   function replaceDownloadText() {
+    const replacementText = placeholders.find(item => item.Key === 'express_replacement_text').Text;
     console.log("🔍 Looking for Download text to replace...");
 
     // Find all elements that might contain "Download"
@@ -420,7 +425,7 @@
         const originalText = textNode.textContent;
         if (originalText && originalText.toLowerCase().includes('download')) {
           // Replace "Download" with "Send For Review" (case-insensitive)
-          const newText = originalText.replace(/download/gi, 'Send For Review');
+          const newText = originalText.replace(/download/gi, replacementText);
           if (newText !== originalText) {
             textNode.textContent = newText;
             replacementCount++;
@@ -433,7 +438,7 @@
       ['aria-label', 'title', 'alt'].forEach(attr => {
         const value = element.getAttribute(attr);
         if (value && value.toLowerCase().includes('download')) {
-          const newValue = value.replace(/download/gi, 'Send For Review');
+          const newValue = value.replace(/download/gi, replacementText);
           element.setAttribute(attr, newValue);
           replacementCount++;
           console.log(`📝 Replaced ${attr}: "${value}" → "${newValue}" in ${element.tagName}`);
@@ -636,96 +641,383 @@
     console.log("✅ Continuous replacement setup complete");
   }
 
-  function miniPicker() {
 
-    const pickerLabel = placeholders.find(item => item.Key === 'mini_picker').Text;
-    const mainBtnWrap = document.createElement("div");
-    mainBtnWrap.id = "ae-place-mini-main";
-    Object.assign(mainBtnWrap.style, {
-      position: "fixed",
-      right: "calc(50% - 263px)",
-      top: "calc(50% - 40px)",
-      transform: "translateY(-50%)",
-      zIndex: 9e6,
-      pointerEvents: "none" // Allow clicks to pass through container
-    });
+  // ========== FIREFLY BOARDS MODAL SYSTEM ==========
 
-    // Main action button - Adobe Express style (centered)
-    const btn = document.createElement("button");
-    btn.id = "ae-place-mini-button";
-    btn.textContent = pickerLabel;
-    Object.assign(btn.style, {
-      padding: "18px 37px", // 15% larger: 16px→18px, 32px→37px
-      borderRadius: "29px", // 15% larger: 25px→29px
-      border: "none",
-      background: "linear-gradient(45deg, #FF6B35, #F7931E)",
-      color: "white",
-      boxShadow: "0 6px 24px rgba(255,107,53,0.4)",
-      fontFamily: "system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial",
-      fontSize: "18px", // 15% larger: 16px→18px
-      fontWeight: "700",
-      letterSpacing: "0.5px",
-      cursor: "pointer",
-      transition: "all 0.3s ease",
-      pointerEvents: "auto", // Re-enable clicks on button itself
-      backdropFilter: "blur(10px)"
-    });
+  function injectFireflyModalStyles() {
+    if (document.getElementById('firefly-modal-styles')) return;
 
-    // Enhanced hover effect
-    btn.addEventListener("mouseenter", () => {
-      btn.style.transform = "translateY(-4px) scale(1.05)";
-      btn.style.boxShadow = "0 8px 32px rgba(255,107,53,0.5)";
-    });
-    btn.addEventListener("mouseleave", () => {
-      btn.style.transform = "translateY(0) scale(1)";
-      btn.style.boxShadow = "0 6px 24px rgba(255,107,53,0.4)";
-    });
-    mainBtnWrap.appendChild(btn);
-    document.body.appendChild(mainBtnWrap);
-    // btn.addEventListener("click", async () => {
-    //   // Show loading state
-    //   btn.textContent = "Placing...";
-    //   btn.style.opacity = "0.7";
-    //   btn.style.cursor = "wait";
-
-    //   try {
-    //     const success = await placeMiniFromKioskFolder();
-
-    //     if (success === true) {
-    //       // Only hide button if placement was actually successful
-    //       btn.textContent = "✅ Placed!";
-    //       btn.style.opacity = "1";
-    //       setTimeout(() => {
-    //         mainBtnWrap.style.opacity = "0";
-    //         mainBtnWrap.style.transform = "translate(-50%, -50%) scale(0.8)";
-    //         setTimeout(() => {
-    //           mainBtnWrap.style.display = "none";
-    //         }, 300);
-    //       }, 1000); // Wait 1 second to show success, then fade out
-    //     } else {
-    //       // Reset button if placement wasn't successful
-    //       btn.textContent = "Place Your Mini";
-    //       btn.style.opacity = "1";
-    //       btn.style.cursor = "pointer";
-    //     }
-    //   } catch (error) {
-    //     // Reset button on error
-    //     btn.textContent = "Place Your Mini";
-    //     btn.style.opacity = "1";
-    //     btn.style.cursor = "pointer";
-    //   }
-    // });
+    const style = document.createElement('style');
+    style.id = 'firefly-modal-styles';
+    style.textContent = `
+      /* Paste the updated CSS from Step 1 here */
+      .firefly-modal-overlay {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 999999;
+        pointer-events: none;
+      }
+      
+      .firefly-modal-overlay.show {
+        pointer-events: auto;
+      }
+      
+      .firefly-modal-content {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        max-width: 400px;
+        width: 400px;
+        overflow: hidden;
+        position: relative;
+        transform: translateX(450px);
+        transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        pointer-events: auto;
+      }
+      
+      .firefly-modal-overlay.show .firefly-modal-content {
+        transform: translateX(0);
+      }
+      
+      .firefly-modal-header {
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      
+      .firefly-modal-title {
+        font-size: 20px;
+        font-weight: 700;
+        color: white;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex: 1;
+      }
+      
+      .firefly-modal-close-btn {
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        color: white;
+        font-size: 20px;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        padding: 0;
+        line-height: 1;
+        flex-shrink: 0;
+      }
+      
+      .firefly-modal-close-btn:hover {
+        background: rgba(255, 255, 255, 0.4);
+        transform: rotate(90deg);
+      }
+      
+      .firefly-modal-body {
+        padding: 20px;
+        color: white;
+        max-height: 400px;
+        overflow-y: auto;
+      }
+      
+      .firefly-modal-body p {
+        margin: 0 0 12px 0;
+        line-height: 1.6;
+        font-size: 15px;
+      }
+      
+      .firefly-modal-body p:last-child {
+        margin-bottom: 0;
+      }
+      
+      .firefly-modal-spinner {
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-top: 3px solid white;
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        animation: firefly-spin 1s linear infinite;
+        margin: 12px auto;
+      }
+      
+      @keyframes firefly-spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
+      .firefly-modal-progress {
+        height: 3px;
+        background: rgba(255, 255, 255, 0.3);
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+      
+      .firefly-modal-progress-bar {
+        height: 100%;
+        background: white;
+        width: 100%;
+        transform-origin: left;
+        animation: firefly-progress-shrink 5s linear forwards;
+      }
+      
+      @keyframes firefly-progress-shrink {
+        from { transform: scaleX(1); }
+        to { transform: scaleX(0); }
+      }
+    `;
+    document.head.appendChild(style);
+    console.log('✅ Firefly modal styles injected');
   }
+
+
+  // Create and show non-blocking Firefly notification modal
+  function createFireflyModal(options = {}) {
+    const {
+      title = '🎨 Firefly Boards',
+      content = '<p>Notification content</p>',
+      buttons = [], // Add this
+      autoDismiss = false,
+      dismissAfter = 5000,
+      onClose = null
+    } = options;
+
+    // Remove any existing modal
+    const existingModal = document.getElementById('firefly-custom-modal');
+    if (existingModal) {
+      existingModal.remove();
+    }
+
+    // Inject styles
+    injectFireflyModalStyles();
+
+    // Create modal overlay
+    const modalOverlay = document.createElement('div');
+    modalOverlay.id = 'firefly-custom-modal';
+    modalOverlay.className = 'firefly-modal-overlay';
+
+    // Build buttons HTML
+    let buttonsHtml = '';
+    if (buttons.length > 0) {
+      buttonsHtml = '<div class="firefly-modal-actions">';
+      buttons.forEach((btn, index) => {
+        const primaryClass = btn.primary ? ' primary' : '';
+        buttonsHtml += `
+        <button class="firefly-modal-action-btn${primaryClass}" data-btn-index="${index}">
+          ${btn.icon ? `<span>${btn.icon}</span>` : ''}
+          <span>${btn.text}</span>
+        </button>
+      `;
+      });
+      buttonsHtml += '</div>';
+    }
+
+    // Create modal structure
+    modalOverlay.innerHTML = `
+    <div class="firefly-modal-content">
+      <div class="firefly-modal-header">
+        <h2 class="firefly-modal-title">${title}</h2>
+        <button class="firefly-modal-close-btn" aria-label="Dismiss">&times;</button>
+      </div>
+      <div class="firefly-modal-body">
+        ${content}
+        ${buttonsHtml}
+      </div>
+      ${autoDismiss ? '<div class="firefly-modal-progress"><div class="firefly-modal-progress-bar"></div></div>' : ''}
+    </div>
+  `;
+
+    document.body.appendChild(modalOverlay);
+
+    // Close modal function
+    function closeModal() {
+      modalOverlay.classList.remove('show');
+      setTimeout(() => {
+        modalOverlay.remove();
+        if (onClose) onClose();
+      }, 400);
+    }
+
+    // Dismiss button event
+    const closeBtn = modalOverlay.querySelector('.firefly-modal-close-btn');
+    closeBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeModal();
+    });
+
+    // Action button events
+    const actionButtons = modalOverlay.querySelectorAll('.firefly-modal-action-btn');
+    actionButtons.forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const index = parseInt(btn.getAttribute('data-btn-index'));
+        const buttonConfig = buttons[index];
+        if (buttonConfig && buttonConfig.onClick) {
+          buttonConfig.onClick(closeModal);
+        }
+      });
+    });
+
+    // Optional: ESC key to dismiss
+    const escKeyListener = (e) => {
+      if (e.key === 'Escape') {
+        closeModal();
+        document.removeEventListener('keydown', escKeyListener);
+      }
+    };
+    document.addEventListener('keydown', escKeyListener);
+
+    // Auto-dismiss timer
+    let autoDismissTimer = null;
+    if (autoDismiss) {
+      autoDismissTimer = setTimeout(() => {
+        closeModal();
+      }, dismissAfter);
+    }
+
+    // Show modal with animation
+    setTimeout(() => {
+      modalOverlay.classList.add('show');
+    }, 10);
+
+    console.log('✅ Firefly notification modal shown');
+
+    return {
+      close: closeModal,
+      modalElement: modalOverlay,
+      cancelAutoDismiss: () => {
+        if (autoDismissTimer) {
+          clearTimeout(autoDismissTimer);
+        }
+      }
+    };
+  }
+
+  // ========== END FIREFLY BOARDS MODAL SYSTEM ==========
 
   async function boardsReadyCheck() {
     console.log('[Content Script] Requesting boards ready check');
     window.dispatchEvent(new CustomEvent('checkBoardsReady'));
   }
 
-  // Initialize
-  function init() {
+  // Listen for workflow completion
+  window.addEventListener('sharpieWorkflowComplete', (event) => {
+    const { success, result, error } = event.detail;
 
-    fetch('https://main--activations-da--adobedevxsc.aem.live/sharpie/placeholders.json').then(response => response.json()).then(data => {
+    console.log('[Content Script] Sharpie workflow completed');
+    console.log('  - Success:', success);
+    console.log('  - Result:', result);
+    console.log('  - Error:', error);
+
+    // Check if we should show modals
+    if (!showWorkflowModals) {
+      console.log('Skipping modal display (retry in progress)');
+      showWorkflowModals = true; // Reset for next time
+      return;
+    }
+
+    // Handle success
+    if (success) {
+      // Extract any useful data from the result
+      if (result) {
+        console.log('Workflow result data:', result);
+      }
+
+      // Update storage or state
+      if (typeof chrome !== 'undefined' && chrome.storage) {
+        chrome.storage.local.set({
+          lastWorkflowStatus: 'success',
+          lastWorkflowTime: Date.now()
+        }).catch(err => console.error('Failed to save status:', err));
+      }
+
+      // Notify user
+      setTimeout(() => {
+        createFireflyModal({
+          title: '🎉 Success!',
+          content: '<p>Image placed successfully on the board.</p>',
+          autoDismiss: true,
+          dismissAfter: 7000,
+          onClose: () => {
+            console.log('User acknowledged success');
+          }
+        });
+        createButton();
+      }, 3000);
+    }
+    // Handle completion (treating as success with retry option)
+    else {
+      if (typeof chrome !== 'undefined' && chrome.storage) {
+        chrome.storage.local.set({
+          lastWorkflowStatus: 'complete',
+          lastWorkflowTime: Date.now(),
+          lastWorkflowError: error
+        }).catch(err => console.error('Failed to save status:', err));
+      }
+
+      // Show success modal with retry option
+      setTimeout(() => {
+        createFireflyModal({
+          title: '🎉 Success!',
+          content: '<p>Image placed successfully on the board.</p>',
+          autoDismiss: true,
+          dismissAfter: 7000,
+          buttons: [
+            {
+              text: 'Retry',
+              icon: '',
+              primary: true,
+              onClick: (close) => {
+                if (lastProjectId) {
+                  console.log('Retrying workflow with projectId:', lastProjectId);
+                  showWorkflowModals = false;
+                  window.dispatchEvent(new CustomEvent('executeSharpieWorkflow', {
+                    detail: { workstationId: lastProjectId }
+                  }));
+                  close();
+                } else {
+                  console.error('No project ID available for retry');
+                  alert('Unable to retry - no project ID found');
+                }
+              }
+            },
+            {
+              text: 'Dismiss',
+              icon: '',
+              onClick: (close) => {
+                console.log('User dismissed modal');
+                close();
+              }
+            }
+          ],
+          onClose: () => {
+            console.log('Workflow modal closed');
+          }
+        });
+        createButton();
+      }, 3000);
+    }
+  });
+
+  // Initialize
+  async function init() {
+
+    let experienceName = await chrome.storage.local.get(['experienceName']);
+    experienceName = experienceName.experienceName.replace(/-/g, '');
+    const url = await chrome.storage.local.get([`${experienceName}Url`]).then(result => result[`${experienceName}Url`]);
+    console.log('URL:', url);
+    fetch(url + 'placeholders.json').then(response => response.json()).then(data => {
 
       placeholders = data.data;
 
@@ -737,59 +1029,99 @@
       if (window.location.hostname.includes('firefly.adobe.com') && window.location.pathname.startsWith('/boards/id/')) {
         console.log('Express Modal: Not supported on this platform');
         console.log('Board ID:', window.location.pathname);
+
+        // DECLARE intervalId FIRST
+        let intervalId = null;
+        let modalShown = false; // Flag to prevent showing modal multiple times
+
         window.addEventListener('boardsReady', (event) => {
+          // Only show modal once
+          if (modalShown) return;
+          modalShown = true;
+
           console.log('Boards are ready');
-          chrome.storage.local.get('sharpieWorkstation')
-            .then(result => {
-              console.log('=== DEBUG START ===');
-              console.log('Storage result:', result);
-              console.log('Has result?', !!result);
-              console.log('Has sharpieWorkstation?', !!result?.sharpieWorkstation);
-              console.log('sharpieWorkstation value:', result?.sharpieWorkstation);
 
-              if (result && result.sharpieWorkstation) {
-                console.log('✓ Inside IF block - has workstation');
-                console.log('Workstation::', result.sharpieWorkstation);
-                console.log('Placeholders:', placeholders);
-                console.log('data.data:', data.data);
+          let content = '<p>Loading your creative assets...</p>';
+          // With auto-dismiss
+          createFireflyModal({
+            title: '🎨 Processing',
+            content: content,
+            autoDismiss: false,
+            dismissAfter: 5000
+          });
 
-                let workstation = placeholders.find(item => item.Key.toLowerCase() === result.sharpieWorkstation.toLowerCase());
-                console.log('Found workstation:', workstation);
 
-                if (!workstation) {
-                  console.error('❌ Workstation not found in placeholders!');
-                  return;
+          if (typeof chrome !== 'undefined' && chrome.storage) {
+            chrome.storage.local.get(['sharpieWorkstation'])
+              .then(result => {
+                console.log('=== DEBUG START ===');
+                console.log('Storage result:', result);
+                console.log('Has result?', !!result);
+                console.log('Has sharpieWorkstation?', !!result?.sharpieWorkstation);
+                console.log('sharpieWorkstation value:', result?.sharpieWorkstation);
+
+                if (result && result.sharpieWorkstation) {
+                  console.log('✓ Inside IF block - has workstation');
+                  console.log('Workstation::', result.sharpieWorkstation);
+                  console.log('Placeholders:', placeholders);
+                  console.log('data.data:', data.data);
+
+                  let workstation = placeholders.find(item => item.Key.toLowerCase() === result.sharpieWorkstation.toLowerCase());
+                  console.log('Found workstation:', workstation);
+
+                  if (!workstation) {
+                    console.error('❌ Workstation not found in placeholders!');
+                    return;
+                  }
+
+                  const url = workstation.Text;
+                  console.log('Workstation URL:', url);
+
+                  const match = url.split('/').pop();
+                  const projectId = match || null;
+                  console.log('Regex match:', match);
+                  console.log('Project ID extracted:', projectId);
+
+                  // Store for retry
+                  lastProjectId = projectId;
+                  setTimeout(() => {
+                    window.dispatchEvent(new CustomEvent('executeSharpieWorkflow', {
+                      detail: { workstationId: projectId }
+                    }));
+                  }, 3000);
+                } else {
+                  console.warn('⚠️ sharpieWorkstation not found in storage');
+                  alert('Boards are ready but no workstation data found');
                 }
+              })
+              .catch(error => {
+                console.error('❌ Error reading from storage:', error);
+              });
+          } else {
+            console.error('❌ Chrome storage API is not available');
+            alert('Extension error: Chrome storage not available');
+          }
 
-                const url = workstation.Text;
-                console.log('Workstation URL:', url);
-
-                const match = url.split('/').pop();
-                const projectId = match || null; // Note: Changed from match[2] to match[1]
-                console.log('Regex match:', match);
-                console.log('Project ID extracted:', projectId);
-
-                window.dispatchEvent(new CustomEvent('executeSharpieWorkflow', {
-                  detail: { workstationId: projectId }
-                }));
-              } else {
-                console.warn('⚠️ sharpieWorkstation not found in storage');
-                alert('Boards are ready but no workstation data found');
-              }
-            })
-            .catch(error => {
-              console.error('❌ Error reading from storage:', error);
-            });
-
-          clearInterval(intervalId);
+          // NOW clear the interval
+          if (intervalId) {
+            clearInterval(intervalId);
+            console.log('✅ Interval cleared');
+          }
         });
-        const intervalId = setInterval(boardsReadyCheck, 1000);
-        createButton();
+        intervalId = setInterval(boardsReadyCheck, 1000);
         return;
       }
 
       if (!window.location.hostname.includes('express.adobe.com')) {
         console.log('Express Modal: Not supported on this platform');
+        createButton();
+        return;
+      }
+
+      if (window.location.hostname.includes('express.adobe.com') && experienceName === 'cocacola') {
+        console.log('Express Modal: Not supported on this platform');
+        // Set up continuous replacement
+        setupContinuousReplacement();
         createButton();
         return;
       }
@@ -821,7 +1153,9 @@
 
       // Wait a moment for page to load
       setTimeout(() => {
-        createModal();
+        if (experienceName === 'sharpie') {
+          createModal();
+        }
       }, 500);
 
     }).catch(error => {
@@ -838,25 +1172,3 @@
   }
 
 })();
-
-// chrome.runtime.onMessage.addListener(
-//   function (request, sender, sendResponse) {
-//     // 'request' contains the message data sent by chrome.runtime.sendMessage
-//     // 'sender' contains information about the sender of the message (e.g., tab ID, URL)
-//     // 'sendResponse' is a function to send a response back to the sender (optional)
-
-//     console.log("Message received:", request);
-
-//     // Example: Check the message type and perform an action
-//     if (request.type === "myCustomMessage") {
-//       console.log("Custom message received:", request.data);
-//       // Perform actions based on the message content
-//       chrome.storage.local.set('activationSession', request.data);
-//       sendResponse({ status: "Message processed successfully" }); // Send a response
-//     }
-
-//     // If you need to send an asynchronous response, return true from the listener
-//     // This indicates that sendResponse will be called later.
-//     // return true;
-//   }
-// );
