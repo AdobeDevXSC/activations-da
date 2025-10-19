@@ -1188,10 +1188,11 @@
 
                   // Store for retry
                   lastProjectId = projectId;
-
-                  window.dispatchEvent(new CustomEvent('executeSharpieWorkflow', {
-                    detail: { workstationId: projectId }
-                  }));
+                  setTimeout(() => {
+                    window.dispatchEvent(new CustomEvent('executeSharpieWorkflow', {
+                      detail: { workstationId: projectId }
+                    }));
+                  }, 3000);
                 } else {
                   console.warn('⚠️ sharpieWorkstation not found in storage');
                   alert('Boards are ready but no workstation data found');

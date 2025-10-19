@@ -63,10 +63,16 @@ function highlightActiveBrand() {
 
   // Automatically update the extension icon
   updateExtensionIcon(newIconChoice);
-  
-  // Save the icon choice to storage
-  chrome.storage.local.set({ iconChoice: newIconChoice }, () => {
-    console.log('Icon choice auto-saved:', newIconChoice);
+
+  // Save BOTH the icon choice AND experience name to storage
+  chrome.storage.local.set({
+    iconChoice: newIconChoice,
+    experienceName: selectedExp?.value || 'sharpie'
+  }, () => {
+    console.log('Auto-saved:', {
+      iconChoice: newIconChoice,
+      experienceName: selectedExp?.value
+    });
   });
 }
 
@@ -106,7 +112,8 @@ function saveSettings(e) {
 
   const selectedExperience = document.querySelector('input[name="experienceName"]:checked');
   const selectedIcon = document.querySelector('input[name="iconChoice"]:checked');
-
+  console.log('Selected Icon:', selectedIcon);
+  console.log('Selected Experience:', selectedExperience);
   const settings = {
     experienceName: selectedExperience ? selectedExperience.value : DEFAULTS.experienceName,
     iconChoice: selectedIcon ? selectedIcon.value : DEFAULTS.iconChoice,
@@ -143,6 +150,7 @@ function saveSettings(e) {
 
 // Update extension icon
 function updateExtensionIcon(iconChoice) {
+  return;
   const iconPath = ICON_PATHS[iconChoice] || ICON_PATHS.sharpie;
 
   chrome.runtime.sendMessage({
