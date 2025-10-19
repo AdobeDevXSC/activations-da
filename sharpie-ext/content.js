@@ -1050,16 +1050,18 @@
       }
 
       // Notify user
-      createFireflyModal({
-        title: '🎉 Success!',
-        content: '<p>Image placed successfully on the board.</p>',
-        autoDismiss: false,
-        dismissAfter: 4000,
-        onClose: () => {
-          console.log('User acknowledged success');
-        }
-      });
-      createButton();
+      setTimeout(() => {
+        createFireflyModal({
+          title: '🎉 Success!',
+          content: '<p>Image placed successfully on the board.</p>',
+          autoDismiss: true,
+          dismissAfter: 7000,
+          onClose: () => {
+            console.log('User acknowledged success');
+          }
+        });
+        createButton();
+      }, 3000);
     }
     // Handle error
     else {
@@ -1072,45 +1074,48 @@
       }
 
       // Show error with more detail
-      createFireflyModal({
-        title: '🎉 Success!',
-        content: '<p>Image placed successfully on the board.</p>',
-        autoDismiss: false,
-        buttons: [
-          {
-            text: 'Retry',
-            icon: '',
-            primary: true,
-            onClick: (close) => {
-              if (lastProjectId) {
-                console.log('Retrying workflow with projectId:', lastProjectId);
+      setTimeout(() => {
+        createFireflyModal({
+          title: '🎉 Success!',
+          content: '<p>Image placed successfully on the board.</p>',
+          autoDismiss: true,
+          dismissAfter: 7000,
+          buttons: [
+            {
+              text: 'Retry',
+              icon: '',
+              primary: true,
+              onClick: (close) => {
+                if (lastProjectId) {
+                  console.log('Retrying workflow with projectId:', lastProjectId);
 
-                // Disable workflow modals for this retry
-                showWorkflowModals = false;
+                  // Disable workflow modals for this retry
+                  showWorkflowModals = false;
 
-                window.dispatchEvent(new CustomEvent('executeSharpieWorkflow', {
-                  detail: { workstationId: lastProjectId }
-                }));
+                  window.dispatchEvent(new CustomEvent('executeSharpieWorkflow', {
+                    detail: { workstationId: lastProjectId }
+                  }));
+                  close();
+                } else {
+                  console.error('No project ID available for retry');
+                  alert('Unable to retry - no project ID found');
+                }
+              }
+            },
+            {
+              text: 'Dismiss',
+              icon: '',
+              onClick: (close) => {
+                console.log('User dismissed error');
                 close();
-              } else {
-                console.error('No project ID available for retry');
-                alert('Unable to retry - no project ID found');
               }
             }
-          },
-          {
-            text: 'Dismiss',
-            icon: '',
-            onClick: (close) => {
-              console.log('User dismissed error');
-              close();
-            }
+          ],
+          onClose: () => {
+            console.log('Error modal closed');
           }
-        ],
-        onClose: () => {
-          console.log('Error modal closed');
-        }
-      });
+        });
+      }, 3000);
     }
   });
 
