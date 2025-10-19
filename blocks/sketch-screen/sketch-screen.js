@@ -53,7 +53,7 @@ export default async function decorate(block) {
       const workstation = placeholders[localStorage.getItem('sharpie-workstation') || 'workstation-01'];
       a.href = workstation;
     } else if (a.href.startsWith('http')) {
-      let ph = placeholders[new URL(a.href).pathname.split('/').pop()];
+      const ph = placeholders[new URL(a.href).pathname.split('/').pop()];
       a.href = ph || a.href;
       if (a.title === 'Download' || a.title.startsWith('Install')) a.target = '_blank';
       if (a.title === 'Reset Experience') {

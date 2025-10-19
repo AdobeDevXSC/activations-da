@@ -9,13 +9,13 @@ async function sendToExtension(message) {
   // Wait for extension ID if not yet available
   console.log('Waiting for extension ID', extensionId); // eslint-disable-line no-console
   while (!extensionId) {
-    await new Promise((resolve) => setTimeout(resolve, 100));// eslint-disable-line no-await-in-loop
+    await new Promise((resolve) => { setTimeout(resolve, 100); });// eslint-disable-line no-await-in-loop
   }
 
   return new Promise((resolve, reject) => {
-    chrome.runtime.sendMessage(extensionId, message, (response) => {
-      if (chrome.runtime.lastError) {
-        reject(chrome.runtime.lastError);
+    chrome.runtime.sendMessage(extensionId, message, (response) => { // eslint-disable-line no-undef
+      if (chrome.runtime.lastError) { // eslint-disable-line no-undef
+        reject(chrome.runtime.lastError); // eslint-disable-line no-undef
       } else {
         resolve(response);
       }
@@ -86,9 +86,9 @@ function generatePayload(form) {
 }
 
 function generateUUID() {
-  return 'xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-    var r = Math.random() * 16 | 0,
-      v = c == 'x' ? r : (r & 0x3 | 0x8);
+  return 'xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = Math.floor(Math.random() * 16);
+    const v = c === 'x' ? r : ((r % 4) + 8);
     return v.toString(16);
   });
 }
@@ -121,10 +121,10 @@ async function handleSubmit(form) {
 
   form.style.cursor = 'default';
   if (form.dataset.confirmation && activation) {
-    let responseJson = {
+    const responseJson = {
       fn: '',
       key: payload.key,
-      status: 'ini',
+      status: 'init',
     };
     if (payload && payload.firstName && payload.lastName) {
       responseJson.fn = `${payload.firstName.toLowerCase()}-${payload.lastName.toLowerCase()}-${payload.key}`;
@@ -145,11 +145,11 @@ async function handleSubmit(form) {
       responseJson.status = 'complete';
       localStorage.setItem(`${activation}-session`, JSON.stringify(responseJson));
     }
-    setTimeout(function() {
+    setTimeout(() => {
       window.location.href = form.dataset.confirmation;
     }, 1000);
   } else {
-    console.log('Form submitted successfully!', await response.text()); // eslint-disable-line no-console
+    console.log('Form submitted successfully!'); // eslint-disable-line no-console
     console.log(form.dataset); // eslint-disable-line no-console
   }
 }
