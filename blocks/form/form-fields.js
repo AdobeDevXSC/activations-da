@@ -137,6 +137,16 @@ const createSubmit = (fd) => {
   return { field: button, fieldWrapper };
 };
 
+const createButton = (fd) => {
+  const button = document.createElement('button');
+  button.textContent = fd.Label || fd.Name;
+  button.classList.add('button');
+
+  const fieldWrapper = createFieldWrapper(fd);
+  fieldWrapper.append(button);
+  return { field: button, fieldWrapper };
+};
+
 const createTextArea = (fd) => {
   const field = document.createElement('textarea');
   setCommonAttributes(field, fd);
@@ -217,6 +227,7 @@ const FIELD_CREATOR_FUNCTIONS = {
     return { field, fieldWrapper };
   },
   submit: createSubmit,
+  button: createButton,
   confirmation: (fd, form) => {
     form.dataset.confirmation = new URL(fd.Value).pathname;
     return {};

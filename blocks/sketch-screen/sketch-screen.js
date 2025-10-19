@@ -65,7 +65,7 @@ export default async function decorate(block) {
     }
   });
 
-  if (experience === 'sharpie' && block.classList.contains('sketch-screen-1') && 0) {
+  if (experience === 'sharpie' && block.classList.contains('sketch-screen-1')) {
     dbExists().then(async (exists) => {
       if (exists) {
         const uploadButton = document.querySelector('.button-container a[title^="Upload "]');

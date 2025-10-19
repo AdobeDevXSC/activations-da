@@ -42,28 +42,72 @@ export async function loadHandle() {
   const db = await window.indexedDB.open(DB_NAME, 1);
   return new Promise((resolve, reject) => {
     db.onsuccess = async () => {
-      console.log(db.result); // eslint-disable-line no-console
+      console.log('📂 Database opened:', db.result);
       if (db.result.objectStoreNames.length) {
         const tx = db.result.transaction(STORE_NAME, 'readwrite');
         const req = tx.objectStore(STORE_NAME).get('dir');
-        req.onsuccess = () => resolve(req.result);
+        req.onsuccess = () => {
+          const handle = req.result;
+          console.log('🗂️ Retrieved handle from DB:', handle);
+          console.log('   Handle kind:', handle?.kind);
+          console.log('   Handle name:', handle?.name);
+          resolve(handle);
+        };
         req.onerror = () => reject(req.error);
       } else {
-        resolve(console.error('no object store')); // eslint-disable-line no-console
+        console.error('❌ No object store found in database');
+        resolve(null);
       }
     };
-    db.onerror = () => reject(console.log(db.error)); // eslint-disable-line no-console
+    db.onerror = () => reject(console.log('❌ DB error:', db.error));
   });
 }
 
-async function ensurePermission(handle, mode = 'readwrite') {
-  if (!handle) return false;
+async function ensurePermission(handle, mode = 'readwrite', forcePrompt = false) {
+  if (!handle) {
+    console.error('❌ No handle provided to ensurePermission');
+    return false;
+  }
+
+  console.log('🔍 Handle type:', handle.kind, handle.name); // See what handle we have
+
   const opts = { mode };
-  if (await handle.queryPermission(opts) === 'granted') return true;
-  console.log('query permission', handle); // eslint-disable-line no-console
-  const requested = await handle.requestPermission(opts);
-  console.log('requesting permission', requested); // eslint-disable-line no-console
-  return requested === 'granted';
+
+  // Check current permission
+  try {
+    const currentPermission = await handle.queryPermission(opts);
+    console.log('📋 Current permission status:', currentPermission);
+
+    if (currentPermission === 'granted') {
+      console.log('✅ Permission already granted');
+      return true;
+    }
+  } catch (error) {
+    console.error('❌ Error querying permission:', error);
+    return false;
+  }
+
+  console.log('⚠️ Permission not granted, forcePrompt:', forcePrompt);
+
+  // If we're forcing a prompt (called from user gesture), request it
+  if (forcePrompt) {
+    try {
+      console.log('🚀 Calling requestPermission with opts:', opts);
+      const requested = await handle.requestPermission(opts);
+      console.log('📨 Permission request result:', requested);
+      return requested === 'granted';
+    } catch (error) {
+      console.error('❌ Failed to request permission:', error);
+      console.error('   Error name:', error.name);
+      console.error('   Error message:', error.message);
+      console.error('   Error stack:', error.stack);
+      return false;
+    }
+  }
+
+  // Otherwise, just return false - permission needed but can't request
+  console.warn('⚠️ Permission needed but cannot request outside user gesture');
+  return false;
 }
 
 // CONFIG
@@ -80,12 +124,68 @@ async function pollFolder() {
   if (!dirHandle) return;
   console.log('polling folder'); // eslint-disable-line no-console
   try {
-    const canRead = await ensurePermission(dirHandle, 'readwrite');
+    const canRead = await ensurePermission(dirHandle, 'readwrite', false);
     if (!canRead) {
-      console.log('Permission revoked. Stopping.'); // eslint-disable-line no-console
+      console.log('Permission needed. Stopping poll and waiting for user action.');
       stopPolling(); // eslint-disable-line no-use-before-define
+
+      // Update button to prompt for permission
+      console.log('🔘 UPLOAD_BUTTON exists?', !!UPLOAD_BUTTON);
+      console.log('🔘 UPLOAD_BUTTON:', UPLOAD_BUTTON);
+
+      if (UPLOAD_BUTTON) {
+        console.log('✏️ Updating button...');
+      
+        // REMOVE disabled class first so clicks work!
+        UPLOAD_BUTTON.classList.remove('disabled');
+        UPLOAD_BUTTON.removeAttribute('disabled');
+      
+        UPLOAD_BUTTON.textContent = 'Click to Grant Folder Access';
+        UPLOAD_BUTTON.classList.add('permission-needed');
+      
+        // Also force pointer-events in case CSS is blocking
+        UPLOAD_BUTTON.style.pointerEvents = 'auto';
+        UPLOAD_BUTTON.style.cursor = 'pointer';
+      
+        console.log('✏️ Button text updated to:', UPLOAD_BUTTON.textContent);
+      
+        // Remove any existing click handlers
+        const newButton = UPLOAD_BUTTON.cloneNode(true);
+        UPLOAD_BUTTON.parentNode.replaceChild(newButton, UPLOAD_BUTTON);
+        UPLOAD_BUTTON = newButton;
+      
+        UPLOAD_BUTTON.onclick = async (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+      
+          console.log('🖱️ BUTTON CLICKED!');
+          console.log('   Event:', event);
+          console.log('   Is trusted?', event.isTrusted);
+          console.log('   Calling ensurePermission with forcePrompt=true');
+      
+          const granted = await ensurePermission(dirHandle, 'readwrite', true);
+      
+          console.log('📬 Permission result:', granted);
+      
+          if (granted) {
+            console.log('Permission granted! Resuming polling...');
+            UPLOAD_BUTTON.textContent = 'Upload';
+            UPLOAD_BUTTON.classList.remove('permission-needed');
+            UPLOAD_BUTTON.classList.add('disabled');
+            startPolling(UPLOAD_BUTTON); // eslint-disable-line no-use-before-define
+          } else {
+            console.error('Permission denied by user');
+            alert('Permission denied. Please grant folder access to continue.');
+          }
+        };
+      
+        console.log('✅ Button onclick handler attached');
+      } else {
+        console.error('❌ UPLOAD_BUTTON is null/undefined!');
+      }
       return;
     }
+
     // eslint-disable-line no-restricted-syntax
     for await (const [name, handle] of dirHandle.entries()) {
       if (handle.kind !== 'file') continue; // eslint-disable-line no-continue

@@ -641,86 +641,6 @@
     console.log("✅ Continuous replacement setup complete");
   }
 
-  function miniPicker() {
-
-    const pickerLabel = placeholders.find(item => item.Key === 'mini_picker').Text;
-    const mainBtnWrap = document.createElement("div");
-    mainBtnWrap.id = "ae-place-mini-main";
-    Object.assign(mainBtnWrap.style, {
-      position: "fixed",
-      right: "calc(50% - 263px)",
-      top: "calc(50% - 40px)",
-      transform: "translateY(-50%)",
-      zIndex: 9e6,
-      pointerEvents: "none" // Allow clicks to pass through container
-    });
-
-    // Main action button - Adobe Express style (centered)
-    const btn = document.createElement("button");
-    btn.id = "ae-place-mini-button";
-    btn.textContent = pickerLabel;
-    Object.assign(btn.style, {
-      padding: "18px 37px", // 15% larger: 16px→18px, 32px→37px
-      borderRadius: "29px", // 15% larger: 25px→29px
-      border: "none",
-      background: "linear-gradient(45deg, #FF6B35, #F7931E)",
-      color: "white",
-      boxShadow: "0 6px 24px rgba(255,107,53,0.4)",
-      fontFamily: "system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial",
-      fontSize: "18px", // 15% larger: 16px→18px
-      fontWeight: "700",
-      letterSpacing: "0.5px",
-      cursor: "pointer",
-      transition: "all 0.3s ease",
-      pointerEvents: "auto", // Re-enable clicks on button itself
-      backdropFilter: "blur(10px)"
-    });
-
-    // Enhanced hover effect
-    btn.addEventListener("mouseenter", () => {
-      btn.style.transform = "translateY(-4px) scale(1.05)";
-      btn.style.boxShadow = "0 8px 32px rgba(255,107,53,0.5)";
-    });
-    btn.addEventListener("mouseleave", () => {
-      btn.style.transform = "translateY(0) scale(1)";
-      btn.style.boxShadow = "0 6px 24px rgba(255,107,53,0.4)";
-    });
-    mainBtnWrap.appendChild(btn);
-    document.body.appendChild(mainBtnWrap);
-    // btn.addEventListener("click", async () => {
-    //   // Show loading state
-    //   btn.textContent = "Placing...";
-    //   btn.style.opacity = "0.7";
-    //   btn.style.cursor = "wait";
-
-    //   try {
-    //     const success = await placeMiniFromKioskFolder();
-
-    //     if (success === true) {
-    //       // Only hide button if placement was actually successful
-    //       btn.textContent = "✅ Placed!";
-    //       btn.style.opacity = "1";
-    //       setTimeout(() => {
-    //         mainBtnWrap.style.opacity = "0";
-    //         mainBtnWrap.style.transform = "translate(-50%, -50%) scale(0.8)";
-    //         setTimeout(() => {
-    //           mainBtnWrap.style.display = "none";
-    //         }, 300);
-    //       }, 1000); // Wait 1 second to show success, then fade out
-    //     } else {
-    //       // Reset button if placement wasn't successful
-    //       btn.textContent = "Place Your Mini";
-    //       btn.style.opacity = "1";
-    //       btn.style.cursor = "pointer";
-    //     }
-    //   } catch (error) {
-    //     // Reset button on error
-    //     btn.textContent = "Place Your Mini";
-    //     btn.style.opacity = "1";
-    //     btn.style.cursor = "pointer";
-    //   }
-    // });
-  }
 
   // ========== FIREFLY BOARDS MODAL SYSTEM ==========
 
@@ -984,33 +904,6 @@
     };
   }
 
-  // Example usage function
-  function showFireflyWelcomeModal() {
-    createFireflyModal({
-      title: '🎨 Welcome to Firefly Boards',
-      content: `
-      <p>Your creative workspace is ready!</p>
-      <p>This modal can display any content you need for your Firefly Boards experience.</p>
-      <div class="firefly-modal-spinner"></div>
-    `,
-      primaryButtonText: 'Get Started',
-      secondaryButtonText: 'Learn More',
-      onPrimaryClick: (close) => {
-        console.log('Primary button clicked!');
-        close();
-      },
-      onSecondaryClick: (close) => {
-        console.log('Secondary button clicked!');
-        // Don't close, just show different content
-        const body = document.querySelector('.firefly-modal-body');
-        body.innerHTML = '<p>Here is more information...</p>';
-      },
-      onClose: () => {
-        console.log('Modal closed');
-      }
-    });
-  }
-
   // ========== END FIREFLY BOARDS MODAL SYSTEM ==========
 
   async function boardsReadyCheck() {
@@ -1063,17 +956,17 @@
         createButton();
       }, 3000);
     }
-    // Handle error
+    // Handle completion (treating as success with retry option)
     else {
       if (typeof chrome !== 'undefined' && chrome.storage) {
         chrome.storage.local.set({
-          lastWorkflowStatus: 'error',
+          lastWorkflowStatus: 'complete',
           lastWorkflowTime: Date.now(),
           lastWorkflowError: error
-        }).catch(err => console.error('Failed to save error:', err));
+        }).catch(err => console.error('Failed to save status:', err));
       }
 
-      // Show error with more detail
+      // Show success modal with retry option
       setTimeout(() => {
         createFireflyModal({
           title: '🎉 Success!',
@@ -1088,10 +981,7 @@
               onClick: (close) => {
                 if (lastProjectId) {
                   console.log('Retrying workflow with projectId:', lastProjectId);
-
-                  // Disable workflow modals for this retry
                   showWorkflowModals = false;
-
                   window.dispatchEvent(new CustomEvent('executeSharpieWorkflow', {
                     detail: { workstationId: lastProjectId }
                   }));
@@ -1106,15 +996,16 @@
               text: 'Dismiss',
               icon: '',
               onClick: (close) => {
-                console.log('User dismissed error');
+                console.log('User dismissed modal');
                 close();
               }
             }
           ],
           onClose: () => {
-            console.log('Error modal closed');
+            console.log('Workflow modal closed');
           }
         });
+        createButton();
       }, 3000);
     }
   });
@@ -1281,25 +1172,3 @@
   }
 
 })();
-
-// chrome.runtime.onMessage.addListener(
-//   function (request, sender, sendResponse) {
-//     // 'request' contains the message data sent by chrome.runtime.sendMessage
-//     // 'sender' contains information about the sender of the message (e.g., tab ID, URL)
-//     // 'sendResponse' is a function to send a response back to the sender (optional)
-
-//     console.log("Message received:", request);
-
-//     // Example: Check the message type and perform an action
-//     if (request.type === "myCustomMessage") {
-//       console.log("Custom message received:", request.data);
-//       // Perform actions based on the message content
-//       chrome.storage.local.set('activationSession', request.data);
-//       sendResponse({ status: "Message processed successfully" }); // Send a response
-//     }
-
-//     // If you need to send an asynchronous response, return true from the listener
-//     // This indicates that sendResponse will be called later.
-//     // return true;
-//   }
-// );
