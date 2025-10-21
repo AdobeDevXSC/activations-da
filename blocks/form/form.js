@@ -94,15 +94,11 @@ function generateUUID() {
 }
 
 function nameToFilename(firstName, lastName) {
-  // Helper to sanitize a single name part
+  // Helper to sanitize a single name part - keep only a-z and A-Z
   const sanitize = (str) => {
     return str
       .trim()
-      .replace(/[\/\\?%*:|"<>]/g, '') // Remove unsafe filename characters
-      .replace(/\s+/g, '_') // Replace spaces with underscores
-      .replace(/\.+/g, '') // Remove dots (avoid hidden files or extension confusion)
-      .replace(/_+/g, '_') // Collapse multiple underscores
-      .replace(/^_|_$/g, ''); // Remove leading/trailing underscores
+      .replace(/[^a-zA-Z]/g, ''); // Remove anything that's not a letter
   };
 
   const cleanFirst = sanitize(firstName || '');
