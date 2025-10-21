@@ -72,6 +72,7 @@ function handleDownload(item, suggest) {
   console.log('⬇️ Download started:', item.filename);
   
   const url = item.finalUrl || item.url;
+  console.log('[Download URL]:', url);
   const isFromExpress = url.includes('express.adobe.com');
   const isFromAEM = url.includes('adobeaemcloud.com');
 

@@ -90,7 +90,6 @@
   }
 
   // Setup event listeners for modal interactions
-  // Setup event listeners for modal interactions
   function setupModalListeners(modalOverlay, closeButton) {
     // Close modal function
     function closeModal() {
@@ -650,16 +649,25 @@
     const style = document.createElement('style');
     style.id = 'firefly-modal-styles';
     style.textContent = `
-      /* Paste the updated CSS from Step 1 here */
+      /* Updated CSS for centered modal */
       .firefly-modal-overlay {
         position: fixed;
-        top: 20px;
-        right: 20px;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
         z-index: 999999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        transition: opacity 0.3s ease;
         pointer-events: none;
       }
       
       .firefly-modal-overlay.show {
+        opacity: 1;
         pointer-events: auto;
       }
       
@@ -671,13 +679,15 @@
         width: 400px;
         overflow: hidden;
         position: relative;
-        transform: translateX(450px);
-        transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        transform: scale(0.7);
+        opacity: 0;
+        transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55), opacity 0.3s ease;
         pointer-events: auto;
       }
       
       .firefly-modal-overlay.show .firefly-modal-content {
-        transform: translateX(0);
+        transform: scale(1);
+        opacity: 1;
       }
       
       .firefly-modal-header {
@@ -903,8 +913,98 @@
       }
     };
   }
+  // ========== FRAME.IO MONITORING SYSTEM ==========
+  async function startFrameIOMonitoring() {
+    const WEBHOOK_URL = 'https://hook.app.workfrontfusion.com/zcgk2uute1mvxiywisamf8sw20lez9h6';
+    const POLL_INTERVAL = 5000; // 5 seconds
 
-  // ========== END FIREFLY BOARDS MODAL SYSTEM ==========
+    let initialAssetCount = null;
+    let pollInterval = null;
+
+    console.log('📹 [Frame.io] Starting asset monitoring...');
+
+    async function checkAssetCount() {
+      try {
+        console.log('📡 [Frame.io] Requesting asset count from webhook...');
+
+        const result = await chrome.storage.local.get(['sharpieWorkstation'])
+        const workstation = placeholders.find(item => item.Key.toLowerCase() === result.sharpieWorkstation.toLowerCase());
+        console.log('[Frame.io] Workstation:', workstation);
+        const projectId = workstation.Text.split('/').pop();
+        console.log('[Frame.io] Project ID:', window.location.pathname);
+        const response = await fetch(`${WEBHOOK_URL}?projectId=${projectId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+
+        const data = await response.json();
+        const currentCount = parseInt(data) || 0;
+
+        console.log(`📊 [Frame.io] Asset count: ${currentCount}`);
+
+        // Set initial count on first request
+        if (initialAssetCount === null) {
+          initialAssetCount = currentCount;
+          console.log(`📌 [Frame.io] Initial asset count set to: ${initialAssetCount}`);
+          return;
+        }
+
+        // Check if there's a new file
+        const newFilesCount = currentCount - initialAssetCount;
+
+        if (newFilesCount >= 1) {
+          console.log(`🎉 [Frame.io] New file detected! (${newFilesCount} new file(s))`);
+
+          // Stop polling IMMEDIATELY
+          if (pollInterval) {
+            clearInterval(pollInterval);
+            pollInterval = null;
+            console.log('✅ [Frame.io] Polling stopped - new file detected');
+          }
+
+          // Show notification with page reload on close
+          createFireflyModal({
+            title: '🎉 New File Added!',
+            content: `<p>A new file has been added to the Frame.io folder.</p><p>Total new files: ${newFilesCount}</p>`,
+            autoDismiss: true,
+            dismissAfter: 7000,
+            onClose: () => {
+              console.log('🔄 [Frame.io] Refreshing page...');
+              window.location.reload();
+            }
+          });
+
+          // Return early to prevent any further execution
+          return;
+        }
+      } catch (error) {
+        console.error('❌ [Frame.io] Error checking asset count:', error);
+      }
+    }
+
+    // Make initial request immediately
+    await checkAssetCount();
+
+    // Set up polling every 5 seconds
+    pollInterval = setInterval(checkAssetCount, POLL_INTERVAL);
+    console.log(`⏰ [Frame.io] Polling every ${POLL_INTERVAL / 1000} seconds`);
+
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', () => {
+      if (pollInterval) {
+        clearInterval(pollInterval);
+        console.log('🧹 [Frame.io] Cleanup: Polling stopped');
+      }
+    });
+  }
+  // ========== END FRAME.IO MONITORING SYSTEM ==========
 
   async function boardsReadyCheck() {
     console.log('[Content Script] Requesting boards ready check');
@@ -1015,10 +1115,11 @@
 
     let experienceName = await chrome.storage.local.get(['experienceName']);
     experienceName = experienceName.experienceName;
-    
-    if (experienceName.includes('-')) 
+
+    if (experienceName.includes('-'))
       experienceName = experienceName.replace(/-/g, '');
-    
+    console.log('Experience Name:', experienceName);
+    console.log('Experience Name URL:', `${experienceName}Url`);
     const url = await chrome.storage.local.get([`${experienceName}Url`]).then(result => result[`${experienceName}Url`]);
     console.log('URL:', url);
     fetch(url + 'placeholders.json').then(response => response.json()).then(data => {
@@ -1113,6 +1214,14 @@
           }
         });
         intervalId = setInterval(boardsReadyCheck, 1000);
+        return;
+      }
+
+      // ADD THIS NEW FRAME.IO CHECK
+      if (window.location.hostname.includes('next.frame.io')) {
+        console.log('[Frame.io] Frame.io detected - starting asset monitoring');
+        startFrameIOMonitoring();
+        createButton();
         return;
       }
 
