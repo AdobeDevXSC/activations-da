@@ -23,8 +23,8 @@ window.addEventListener('executeSharpieWorkflow', async (event) => {
     const result = await window.DEBUG.executeWorkflow(
       "sharpie-retrieve-image",
       {
-        x: { value: -2541 },
-        y: { value: -1550 },
+        x: { value: -3919 },
+        y: { value: -1067 },
         height: { value: 800 },
         width: { value: 800 },
         workstationId: { value: workstationId }

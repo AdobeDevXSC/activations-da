@@ -75,10 +75,10 @@ function handleDownload(item, suggest) {
   const isFromExpress = url.includes('express.adobe.com');
   const isFromAEM = url.includes('adobeaemcloud.com');
 
-  if (!isFromExpress && !isFromAEM) {
-    console.log('ℹ️ Not from Express/AEM, keeping original filename');
-    return false;
-  }
+  // if (!isFromExpress && !isFromAEM) {
+  //   console.log('ℹ️ Not from Express/AEM, keeping original filename');
+  //   return false;
+  // }
 
   console.log('🔄 Processing Express download...');
 

@@ -93,6 +93,28 @@ function generateUUID() {
   });
 }
 
+function nameToFilename(firstName, lastName) {
+  // Helper to sanitize a single name part
+  const sanitize = (str) => {
+    return str
+      .trim()
+      .replace(/[\/\\?%*:|"<>]/g, '') // Remove unsafe filename characters
+      .replace(/\s+/g, '_') // Replace spaces with underscores
+      .replace(/\.+/g, '') // Remove dots (avoid hidden files or extension confusion)
+      .replace(/_+/g, '_') // Collapse multiple underscores
+      .replace(/^_|_$/g, ''); // Remove leading/trailing underscores
+  };
+
+  const cleanFirst = sanitize(firstName || '');
+  const cleanLast = sanitize(lastName || '');
+
+  // Join with underscore, handle empty cases
+  if (cleanFirst && cleanLast) {
+    return `${cleanFirst}_${cleanLast}`;
+  }
+  return cleanFirst || cleanLast || 'unnamed';
+}
+
 async function handleSubmit(form) {
   if (form.getAttribute('data-submitting') === 'true') return;
   form.style.cursor = 'wait';
@@ -127,7 +149,9 @@ async function handleSubmit(form) {
       status: 'init',
     };
     if (payload && payload.firstName && payload.lastName) {
-      responseJson.fn = `${payload.firstName.toLowerCase()}-${payload.lastName.toLowerCase()}-${payload.key}`;
+      const { firstName, lastName } = payload;
+      const filename = nameToFilename(firstName, lastName);
+      responseJson.fn = `${filename}-${payload.key}`;
 
       try {
         const res = await sendToExtension({

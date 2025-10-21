@@ -1014,7 +1014,11 @@
   async function init() {
 
     let experienceName = await chrome.storage.local.get(['experienceName']);
-    experienceName = experienceName.experienceName.replace(/-/g, '');
+    experienceName = experienceName.experienceName;
+    
+    if (experienceName.includes('-')) 
+      experienceName = experienceName.replace(/-/g, '');
+    
     const url = await chrome.storage.local.get([`${experienceName}Url`]).then(result => result[`${experienceName}Url`]);
     console.log('URL:', url);
     fetch(url + 'placeholders.json').then(response => response.json()).then(data => {
