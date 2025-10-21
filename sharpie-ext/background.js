@@ -30,11 +30,11 @@ chrome.runtime.onMessageExternal.addListener((request, sender, sendResponse) => 
 // ========== INTERNAL MESSAGE HANDLER ==========
 // Consolidated listener for all internal extension messages
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  
+
   // Handle icon updates
   if (request.type === 'updateIcon') {
     console.log('🎨 Updating icon to:', request.iconPath);
-    
+
     fetch(chrome.runtime.getURL(request.iconPath))
       .then(response => {
         if (!response.ok) {
@@ -50,7 +50,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         console.error('❌ Icon update failed:', error.message);
         sendResponse({ success: false, error: error.message });
       });
-    
+
     return true;
   }
 
@@ -67,29 +67,77 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   return false;
 });
 
+function handleMiniDownload(item, suggest) {
+  chrome.storage.local.get(['activationSession', 'sharpieWorkstation', 'placeholders'], (result) => {
+    try {
+      const activationSession = result.activationSession;
+      const sharpieWorkstation = result.sharpieWorkstation;
+      const placeholders = result.placeholders; // ✅ Now reading from storage
+
+      const url = item.finalUrl || item.url;
+      console.log('[Download URL]:', url);
+
+      console.log('[Activation Session]:', activationSession);
+      console.log('[Sharpie Workstation]:', sharpieWorkstation);
+      console.log('[Placeholders]:', placeholders);
+
+      let workstation = placeholders.find(item => item.Key.toLowerCase() === sharpieWorkstation.toLowerCase());
+      workstation = workstation.Text.split('/').pop();
+      console.log('[Workstation]:', workstation);
+
+      const data = {
+        presignedUrl: url,
+        folderId: workstation,
+        key: activationSession.split('-').pop()
+      }
+
+      fetch('https://hook.fusion.adobe.com/3acwvdptenz1x9wbka2z3cbyetv92cvq', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(responseData => {
+          console.log('✅ Data sent successfully to webhook:', responseData);
+        })
+        .catch(error => {
+          console.error('❌ Error sending data to webhook:', error);
+        });
+
+      console.log('[Data]:', JSON.stringify(data));
+    } catch (error) {
+      console.error('❌ Error getting activation session:', error);
+    }
+  });
+}
+
 // ========== DOWNLOAD RENAMING ==========
 function handleDownload(item, suggest) {
   console.log('⬇️ Download started:', item.filename);
-  
+
   const url = item.finalUrl || item.url;
   console.log('[Download URL]:', url);
-  const isFromExpress = url.includes('express.adobe.com');
-  const isFromAEM = url.includes('adobeaemcloud.com');
-
-  // if (!isFromExpress && !isFromAEM) {
-  //   console.log('ℹ️ Not from Express/AEM, keeping original filename');
-  //   return false;
-  // }
 
   console.log('🔄 Processing Express download...');
 
-  chrome.storage.local.get(['activationSession'], (result) => {
+  chrome.storage.local.get(['activationSession', 'experienceName'], (result) => {
     try {
+      console.log('[Result]:', result);
+      if (result.experienceName === 'sharpie') {
+        handleMiniDownload(item, suggest);
+      }
       const ext = (item.filename.split('.').pop() || 'bin').toLowerCase();
       const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
-      
+
       let baseName = result.activationSession || 'Express-Export';
-      
+
       // Clean filename
       baseName = baseName
         .replace(/[\/\\?%*:|"<>]/g, '-')
@@ -97,9 +145,9 @@ function handleDownload(item, suggest) {
         .slice(0, 40);
 
       const newFilename = `${baseName}_${timestamp}.${ext}`;
-      
+
       console.log(`✅ Renamed: ${item.filename} → ${newFilename}`);
-      
+
       suggest({
         filename: newFilename,
         conflictAction: 'uniquify'

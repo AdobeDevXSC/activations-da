@@ -641,15 +641,13 @@
   }
 
 
-  // ========== FIREFLY BOARDS MODAL SYSTEM ==========
-
   function injectFireflyModalStyles() {
     if (document.getElementById('firefly-modal-styles')) return;
 
     const style = document.createElement('style');
     style.id = 'firefly-modal-styles';
     style.textContent = `
-      /* Updated CSS for centered modal */
+      /* Updated CSS for centered modal without backdrop */
       .firefly-modal-overlay {
         position: fixed;
         top: 0;
@@ -660,14 +658,10 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: rgba(0, 0, 0, 0.5);
-        opacity: 0;
-        transition: opacity 0.3s ease;
         pointer-events: none;
       }
       
       .firefly-modal-overlay.show {
-        opacity: 1;
         pointer-events: auto;
       }
       
@@ -942,7 +936,7 @@
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
 
         const data = await response.json();
         const currentCount = parseInt(data) || 0;
@@ -971,10 +965,10 @@
 
           // Show notification with page reload on close
           createFireflyModal({
-            title: '🎉 New File Added!',
-            content: `<p>A new file has been added to the Frame.io folder.</p><p>Total new files: ${newFilesCount}</p>`,
+            title: '🎉 Firefly Services Complete!',
+            content: `<p>Your mini is ready.</p>`,
             autoDismiss: true,
-            dismissAfter: 7000,
+            dismissAfter: 5000,
             onClose: () => {
               console.log('🔄 [Frame.io] Refreshing page...');
               window.location.reload();
@@ -1125,6 +1119,10 @@
     fetch(url + 'placeholders.json').then(response => response.json()).then(data => {
 
       placeholders = data.data;
+
+      chrome.storage.local.set({ placeholders: data.data }, () => {
+        console.log('✅ Placeholders saved to storage:', data.data.length, 'items');
+      });
 
       if (window.location.hostname.includes('localhost') || window.location.hostname.includes('aem.live') || window.location.hostname.includes('aem.page')) {
         console.log('Express Modal: Not supported on this platform');
