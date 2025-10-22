@@ -647,7 +647,6 @@
     const style = document.createElement('style');
     style.id = 'firefly-modal-styles';
     style.textContent = `
-      /* Updated CSS for centered modal without backdrop */
       .firefly-modal-overlay {
         position: fixed;
         top: 0;
@@ -659,19 +658,16 @@
         align-items: center;
         justify-content: center;
         pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
       }
       
       .firefly-modal-overlay.show {
         pointer-events: auto;
+        opacity: 1;
       }
       
-      .firefly-modal-content {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border-radius: 16px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        max-width: 400px;
-        width: 400px;
-        overflow: hidden;
+      .firefly-modal-wrapper {
         position: relative;
         transform: scale(0.7);
         opacity: 0;
@@ -679,32 +675,15 @@
         pointer-events: auto;
       }
       
-      .firefly-modal-overlay.show .firefly-modal-content {
+      .firefly-modal-overlay.show .firefly-modal-wrapper {
         transform: scale(1);
         opacity: 1;
       }
       
-      .firefly-modal-header {
-        padding: 20px;
-        background: rgba(255, 255, 255, 0.1);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      }
-      
-      .firefly-modal-title {
-        font-size: 20px;
-        font-weight: 700;
-        color: white;
-        margin: 0;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        flex: 1;
-      }
-      
       .firefly-modal-close-btn {
+        position: absolute;
+        top: 20px;
+        right: 20px;
         background: rgba(255, 255, 255, 0.2);
         border: none;
         color: white;
@@ -719,7 +698,7 @@
         transition: all 0.2s;
         padding: 0;
         line-height: 1;
-        flex-shrink: 0;
+        z-index: 10;
       }
       
       .firefly-modal-close-btn:hover {
@@ -727,71 +706,25 @@
         transform: rotate(90deg);
       }
       
-      .firefly-modal-body {
-        padding: 20px;
-        color: white;
-        max-height: 400px;
-        overflow-y: auto;
-      }
-      
-      .firefly-modal-body p {
-        margin: 0 0 12px 0;
-        line-height: 1.6;
-        font-size: 15px;
-      }
-      
-      .firefly-modal-body p:last-child {
-        margin-bottom: 0;
-      }
-      
-      .firefly-modal-spinner {
-        border: 3px solid rgba(255, 255, 255, 0.3);
-        border-top: 3px solid white;
-        border-radius: 50%;
-        width: 32px;
-        height: 32px;
-        animation: firefly-spin 1s linear infinite;
-        margin: 12px auto;
-      }
-      
-      @keyframes firefly-spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-      }
-      
-      .firefly-modal-progress {
-        height: 3px;
-        background: rgba(255, 255, 255, 0.3);
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-      }
-      
-      .firefly-modal-progress-bar {
-        height: 100%;
-        background: white;
-        width: 100%;
-        transform-origin: left;
-        animation: firefly-progress-shrink 5s linear forwards;
-      }
-      
-      @keyframes firefly-progress-shrink {
-        from { transform: scaleX(1); }
-        to { transform: scaleX(0); }
+      .firefly-modal-iframe {
+        width: 400px;
+        height: 300px;
+        border: none;
+        border-radius: 16px;
+        display: block;
+        background: transparent;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
       }
     `;
     document.head.appendChild(style);
     console.log('✅ Firefly modal styles injected');
   }
 
-
-  // Create and show non-blocking Firefly notification modal
+  // Create and show Firefly notification modal via iframe
   function createFireflyModal(options = {}) {
     const {
       title = '🎨 Firefly Boards',
       content = '<p>Notification content</p>',
-      buttons = [], // Add this
       autoDismiss = false,
       dismissAfter = 5000,
       onClose = null
@@ -811,37 +744,27 @@
     modalOverlay.id = 'firefly-custom-modal';
     modalOverlay.className = 'firefly-modal-overlay';
 
-    // Build buttons HTML
-    let buttonsHtml = '';
-    if (buttons.length > 0) {
-      buttonsHtml = '<div class="firefly-modal-actions">';
-      buttons.forEach((btn, index) => {
-        const primaryClass = btn.primary ? ' primary' : '';
-        buttonsHtml += `
-        <button class="firefly-modal-action-btn${primaryClass}" data-btn-index="${index}">
-          ${btn.icon ? `<span>${btn.icon}</span>` : ''}
-          <span>${btn.text}</span>
-        </button>
-      `;
-      });
-      buttonsHtml += '</div>';
-    }
+    // Create wrapper
+    const modalWrapper = document.createElement('div');
+    modalWrapper.className = 'firefly-modal-wrapper';
 
-    // Create modal structure
-    modalOverlay.innerHTML = `
-    <div class="firefly-modal-content">
-      <div class="firefly-modal-header">
-        <h2 class="firefly-modal-title">${title}</h2>
-        <button class="firefly-modal-close-btn" aria-label="Dismiss">&times;</button>
-      </div>
-      <div class="firefly-modal-body">
-        ${content}
-        ${buttonsHtml}
-      </div>
-      ${autoDismiss ? '<div class="firefly-modal-progress"><div class="firefly-modal-progress-bar"></div></div>' : ''}
-    </div>
-  `;
+    // Create close button (outside iframe)
+    const closeButton = document.createElement('button');
+    closeButton.className = 'firefly-modal-close-btn';
+    closeButton.innerHTML = '&times;';
+    closeButton.setAttribute('aria-label', 'Dismiss');
 
+    // Create iframe
+    const iframe = document.createElement('iframe');
+    iframe.className = 'firefly-modal-iframe';
+    iframe.src = 'https://main--activations-da--adobedevxsc.aem.page/sharpie/fragments/firefly-modal';
+    iframe.setAttribute('scrolling', 'no');
+    iframe.setAttribute('credentialless', '');
+
+    // Append elements
+    modalWrapper.appendChild(closeButton);
+    modalWrapper.appendChild(iframe);
+    modalOverlay.appendChild(modalWrapper);
     document.body.appendChild(modalOverlay);
 
     // Close modal function
@@ -853,27 +776,13 @@
       }, 400);
     }
 
-    // Dismiss button event
-    const closeBtn = modalOverlay.querySelector('.firefly-modal-close-btn');
-    closeBtn.addEventListener('click', (e) => {
+    // Close button event
+    closeButton.addEventListener('click', (e) => {
       e.stopPropagation();
       closeModal();
     });
 
-    // Action button events
-    const actionButtons = modalOverlay.querySelectorAll('.firefly-modal-action-btn');
-    actionButtons.forEach((btn) => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const index = parseInt(btn.getAttribute('data-btn-index'));
-        const buttonConfig = buttons[index];
-        if (buttonConfig && buttonConfig.onClick) {
-          buttonConfig.onClick(closeModal);
-        }
-      });
-    });
-
-    // Optional: ESC key to dismiss
+    // ESC key to dismiss
     const escKeyListener = (e) => {
       if (e.key === 'Escape') {
         closeModal();
@@ -881,6 +790,46 @@
       }
     };
     document.addEventListener('keydown', escKeyListener);
+
+
+    // Listen for messages from iframe
+    const messageListener = (event) => {
+      // Verify origin for security
+      if (!event.origin.includes('aem.page') && !event.origin.includes('aem.live')) {
+        return;
+      }
+
+      if (event.data.type === 'modalReady') {
+        console.log('✅ Modal iframe ready');
+        // Send configuration to iframe INCLUDING buttons
+        iframe.contentWindow.postMessage({
+          type: 'updateModal',
+          title,
+          content,
+          autoDismiss,
+          dismissAfter,
+          buttons: options.buttons || []  // ← Add this line
+        }, '*');
+      }
+
+      if (event.data.type === 'modalDismiss') {
+        closeModal();
+        window.removeEventListener('message', messageListener);
+      }
+
+      // NEW: Handle button clicks from iframe
+      if (event.data.type === 'buttonClick') {
+        const buttonIndex = event.data.buttonIndex;
+        const buttons = options.buttons || [];
+        const button = buttons[buttonIndex];
+
+        if (button && button.onClick) {
+          console.log(`Button clicked: ${button.text}`);
+          button.onClick(closeModal);
+        }
+      }
+    };
+    window.addEventListener('message', messageListener);
 
     // Auto-dismiss timer
     let autoDismissTimer = null;
@@ -895,7 +844,7 @@
       modalOverlay.classList.add('show');
     }, 10);
 
-    console.log('✅ Firefly notification modal shown');
+    console.log('✅ Firefly notification modal shown (iframe)');
 
     return {
       close: closeModal,
@@ -1106,9 +1055,33 @@
 
   // Initialize
   async function init() {
-
     let experienceName = await chrome.storage.local.get(['experienceName']);
     experienceName = experienceName.experienceName;
+
+    createFireflyModal({
+      title: '🎉 Success!',
+      content: '<p>Image placed successfully on the board.</p>',
+      autoDismiss: true,
+      dismissAfter: 7000,
+      buttons: [
+        {
+          text: 'Retry',
+          primary: true,
+          onClick: (close) => {
+            console.log('Retrying workflow...');
+            // Your retry logic
+            close();
+          }
+        },
+        {
+          text: 'Dismiss',
+          onClick: (close) => {
+            console.log('User dismissed modal');
+            close();
+          }
+        }
+      ]
+    });
 
     if (experienceName.includes('-'))
       experienceName = experienceName.replace(/-/g, '');
