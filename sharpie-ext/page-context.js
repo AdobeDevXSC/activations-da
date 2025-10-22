@@ -33,6 +33,12 @@ window.addEventListener('executeSharpieWorkflow', async (event) => {
     );
 
     console.log('[Page Context] Workflow result:', result);
+    // ADD THESE DEBUG LINES:
+    console.log('[Page Context] Result type:', typeof result);
+    console.log('[Page Context] Result keys:', result ? Object.keys(result) : 'null/undefined');
+    console.log('[Page Context] Result.success:', result?.success);
+    console.log('[Page Context] Result.error:', result?.error);
+    console.log('[Page Context] Result.message:', result?.message);
 
     // Check if the workflow actually succeeded
     if (result && result.success !== false) {

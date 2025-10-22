@@ -641,8 +641,6 @@
   }
 
 
-  // ========== FIREFLY MODAL SYSTEM (AEM Embed) ==========
-
   // Load AEM Embed web component
   function loadAEMEmbedComponent() {
     if (document.querySelector('script[src*="aem-embed.js"]')) {
@@ -653,15 +651,16 @@
     return new Promise((resolve, reject) => {
       const script = document.createElement('script');
       script.type = 'module';
-      script.src = '/scripts/aem-embed.js';
+      // Load from extension instead of CDN
+      script.src = 'https://aem-embed--activations-da--adobedevxsc.aem.page/scripts/aem-embed.js';
 
       script.onload = () => {
-        console.log('✅ AEM Embed component loaded');
+        console.log('✅ AEM Embed component loaded from extension');
         resolve();
       };
 
       script.onerror = () => {
-        console.error('❌ Failed to load AEM Embed component');
+        console.error('❌ Failed to load AEM Embed component from extension');
         reject(new Error('Failed to load AEM Embed'));
       };
 
@@ -782,7 +781,7 @@
 
     // Create AEM Embed element
     const aemEmbed = document.createElement('aem-embed');
-    aemEmbed.setAttribute('url', 'https://main--activations-da--adobedevxsc.aem.page/sharpie/fragments/firefly-modal');
+    aemEmbed.setAttribute('url', 'https://aem-embed--activations-da--adobedevxsc.aem.page/sharpie/fragments/firefly-modal');
 
     // Add data attributes for configuration
     aemEmbed.dataset.title = title;
@@ -856,7 +855,6 @@
       modalElement: modalOverlay
     };
   }
-
   // ========== END FIREFLY MODAL SYSTEM ==========
 
   // ========== FRAME.IO MONITORING SYSTEM ==========
@@ -1058,9 +1056,19 @@
 
   // Initialize
   async function init() {
-
     let experienceName = await chrome.storage.local.get(['experienceName']);
     experienceName = experienceName.experienceName;
+
+    // TEST: Trigger modal after 3 seconds for debugging
+    setTimeout(() => {
+      console.log('🧪 Test: Creating modal...');
+      createFireflyModal({
+        title: '🧪 OMG!!!',
+        content: '<p>If you see this, the modal system is working!</p>',
+        autoDismiss: true,
+        dismissAfter: 5000
+      });
+    }, 3000);
 
     if (experienceName.includes('-'))
       experienceName = experienceName.replace(/-/g, '');
