@@ -20,14 +20,14 @@
   let installed = false;
   let lastProjectId = null; // Add this to store project ID for retry
   let showWorkflowModals = true; // Add this flag
-  const MODAL_URL = 'https://aem-embed--activations-da--adobedevxsc.aem.live/sharpie/fragments/';
+  let MODAL_URL = 'https://aem-embed--activations-da--adobedevxsc.aem.live/sharpie/fragments/';
 
   // Initialize MODAL_URL from storage
   async function initModalUrl() {
     try {
       const result = await chrome.storage.local.get(['sharpieUrl']);
       if (result.sharpieUrl) {
-        MODAL_URL = `${result.sharpieUrl}/fragments/`;
+        MODAL_URL = `${result.sharpieUrl}fragments/`;
         console.log('✅ MODAL_URL initialized from storage:', MODAL_URL);
       } else {
         console.log('⚠️ sharpieUrl not found in storage, using default:', MODAL_URL);
@@ -808,6 +808,16 @@
     aemEmbed.setAttribute('url', url);
     aemEmbed.setAttribute('shadow', 'true');
 
+    // Close modal function
+    function closeModal() {
+      modalOverlay.classList.remove('show');
+      setTimeout(() => {
+        modalOverlay.remove();
+        if (onClose) onClose();
+      }, 400);
+    }
+
+
     // Create button container if buttons provided
     let buttonContainer;
     if (buttons.length > 0) {
@@ -854,9 +864,8 @@
         button.addEventListener('click', async (e) => {
           e.stopPropagation();
           if (btn.onClick) {
-            await btn.onClick();
-          }
-          if (btn.closeOnClick !== false) {
+            await btn.onClick(closeModal);  // Pass closeModal as parameter
+          } else if (btn.closeOnClick !== false) {
             closeModal();
           }
         });
@@ -895,15 +904,6 @@
 
       // Timeout after 2 seconds
       setTimeout(() => clearInterval(checkShadowRoot), 2000);
-    }
-
-    // Close modal function
-    function closeModal() {
-      modalOverlay.classList.remove('show');
-      setTimeout(() => {
-        modalOverlay.remove();
-        if (onClose) onClose();
-      }, 400);
     }
 
     // Close button event
@@ -1116,7 +1116,7 @@
           dismissAfter: 7000,
           buttons: [
             {
-              text: 'Retry',
+              label: 'Retry',
               icon: '',
               primary: true,
               onClick: (close) => {
@@ -1134,7 +1134,7 @@
               }
             },
             {
-              text: 'Dismiss',
+              label: 'Dismiss',
               icon: '',
               onClick: (close) => {
                 console.log('User dismissed modal');
