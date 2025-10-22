@@ -682,7 +682,7 @@
       
       .firefly-modal-close-btn {
         position: absolute;
-        top: 20px;
+        top: 7px;
         right: 20px;
         background: rgba(255, 255, 255, 0.2);
         border: none;
@@ -710,10 +710,8 @@
         width: 400px;
         height: 300px;
         border: none;
-        border-radius: 16px;
         display: block;
         background: transparent;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
       }
     `;
     document.head.appendChild(style);
@@ -757,9 +755,10 @@
     // Create iframe
     const iframe = document.createElement('iframe');
     iframe.className = 'firefly-modal-iframe';
-    iframe.src = 'https://main--activations-da--adobedevxsc.aem.page/sharpie/fragments/firefly-modal';
+    iframe.src = 'http://localhost:3000/sharpie/fragments/firefly-modal';
     iframe.setAttribute('scrolling', 'no');
     iframe.setAttribute('credentialless', '');
+    iframe.style.background = 'transparent';  // ← Add this
 
     // Append elements
     modalWrapper.appendChild(closeButton);
@@ -792,23 +791,34 @@
     document.addEventListener('keydown', escKeyListener);
 
 
-    // Listen for messages from iframe
+    // ===== MOVE THIS SECTION UP FROM LINE 796 =====
+    // Listen for messages from iframe (MUST be before appendChild!)
     const messageListener = (event) => {
-      // Verify origin for security
-      if (!event.origin.includes('aem.page') && !event.origin.includes('aem.live')) {
+      // Verify origin for security (allow localhost for dev)
+      if (!event.origin.includes('aem.page') &&
+        !event.origin.includes('aem.live') &&
+        !event.origin.includes('localhost')) {
+        console.log('❌ Rejected message from:', event.origin);
         return;
       }
 
+      console.log('📨 Received message:', event.data.type, 'from', event.origin);
+
       if (event.data.type === 'modalReady') {
         console.log('✅ Modal iframe ready');
-        // Send configuration to iframe INCLUDING buttons
         iframe.contentWindow.postMessage({
           type: 'updateModal',
           title,
           content,
           autoDismiss,
           dismissAfter,
-          buttons: options.buttons || []  // ← Add this line
+          // ✅ Only send serializable data (no functions!)
+          buttons: (options.buttons || []).map(btn => ({
+            text: btn.text,
+            primary: btn.primary || false,
+            icon: btn.icon || ''
+            // DON'T send onClick - it's a function!
+          }))
         }, '*');
       }
 
@@ -817,7 +827,7 @@
         window.removeEventListener('message', messageListener);
       }
 
-      // NEW: Handle button clicks from iframe
+      // Handle button clicks from iframe
       if (event.data.type === 'buttonClick') {
         const buttonIndex = event.data.buttonIndex;
         const buttons = options.buttons || [];
@@ -830,6 +840,10 @@
       }
     };
     window.addEventListener('message', messageListener);
+    // ===== END MOVED SECTION =====
+
+    // Append elements (NOW listener is ready!)
+    modalWrapper.appendChild(closeButton);
 
     // Auto-dismiss timer
     let autoDismissTimer = null;
@@ -1061,7 +1075,7 @@
     createFireflyModal({
       title: '🎉 Success!',
       content: '<p>Image placed successfully on the board.</p>',
-      autoDismiss: true,
+      autoDismiss: false,
       dismissAfter: 7000,
       buttons: [
         {
