@@ -20,6 +20,7 @@
   let installed = false;
   let lastProjectId = null; // Add this to store project ID for retry
   let showWorkflowModals = true; // Add this flag
+  const MODAL_URL = 'https://aem-embed--activations-da--adobedevxsc.aem.page/sharpie/fragments/';
 
   function getTargetURL() {
 
@@ -747,6 +748,7 @@
     const {
       title = '🎨 Firefly Boards',
       content = '<p>Notification content</p>',
+      url = `${MODAL_URL}firefly-modal`,
       autoDismiss = false,
       dismissAfter = 5000,
       onClose = null
@@ -781,7 +783,7 @@
 
     // Create AEM Embed element
     const aemEmbed = document.createElement('aem-embed');
-    aemEmbed.setAttribute('url', 'https://aem-embed--activations-da--adobedevxsc.aem.page/sharpie/fragments/firefly-modal');
+    aemEmbed.setAttribute('url', url);
     aemEmbed.setAttribute('shadow', 'true');
 
     // Add data attributes for configuration
@@ -916,8 +918,7 @@
 
           // Show notification with page reload on close
           createFireflyModal({
-            title: '🎉 Firefly Services Complete!',
-            content: `<p>Your mini is ready.</p>`,
+            url: `${MODAL_URL}firefly-services-done`,
             autoDismiss: true,
             dismissAfter: 5000,
             onClose: () => {
@@ -990,8 +991,7 @@
       // Notify user
       setTimeout(() => {
         createFireflyModal({
-          title: '🎉 Success!',
-          content: '<p>Image placed successfully on the board.</p>',
+          url: `${MODAL_URL}boards-mini-placed`,
           autoDismiss: true,
           dismissAfter: 7000,
           onClose: () => {
@@ -1014,8 +1014,7 @@
       // Show success modal with retry option
       setTimeout(() => {
         createFireflyModal({
-          title: '🎉 Success!',
-          content: '<p>Image placed successfully on the board.</p>',
+          url: `${MODAL_URL}boards-mini-placed`,
           autoDismiss: true,
           dismissAfter: 7000,
           buttons: [
@@ -1061,15 +1060,14 @@
     experienceName = experienceName.experienceName;
 
     // TEST: Trigger modal after 3 seconds for debugging
-    setTimeout(() => {
-      console.log('🧪 Test: Creating modal...');
-      createFireflyModal({
-        title: '🧪 OMG!!!',
-        content: '<p>If you see this, the modal system is working!</p>',
-        autoDismiss: true,
-        dismissAfter: 5000
-      });
-    }, 3000);
+    // setTimeout(() => {
+    //   console.log('🧪 Test: Creating modal...');
+    //   createFireflyModal({
+    //     url: `${MODAL_URL}firefly-services-done`,
+    //     autoDismiss: true,
+    //     dismissAfter: 5000
+    //   });
+    // }, 3000);
 
     if (experienceName.includes('-'))
       experienceName = experienceName.replace(/-/g, '');
@@ -1105,11 +1103,9 @@
 
           console.log('Boards are ready');
 
-          let content = '<p>Loading your creative assets...</p>';
           // With auto-dismiss
           createFireflyModal({
-            title: '🎨 Processing',
-            content: content,
+            url: `${MODAL_URL}boards-processing`,
             autoDismiss: false,
             dismissAfter: 5000
           });
