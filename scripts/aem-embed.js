@@ -104,7 +104,7 @@ export class AEMEmbed extends HTMLElement {
     main.innerHTML = htmlText;
 
     //const { decorateMain } = await import(`${origin}${window.hlx.codeBasePath}/scripts/scripts.js`);
-    const { decorateMain } = await import('https://aem-embed--activations-da--adobedevxsc.aem.page/scripts/scripts.js');
+    const { decorateMain } = await import('https://aem-embed--activations-da--adobedevxsc.aem.page/scripts/scripts.js?v1');
     if (decorateMain) {
       await decorateMain(main, true);
     }
