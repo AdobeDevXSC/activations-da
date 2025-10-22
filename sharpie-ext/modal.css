@@ -38,11 +38,21 @@
   height: calc(100vh - 148px);
 }
 
-.express-modal-content iframe {
+/* Support both iframe (legacy) and aem-embed */
+.express-modal-content iframe,
+.express-modal-content aem-embed {
   box-sizing: border-box;
   border-radius: calc(10vw / 19.2);
   border: calc(1vw / 19.2) solid #DEDEDE;
   box-shadow: 0 0 2px rgb(0 0 0 / 12%), 0 2px 6px rgb(0 0 0 / 4%), 0 4px 12px rgb(0 0 0 / 8%);
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Ensure aem-embed takes full space */
+.express-modal-content aem-embed {
+  flex: 1;
 }
 
 .express-modal-overlay.show .express-modal-content {

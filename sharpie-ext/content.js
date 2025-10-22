@@ -44,54 +44,42 @@
   function markModalAsShown() {
     sessionStorage.setItem(STORAGE_KEY, 'true');
   }
+  // Create and inject the modal using AEM Embed
+  async function createModal() {
+    // Load AEM Embed component
+    await loadAEMEmbedComponent();
 
-  // Create and inject the modal
-  function createModal() {
     // Create modal container
     const modalOverlay = document.createElement('div');
     modalOverlay.id = 'express-custom-modal-overlay';
     modalOverlay.className = 'express-modal-overlay';
 
-    // Create modal content
+    // Create modal content wrapper
     const modalContent = document.createElement('div');
     modalContent.className = 'express-modal-content';
 
-    // Create close button (outside iframe)
+    // Create close button (outside aem-embed)
     const closeButton = document.createElement('button');
     closeButton.className = 'express-modal-close-btn';
     closeButton.innerHTML = '&times;';
     closeButton.setAttribute('aria-label', 'Close modal');
 
-
-    // Create iframe (don't use innerHTML - it wipes out the button!)
-    const iframe = document.createElement('iframe');
-    iframe.src = 'https://ext--activations-da--adobedevxsc.aem.live/sharpie/fragments/express-modal';
-    iframe.width = '100%';
-    iframe.height = '100%';
-    iframe.setAttribute('scrolling', 'no');
-    iframe.setAttribute('credentialless', '');
-    iframe.style.border = 'none';
+    // Create AEM Embed element
+    const aemEmbed = document.createElement('aem-embed');
+    aemEmbed.setAttribute('url', `${MODAL_URL}express-modal`);
+    aemEmbed.setAttribute('shadow', 'true'); // Enable shadow DOM isolation
+    aemEmbed.style.width = '100%';
+    aemEmbed.style.height = '100%';
 
     // Append in correct order
     modalContent.appendChild(closeButton);
-    modalContent.appendChild(iframe);
+    modalContent.appendChild(aemEmbed);
     modalOverlay.appendChild(modalContent);
     document.body.appendChild(modalOverlay);
 
     // Prevent body scroll when modal is open
     document.body.style.overflow = 'hidden';
 
-    // Add event listeners
-    setupModalListeners(modalOverlay, closeButton);
-
-    // Fade in animation
-    setTimeout(() => {
-      modalOverlay.classList.add('show');
-    }, 10);
-  }
-
-  // Setup event listeners for modal interactions
-  function setupModalListeners(modalOverlay, closeButton) {
     // Close modal function
     function closeModal() {
       modalOverlay.classList.remove('show');
@@ -103,7 +91,7 @@
       createButton();
     }
 
-    // Close button - use the direct reference
+    // Close button event
     closeButton.addEventListener('click', closeModal);
 
     // Click outside to close
@@ -121,6 +109,26 @@
       }
     };
     document.addEventListener('keydown', escKeyListener);
+
+    // Listen for messages from embedded content (if needed)
+    const messageListener = (event) => {
+      if (event.data.type === 'modalReady') {
+        console.log('✅ Express modal content ready');
+      }
+
+      if (event.data.type === 'modalDismiss') {
+        closeModal();
+        window.removeEventListener('message', messageListener);
+      }
+    };
+    window.addEventListener('message', messageListener);
+
+    // Fade in animation
+    setTimeout(() => {
+      modalOverlay.classList.add('show');
+    }, 10);
+
+    console.log('✅ Express modal shown (AEM Embed)');
   }
 
   // ---------- Shadow-DOM aware query ----------
