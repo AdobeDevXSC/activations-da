@@ -20,7 +20,7 @@
   let installed = false;
   let lastProjectId = null; // Add this to store project ID for retry
   let showWorkflowModals = true; // Add this flag
-  const MODAL_URL = 'https://aem-embed--activations-da--adobedevxsc.aem.page/sharpie/fragments/';
+  const MODAL_URL = 'http://localhost:3000/sharpie/fragments/';
 
   function getTargetURL() {
 
