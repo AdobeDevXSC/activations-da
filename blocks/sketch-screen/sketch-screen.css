@@ -1,3 +1,8 @@
+:root,
+:host {
+  /* CSS variables if needed */
+  --layout-size: 19.2;
+}
 .sketch-screen-wrapper>[class*="sketch-screen"]:not(.sketch-screen-1):not(.cola-thank-you) {
   padding: calc(40vw / var(--layout-size)) calc(40vw / var(--layout-size)) !important;
   box-sizing: border-box;
