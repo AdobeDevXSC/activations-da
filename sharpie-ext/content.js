@@ -641,161 +641,123 @@
   }
 
 
+  // ========== FIREFLY MODAL SYSTEM (AEM Embed) ==========
+
+  // Load AEM Embed web component
+  function loadAEMEmbedComponent() {
+    if (document.querySelector('script[src*="aem-embed.js"]')) {
+      console.log('✅ AEM Embed already loaded');
+      return Promise.resolve();
+    }
+
+    return new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.type = 'module';
+      script.src = '/scripts/aem-embed.js';
+
+      script.onload = () => {
+        console.log('✅ AEM Embed component loaded');
+        resolve();
+      };
+
+      script.onerror = () => {
+        console.error('❌ Failed to load AEM Embed component');
+        reject(new Error('Failed to load AEM Embed'));
+      };
+
+      document.head.appendChild(script);
+    });
+  }
+
+  // Inject modal wrapper styles (for positioning/animation)
   function injectFireflyModalStyles() {
     if (document.getElementById('firefly-modal-styles')) return;
 
     const style = document.createElement('style');
     style.id = 'firefly-modal-styles';
     style.textContent = `
-      /* Updated CSS for centered modal without backdrop */
-      .firefly-modal-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 999999;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        pointer-events: none;
-      }
-      
-      .firefly-modal-overlay.show {
-        pointer-events: auto;
-      }
-      
-      .firefly-modal-content {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border-radius: 16px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        max-width: 400px;
-        width: 400px;
-        overflow: hidden;
-        position: relative;
-        transform: scale(0.7);
-        opacity: 0;
-        transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55), opacity 0.3s ease;
-        pointer-events: auto;
-      }
-      
-      .firefly-modal-overlay.show .firefly-modal-content {
-        transform: scale(1);
-        opacity: 1;
-      }
-      
-      .firefly-modal-header {
-        padding: 20px;
-        background: rgba(255, 255, 255, 0.1);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      }
-      
-      .firefly-modal-title {
-        font-size: 20px;
-        font-weight: 700;
-        color: white;
-        margin: 0;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        flex: 1;
-      }
-      
-      .firefly-modal-close-btn {
-        background: rgba(255, 255, 255, 0.2);
-        border: none;
-        color: white;
-        font-size: 20px;
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s;
-        padding: 0;
-        line-height: 1;
-        flex-shrink: 0;
-      }
-      
-      .firefly-modal-close-btn:hover {
-        background: rgba(255, 255, 255, 0.4);
-        transform: rotate(90deg);
-      }
-      
-      .firefly-modal-body {
-        padding: 20px;
-        color: white;
-        max-height: 400px;
-        overflow-y: auto;
-      }
-      
-      .firefly-modal-body p {
-        margin: 0 0 12px 0;
-        line-height: 1.6;
-        font-size: 15px;
-      }
-      
-      .firefly-modal-body p:last-child {
-        margin-bottom: 0;
-      }
-      
-      .firefly-modal-spinner {
-        border: 3px solid rgba(255, 255, 255, 0.3);
-        border-top: 3px solid white;
-        border-radius: 50%;
-        width: 32px;
-        height: 32px;
-        animation: firefly-spin 1s linear infinite;
-        margin: 12px auto;
-      }
-      
-      @keyframes firefly-spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-      }
-      
-      .firefly-modal-progress {
-        height: 3px;
-        background: rgba(255, 255, 255, 0.3);
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-      }
-      
-      .firefly-modal-progress-bar {
-        height: 100%;
-        background: white;
-        width: 100%;
-        transform-origin: left;
-        animation: firefly-progress-shrink 5s linear forwards;
-      }
-      
-      @keyframes firefly-progress-shrink {
-        from { transform: scaleX(1); }
-        to { transform: scaleX(0); }
-      }
-    `;
+    .firefly-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 999999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+    
+    .firefly-modal-overlay.show {
+      pointer-events: auto;
+    }
+    
+    .firefly-modal-wrapper {
+      position: relative;
+      transform: scale(0.7);
+      opacity: 0;
+      transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55), opacity 0.3s ease;
+      pointer-events: auto;
+    }
+    
+    .firefly-modal-overlay.show .firefly-modal-wrapper {
+      transform: scale(1);
+      opacity: 1;
+    }
+    
+    .firefly-modal-close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: white;
+      font-size: 20px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      padding: 0;
+      line-height: 1;
+      z-index: 10;
+    }
+    
+    .firefly-modal-close-btn:hover {
+      background: rgba(255, 255, 255, 0.4);
+      transform: rotate(90deg);
+    }
+    
+    /* AEM Embed custom element styling */
+    aem-embed {
+      display: block;
+      width: 400px;
+      min-height: 200px;
+    }
+  `;
     document.head.appendChild(style);
     console.log('✅ Firefly modal styles injected');
   }
 
-
-  // Create and show non-blocking Firefly notification modal
-  function createFireflyModal(options = {}) {
+  // Create modal using AEM Embed
+  async function createFireflyModal(options = {}) {
     const {
       title = '🎨 Firefly Boards',
       content = '<p>Notification content</p>',
-      buttons = [], // Add this
       autoDismiss = false,
       dismissAfter = 5000,
       onClose = null
     } = options;
+
+    // Load AEM Embed component
+    await loadAEMEmbedComponent();
+
+    // Inject styles
+    injectFireflyModalStyles();
 
     // Remove any existing modal
     const existingModal = document.getElementById('firefly-custom-modal');
@@ -803,45 +765,35 @@
       existingModal.remove();
     }
 
-    // Inject styles
-    injectFireflyModalStyles();
-
     // Create modal overlay
     const modalOverlay = document.createElement('div');
     modalOverlay.id = 'firefly-custom-modal';
     modalOverlay.className = 'firefly-modal-overlay';
 
-    // Build buttons HTML
-    let buttonsHtml = '';
-    if (buttons.length > 0) {
-      buttonsHtml = '<div class="firefly-modal-actions">';
-      buttons.forEach((btn, index) => {
-        const primaryClass = btn.primary ? ' primary' : '';
-        buttonsHtml += `
-        <button class="firefly-modal-action-btn${primaryClass}" data-btn-index="${index}">
-          ${btn.icon ? `<span>${btn.icon}</span>` : ''}
-          <span>${btn.text}</span>
-        </button>
-      `;
-      });
-      buttonsHtml += '</div>';
-    }
+    // Create wrapper
+    const modalWrapper = document.createElement('div');
+    modalWrapper.className = 'firefly-modal-wrapper';
 
-    // Create modal structure
-    modalOverlay.innerHTML = `
-    <div class="firefly-modal-content">
-      <div class="firefly-modal-header">
-        <h2 class="firefly-modal-title">${title}</h2>
-        <button class="firefly-modal-close-btn" aria-label="Dismiss">&times;</button>
-      </div>
-      <div class="firefly-modal-body">
-        ${content}
-        ${buttonsHtml}
-      </div>
-      ${autoDismiss ? '<div class="firefly-modal-progress"><div class="firefly-modal-progress-bar"></div></div>' : ''}
-    </div>
-  `;
+    // Create close button
+    const closeButton = document.createElement('button');
+    closeButton.className = 'firefly-modal-close-btn';
+    closeButton.innerHTML = '&times;';
+    closeButton.setAttribute('aria-label', 'Dismiss');
 
+    // Create AEM Embed element
+    const aemEmbed = document.createElement('aem-embed');
+    aemEmbed.setAttribute('url', 'https://main--activations-da--adobedevxsc.aem.page/sharpie/fragments/firefly-modal');
+
+    // Add data attributes for configuration
+    aemEmbed.dataset.title = title;
+    aemEmbed.dataset.content = content;
+    aemEmbed.dataset.autoDismiss = autoDismiss.toString();
+    aemEmbed.dataset.dismissAfter = dismissAfter.toString();
+
+    // Append elements
+    modalWrapper.appendChild(closeButton);
+    modalWrapper.appendChild(aemEmbed);
+    modalOverlay.appendChild(modalWrapper);
     document.body.appendChild(modalOverlay);
 
     // Close modal function
@@ -853,27 +805,13 @@
       }, 400);
     }
 
-    // Dismiss button event
-    const closeBtn = modalOverlay.querySelector('.firefly-modal-close-btn');
-    closeBtn.addEventListener('click', (e) => {
+    // Close button event
+    closeButton.addEventListener('click', (e) => {
       e.stopPropagation();
       closeModal();
     });
 
-    // Action button events
-    const actionButtons = modalOverlay.querySelectorAll('.firefly-modal-action-btn');
-    actionButtons.forEach((btn) => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const index = parseInt(btn.getAttribute('data-btn-index'));
-        const buttonConfig = buttons[index];
-        if (buttonConfig && buttonConfig.onClick) {
-          buttonConfig.onClick(closeModal);
-        }
-      });
-    });
-
-    // Optional: ESC key to dismiss
+    // ESC key to dismiss
     const escKeyListener = (e) => {
       if (e.key === 'Escape') {
         closeModal();
@@ -882,31 +820,45 @@
     };
     document.addEventListener('keydown', escKeyListener);
 
-    // Auto-dismiss timer
-    let autoDismissTimer = null;
-    if (autoDismiss) {
-      autoDismissTimer = setTimeout(() => {
+    // Listen for messages from embedded content
+    const messageListener = (event) => {
+      if (event.data.type === 'modalReady') {
+        console.log('✅ Modal content ready');
+        // Send configuration to embedded content
+        const iframe = aemEmbed.shadowRoot?.querySelector('iframe');
+        if (iframe && iframe.contentWindow) {
+          iframe.contentWindow.postMessage({
+            type: 'updateModal',
+            title,
+            content,
+            autoDismiss,
+            dismissAfter
+          }, '*');
+        }
+      }
+
+      if (event.data.type === 'modalDismiss') {
         closeModal();
-      }, dismissAfter);
-    }
+        window.removeEventListener('message', messageListener);
+      }
+    };
+    window.addEventListener('message', messageListener);
 
     // Show modal with animation
     setTimeout(() => {
       modalOverlay.classList.add('show');
     }, 10);
 
-    console.log('✅ Firefly notification modal shown');
+    console.log('✅ Firefly notification modal shown (AEM Embed)');
 
     return {
       close: closeModal,
-      modalElement: modalOverlay,
-      cancelAutoDismiss: () => {
-        if (autoDismissTimer) {
-          clearTimeout(autoDismissTimer);
-        }
-      }
+      modalElement: modalOverlay
     };
   }
+
+  // ========== END FIREFLY MODAL SYSTEM ==========
+
   // ========== FRAME.IO MONITORING SYSTEM ==========
   async function startFrameIOMonitoring() {
     const WEBHOOK_URL = 'https://hook.app.workfrontfusion.com/zcgk2uute1mvxiywisamf8sw20lez9h6';
