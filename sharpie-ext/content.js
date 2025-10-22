@@ -20,6 +20,23 @@
   let installed = false;
   let lastProjectId = null; // Add this to store project ID for retry
   let showWorkflowModals = true; // Add this flag
+  let MODAL_URL = 'https://aem-embed--activations-da--adobedevxsc.aem.live/sharpie/fragments/';
+
+  // Initialize MODAL_URL from storage
+  async function initModalUrl() {
+    try {
+      const result = await chrome.storage.local.get(['sharpieUrl']);
+      if (result.sharpieUrl) {
+        MODAL_URL = `${result.sharpieUrl}fragments/`;
+        console.log('✅ MODAL_URL initialized from storage:', MODAL_URL);
+      } else {
+        console.log('⚠️ sharpieUrl not found in storage, using default:', MODAL_URL);
+      }
+    } catch (err) {
+      console.error('❌ Failed to load sharpieUrl from storage:', err);
+    }
+  }
+  initModalUrl();
 
   function getTargetURL() {
 
@@ -43,54 +60,42 @@
   function markModalAsShown() {
     sessionStorage.setItem(STORAGE_KEY, 'true');
   }
+  // Create and inject the modal using AEM Embed
+  async function createModal() {
+    // Load AEM Embed component
+    await loadAEMEmbedComponent();
 
-  // Create and inject the modal
-  function createModal() {
     // Create modal container
     const modalOverlay = document.createElement('div');
     modalOverlay.id = 'express-custom-modal-overlay';
     modalOverlay.className = 'express-modal-overlay';
 
-    // Create modal content
+    // Create modal content wrapper
     const modalContent = document.createElement('div');
     modalContent.className = 'express-modal-content';
 
-    // Create close button (outside iframe)
+    // Create close button (outside aem-embed)
     const closeButton = document.createElement('button');
     closeButton.className = 'express-modal-close-btn';
     closeButton.innerHTML = '&times;';
     closeButton.setAttribute('aria-label', 'Close modal');
 
-
-    // Create iframe (don't use innerHTML - it wipes out the button!)
-    const iframe = document.createElement('iframe');
-    iframe.src = 'https://ext--activations-da--adobedevxsc.aem.live/sharpie/fragments/express-modal';
-    iframe.width = '100%';
-    iframe.height = '100%';
-    iframe.setAttribute('scrolling', 'no');
-    iframe.setAttribute('credentialless', '');
-    iframe.style.border = 'none';
+    // Create AEM Embed element
+    const aemEmbed = document.createElement('aem-embed');
+    aemEmbed.setAttribute('url', `${MODAL_URL}express-modal`);
+    aemEmbed.setAttribute('shadow', 'true'); // Enable shadow DOM isolation
+    aemEmbed.style.width = '100%';
+    aemEmbed.style.height = '100%';
 
     // Append in correct order
     modalContent.appendChild(closeButton);
-    modalContent.appendChild(iframe);
+    modalContent.appendChild(aemEmbed);
     modalOverlay.appendChild(modalContent);
     document.body.appendChild(modalOverlay);
 
     // Prevent body scroll when modal is open
     document.body.style.overflow = 'hidden';
 
-    // Add event listeners
-    setupModalListeners(modalOverlay, closeButton);
-
-    // Fade in animation
-    setTimeout(() => {
-      modalOverlay.classList.add('show');
-    }, 10);
-  }
-
-  // Setup event listeners for modal interactions
-  function setupModalListeners(modalOverlay, closeButton) {
     // Close modal function
     function closeModal() {
       modalOverlay.classList.remove('show');
@@ -102,7 +107,7 @@
       createButton();
     }
 
-    // Close button - use the direct reference
+    // Close button event
     closeButton.addEventListener('click', closeModal);
 
     // Click outside to close
@@ -120,6 +125,26 @@
       }
     };
     document.addEventListener('keydown', escKeyListener);
+
+    // Listen for messages from embedded content (if needed)
+    const messageListener = (event) => {
+      if (event.data.type === 'modalReady') {
+        console.log('✅ Express modal content ready');
+      }
+
+      if (event.data.type === 'modalDismiss') {
+        closeModal();
+        window.removeEventListener('message', messageListener);
+      }
+    };
+    window.addEventListener('message', messageListener);
+
+    // Fade in animation
+    setTimeout(() => {
+      modalOverlay.classList.add('show');
+    }, 10);
+
+    console.log('✅ Express modal shown (AEM Embed)');
   }
 
   // ---------- Shadow-DOM aware query ----------
@@ -641,161 +666,121 @@
   }
 
 
+  // Load AEM Embed web component
+  function loadAEMEmbedComponent() {
+    if (document.querySelector('script[src*="aem-embed.js"]')) {
+      console.log('✅ AEM Embed already loaded');
+      return Promise.resolve();
+    }
+
+    return new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.type = 'module';
+      // Load from extension instead of CDN
+      script.src = 'https://aem-embed--activations-da--adobedevxsc.aem.page/scripts/aem-embed.js';
+
+      script.onload = () => {
+        console.log('✅ AEM Embed component loaded from extension');
+        resolve();
+      };
+
+      script.onerror = () => {
+        console.error('❌ Failed to load AEM Embed component from extension');
+        reject(new Error('Failed to load AEM Embed'));
+      };
+
+      document.head.appendChild(script);
+    });
+  }
+
+  // Inject modal wrapper styles (for positioning/animation)
   function injectFireflyModalStyles() {
     if (document.getElementById('firefly-modal-styles')) return;
 
     const style = document.createElement('style');
     style.id = 'firefly-modal-styles';
     style.textContent = `
-      /* Updated CSS for centered modal without backdrop */
-      .firefly-modal-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 999999;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        pointer-events: none;
-      }
-      
-      .firefly-modal-overlay.show {
-        pointer-events: auto;
-      }
-      
-      .firefly-modal-content {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border-radius: 16px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        max-width: 400px;
-        width: 400px;
-        overflow: hidden;
-        position: relative;
-        transform: scale(0.7);
-        opacity: 0;
-        transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55), opacity 0.3s ease;
-        pointer-events: auto;
-      }
-      
-      .firefly-modal-overlay.show .firefly-modal-content {
-        transform: scale(1);
-        opacity: 1;
-      }
-      
-      .firefly-modal-header {
-        padding: 20px;
-        background: rgba(255, 255, 255, 0.1);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      }
-      
-      .firefly-modal-title {
-        font-size: 20px;
-        font-weight: 700;
-        color: white;
-        margin: 0;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        flex: 1;
-      }
-      
-      .firefly-modal-close-btn {
-        background: rgba(255, 255, 255, 0.2);
-        border: none;
-        color: white;
-        font-size: 20px;
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s;
-        padding: 0;
-        line-height: 1;
-        flex-shrink: 0;
-      }
-      
-      .firefly-modal-close-btn:hover {
-        background: rgba(255, 255, 255, 0.4);
-        transform: rotate(90deg);
-      }
-      
-      .firefly-modal-body {
-        padding: 20px;
-        color: white;
-        max-height: 400px;
-        overflow-y: auto;
-      }
-      
-      .firefly-modal-body p {
-        margin: 0 0 12px 0;
-        line-height: 1.6;
-        font-size: 15px;
-      }
-      
-      .firefly-modal-body p:last-child {
-        margin-bottom: 0;
-      }
-      
-      .firefly-modal-spinner {
-        border: 3px solid rgba(255, 255, 255, 0.3);
-        border-top: 3px solid white;
-        border-radius: 50%;
-        width: 32px;
-        height: 32px;
-        animation: firefly-spin 1s linear infinite;
-        margin: 12px auto;
-      }
-      
-      @keyframes firefly-spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-      }
-      
-      .firefly-modal-progress {
-        height: 3px;
-        background: rgba(255, 255, 255, 0.3);
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-      }
-      
-      .firefly-modal-progress-bar {
-        height: 100%;
-        background: white;
-        width: 100%;
-        transform-origin: left;
-        animation: firefly-progress-shrink 5s linear forwards;
-      }
-      
-      @keyframes firefly-progress-shrink {
-        from { transform: scaleX(1); }
-        to { transform: scaleX(0); }
-      }
-    `;
+    .firefly-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 999999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+    
+    .firefly-modal-overlay.show {
+      pointer-events: auto;
+    }
+    
+    .firefly-modal-wrapper {
+      position: relative;
+      transform: scale(0.7);
+      opacity: 0;
+      transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55), opacity 0.3s ease;
+      pointer-events: auto;
+    }
+    
+    .firefly-modal-overlay.show .firefly-modal-wrapper {
+      transform: scale(1);
+      opacity: 1;
+    }
+    
+    .firefly-modal-close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: white;
+      font-size: 20px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      padding: 0;
+      line-height: 1;
+      z-index: 10;
+    }
+    
+    .firefly-modal-close-btn:hover {
+      background: rgba(255, 255, 255, 0.4);
+      transform: rotate(90deg);
+    }
+    
+    /* AEM Embed custom element styling */
+    aem-embed {
+      display: block;
+      width: 400px;
+      min-height: 200px;
+    }
+  `;
     document.head.appendChild(style);
     console.log('✅ Firefly modal styles injected');
   }
 
-
-  // Create and show non-blocking Firefly notification modal
-  function createFireflyModal(options = {}) {
+  async function createFireflyModal(options = {}) {
     const {
       title = '🎨 Firefly Boards',
       content = '<p>Notification content</p>',
-      buttons = [], // Add this
-      autoDismiss = false,
-      dismissAfter = 5000,
+      url = `${MODAL_URL}firefly-modal`,
+      buttons = [],  // ADD THIS: array of button objects
       onClose = null
     } = options;
+
+    // Load AEM Embed component
+    await loadAEMEmbedComponent();
+
+    // Inject styles
+    injectFireflyModalStyles();
 
     // Remove any existing modal
     const existingModal = document.getElementById('firefly-custom-modal');
@@ -803,46 +788,25 @@
       existingModal.remove();
     }
 
-    // Inject styles
-    injectFireflyModalStyles();
-
     // Create modal overlay
     const modalOverlay = document.createElement('div');
     modalOverlay.id = 'firefly-custom-modal';
     modalOverlay.className = 'firefly-modal-overlay';
 
-    // Build buttons HTML
-    let buttonsHtml = '';
-    if (buttons.length > 0) {
-      buttonsHtml = '<div class="firefly-modal-actions">';
-      buttons.forEach((btn, index) => {
-        const primaryClass = btn.primary ? ' primary' : '';
-        buttonsHtml += `
-        <button class="firefly-modal-action-btn${primaryClass}" data-btn-index="${index}">
-          ${btn.icon ? `<span>${btn.icon}</span>` : ''}
-          <span>${btn.text}</span>
-        </button>
-      `;
-      });
-      buttonsHtml += '</div>';
-    }
+    // Create wrapper
+    const modalWrapper = document.createElement('div');
+    modalWrapper.className = 'firefly-modal-wrapper';
 
-    // Create modal structure
-    modalOverlay.innerHTML = `
-    <div class="firefly-modal-content">
-      <div class="firefly-modal-header">
-        <h2 class="firefly-modal-title">${title}</h2>
-        <button class="firefly-modal-close-btn" aria-label="Dismiss">&times;</button>
-      </div>
-      <div class="firefly-modal-body">
-        ${content}
-        ${buttonsHtml}
-      </div>
-      ${autoDismiss ? '<div class="firefly-modal-progress"><div class="firefly-modal-progress-bar"></div></div>' : ''}
-    </div>
-  `;
+    // Create close button
+    const closeButton = document.createElement('button');
+    closeButton.className = 'firefly-modal-close-btn';
+    closeButton.innerHTML = '&times;';
+    closeButton.setAttribute('aria-label', 'Dismiss');
 
-    document.body.appendChild(modalOverlay);
+    // Create AEM Embed element
+    const aemEmbed = document.createElement('aem-embed');
+    aemEmbed.setAttribute('url', url);
+    aemEmbed.setAttribute('shadow', 'true');
 
     // Close modal function
     function closeModal() {
@@ -853,27 +817,102 @@
       }, 400);
     }
 
-    // Dismiss button event
-    const closeBtn = modalOverlay.querySelector('.firefly-modal-close-btn');
-    closeBtn.addEventListener('click', (e) => {
+
+    // Create button container if buttons provided
+    let buttonContainer;
+    if (buttons.length > 0) {
+      buttonContainer = document.createElement('div');
+      buttonContainer.className = 'firefly-modal-buttons';
+      buttonContainer.style.cssText = `
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    z-index: 10;
+  `;
+
+      buttons.forEach(btn => {
+        const button = document.createElement('button');
+        button.textContent = btn.label || 'Button';
+        button.className = btn.primary ? 'firefly-modal-btn-primary' : 'firefly-modal-btn-secondary';
+        button.style.cssText = `
+      padding: 12px 20px;
+      border-radius: 8px;
+      border: ${btn.primary ? 'none' : '2px solid rgba(255,255,255,0.4)'};
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      background: ${btn.primary ? 'white' : 'rgba(255,255,255,0.2)'};
+      color: ${btn.primary ? '#667eea' : 'white'};
+      transition: all 0.2s;
+    `;
+
+        button.addEventListener('mouseover', () => {
+          button.style.transform = 'translateY(-2px)';
+          button.style.background = btn.primary ? '#f0f0f0' : 'rgba(255,255,255,0.3)';
+        });
+
+        button.addEventListener('mouseout', () => {
+          button.style.transform = 'translateY(0)';
+          button.style.background = btn.primary ? 'white' : 'rgba(255,255,255,0.2)';
+        });
+
+        button.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          if (btn.onClick) {
+            await btn.onClick(closeModal);  // Pass closeModal as parameter
+          } else if (btn.closeOnClick !== false) {
+            closeModal();
+          }
+        });
+
+        buttonContainer.appendChild(button);
+      });
+    }
+
+    // Append elements
+    modalWrapper.appendChild(closeButton);
+    modalWrapper.appendChild(aemEmbed);
+    if (buttonContainer) {
+      modalWrapper.appendChild(buttonContainer);  // Positioned absolutely, so it floats over the aemEmbed
+    }
+    modalOverlay.appendChild(modalWrapper);
+    document.body.appendChild(modalOverlay);
+
+    // If buttons are present, inject padding into shadow DOM content
+    if (buttons.length > 0) {
+      // Wait for shadow root to be ready
+      const checkShadowRoot = setInterval(() => {
+        if (aemEmbed.shadowRoot) {
+          clearInterval(checkShadowRoot);
+
+          // Inject style into shadow DOM
+          const style = document.createElement('style');
+          style.textContent = `
+        .firefly-notification-modal {
+          padding-bottom: 80px !important;
+        }
+      `;
+          aemEmbed.shadowRoot.appendChild(style);
+          console.log('✅ Added button spacing to modal');
+        }
+      }, 100);
+
+      // Timeout after 2 seconds
+      setTimeout(() => clearInterval(checkShadowRoot), 2000);
+    }
+
+    // Close button event
+    closeButton.addEventListener('click', (e) => {
       e.stopPropagation();
       closeModal();
     });
 
-    // Action button events
-    const actionButtons = modalOverlay.querySelectorAll('.firefly-modal-action-btn');
-    actionButtons.forEach((btn) => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const index = parseInt(btn.getAttribute('data-btn-index'));
-        const buttonConfig = buttons[index];
-        if (buttonConfig && buttonConfig.onClick) {
-          buttonConfig.onClick(closeModal);
-        }
-      });
-    });
-
-    // Optional: ESC key to dismiss
+    // ESC key to dismiss
     const escKeyListener = (e) => {
       if (e.key === 'Escape') {
         closeModal();
@@ -882,31 +921,19 @@
     };
     document.addEventListener('keydown', escKeyListener);
 
-    // Auto-dismiss timer
-    let autoDismissTimer = null;
-    if (autoDismiss) {
-      autoDismissTimer = setTimeout(() => {
-        closeModal();
-      }, dismissAfter);
-    }
-
     // Show modal with animation
     setTimeout(() => {
       modalOverlay.classList.add('show');
     }, 10);
 
-    console.log('✅ Firefly notification modal shown');
+    console.log('✅ Firefly notification modal shown (AEM Embed)');
 
     return {
       close: closeModal,
-      modalElement: modalOverlay,
-      cancelAutoDismiss: () => {
-        if (autoDismissTimer) {
-          clearTimeout(autoDismissTimer);
-        }
-      }
+      modalElement: modalOverlay
     };
   }
+
   // ========== FRAME.IO MONITORING SYSTEM ==========
   async function startFrameIOMonitoring() {
     const WEBHOOK_URL = 'https://hook.app.workfrontfusion.com/zcgk2uute1mvxiywisamf8sw20lez9h6';
@@ -921,9 +948,32 @@
       try {
         console.log('📡 [Frame.io] Requesting asset count from webhook...');
 
-        const result = await chrome.storage.local.get(['sharpieWorkstation'])
-        const workstation = placeholders.find(item => item.Key.toLowerCase() === result.sharpieWorkstation.toLowerCase());
-        console.log('[Frame.io] Workstation:', workstation);
+        // Check if extension context is still valid
+        if (!chrome.runtime?.id) {
+          console.log('⚠️ [Frame.io] Extension context invalidated, stopping polling');
+          if (pollInterval) {
+            clearInterval(pollInterval);
+            pollInterval = null;
+          }
+          return;
+        }
+
+        let result, workstation;
+        try {
+          result = await chrome.storage.local.get(['sharpieWorkstation']);
+          workstation = placeholders.find(item => item.Key.toLowerCase() === result.sharpieWorkstation.toLowerCase());
+          console.log('[Frame.io] Workstation:', workstation);
+        } catch (err) {
+          if (err.message.includes('Extension context invalidated')) {
+            console.log('⚠️ [Frame.io] Extension was reloaded, stopping polling');
+            if (pollInterval) {
+              clearInterval(pollInterval);
+              pollInterval = null;
+            }
+            return;
+          }
+          throw err; // Re-throw if it's a different error
+        }
         const projectId = workstation.Text.split('/').pop();
         console.log('[Frame.io] Project ID:', window.location.pathname);
         const response = await fetch(`${WEBHOOK_URL}?projectId=${projectId}`, {
@@ -965,8 +1015,7 @@
 
           // Show notification with page reload on close
           createFireflyModal({
-            title: '🎉 Firefly Services Complete!',
-            content: `<p>Your mini is ready.</p>`,
+            url: `${MODAL_URL}firefly-services-done`,
             autoDismiss: true,
             dismissAfter: 5000,
             onClose: () => {
@@ -1039,16 +1088,15 @@
       // Notify user
       setTimeout(() => {
         createFireflyModal({
-          title: '🎉 Success!',
-          content: '<p>Image placed successfully on the board.</p>',
+          url: `${MODAL_URL}boards-mini-placed`,
           autoDismiss: true,
           dismissAfter: 7000,
           onClose: () => {
-            console.log('User acknowledged success');
+            console.log('[Firefly Notification Modal] User acknowledged success');
           }
         });
         createButton();
-      }, 3000);
+      }, 1000);
     }
     // Handle completion (treating as success with retry option)
     else {
@@ -1063,13 +1111,12 @@
       // Show success modal with retry option
       setTimeout(() => {
         createFireflyModal({
-          title: '🎉 Success!',
-          content: '<p>Image placed successfully on the board.</p>',
+          url: `${MODAL_URL}boards-mini-placed`,
           autoDismiss: true,
           dismissAfter: 7000,
           buttons: [
             {
-              text: 'Retry',
+              label: 'Retry',
               icon: '',
               primary: true,
               onClick: (close) => {
@@ -1087,7 +1134,7 @@
               }
             },
             {
-              text: 'Dismiss',
+              label: 'Dismiss',
               icon: '',
               onClick: (close) => {
                 console.log('User dismissed modal');
@@ -1106,9 +1153,32 @@
 
   // Initialize
   async function init() {
-
     let experienceName = await chrome.storage.local.get(['experienceName']);
     experienceName = experienceName.experienceName;
+
+    // TEST: Trigger modal after 3 seconds for debugging
+    // setTimeout(() => {
+    //   console.log('🧪 Test: Creating modal...');
+    //   createFireflyModal({
+    //     url: `${MODAL_URL}firefly-services-done`,
+    //     buttons: [
+    //       {
+    //         label: 'Cancel',
+    //         primary: false,
+    //         onClick: () => {
+    //           console.log('Cancel clicked');
+    //         }
+    //       },
+    //       {
+    //         label: 'Refresh Page',
+    //         primary: true,
+    //         onClick: () => {
+    //           window.location.reload();
+    //         }
+    //       }
+    //     ]
+    //   });
+    // }, 1000);
 
     if (experienceName.includes('-'))
       experienceName = experienceName.replace(/-/g, '');
@@ -1144,11 +1214,9 @@
 
           console.log('Boards are ready');
 
-          let content = '<p>Loading your creative assets...</p>';
           // With auto-dismiss
           createFireflyModal({
-            title: '🎨 Processing',
-            content: content,
+            url: `${MODAL_URL}boards-processing`,
             autoDismiss: false,
             dismissAfter: 5000
           });

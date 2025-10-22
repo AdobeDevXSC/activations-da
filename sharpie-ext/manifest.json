@@ -23,6 +23,8 @@
       "https://ext--activations-da--adobedevxsc.aem.live/*",
       "https://main--activations-da--adobedevxsc.aem.page/*",
       "https://ext--activations-da--adobedevxsc.aem.page/*",
+      "https://aem-embed--activations-da--adobedevxsc.aem.page/*",
+      "https://aem-embed--activations-da--adobedevxsc.aem.live/*",
       "http://localhost:3000/*"
     ]
   },
@@ -44,6 +46,25 @@
       "matches": [
         "*://firefly.adobe.com/*"
       ]
+    },
+    {
+      "resources": [
+        "aem-embed.js"
+      ],
+      "matches": [
+        "*://new.express.adobe.com/*",
+        "*://express.adobe.com/*",
+        "*://next.frame.io/*",
+        "*://firefly.adobe.com/*",
+        "https://main--activations-da--adobedevxsc.aem.live/*",
+        "https://ext--activations-da--adobedevxsc.aem.live/*",
+        "https://main--activations-da--adobedevxsc.aem.page/*",
+        "https://ext--activations-da--adobedevxsc.aem.page/*",
+        "https://aem-embed--activations-da--adobedevxsc.aem.page/*",
+        "https://aem-embed--activations-da--adobedevxsc.aem.live/*",
+        "http://localhost:3000/*",
+        "https://experience.adobe.com/*"
+      ]
     }
   ],
   "content_scripts": [
@@ -57,6 +78,8 @@
         "https://ext--activations-da--adobedevxsc.aem.live/*",
         "https://main--activations-da--adobedevxsc.aem.page/*",
         "https://ext--activations-da--adobedevxsc.aem.page/*",
+        "https://aem-embed--activations-da--adobedevxsc.aem.page/*",
+        "https://aem-embed--activations-da--adobedevxsc.aem.live/*",
         "http://localhost:3000/*",
         "https://experience.adobe.com/*"
       ],
