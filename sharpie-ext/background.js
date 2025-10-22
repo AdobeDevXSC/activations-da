@@ -87,7 +87,7 @@ function handleMiniDownload(item, suggest) {
 
       const data = {
         presignedUrl: url,
-        folderId: workstation,
+        wsID: workstation,
         key: activationSession.split('-').pop()
       }
 
@@ -102,18 +102,18 @@ function handleMiniDownload(item, suggest) {
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
-          return response.json();
+          return response;
         })
         .then(responseData => {
-          console.log('✅ Data sent successfully to webhook:', responseData);
+          console.log('[Background] ✅ Data sent successfully to webhook:', responseData);
         })
         .catch(error => {
-          console.error('❌ Error sending data to webhook:', error);
+          console.error('[Background] ❌ Error sending data to webhook:', error);
         });
 
       console.log('[Data]:', JSON.stringify(data));
     } catch (error) {
-      console.error('❌ Error getting activation session:', error);
+      console.error('❌ [Background] Error getting activation session:', error);
     }
   });
 }
