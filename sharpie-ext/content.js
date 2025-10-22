@@ -782,6 +782,7 @@
     // Create AEM Embed element
     const aemEmbed = document.createElement('aem-embed');
     aemEmbed.setAttribute('url', 'https://aem-embed--activations-da--adobedevxsc.aem.page/sharpie/fragments/firefly-modal');
+    aemEmbed.setAttribute('shadow', 'true');
 
     // Add data attributes for configuration
     aemEmbed.dataset.title = title;
