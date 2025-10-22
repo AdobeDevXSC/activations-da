@@ -233,6 +233,9 @@ export default async function decorate(block) {
     handleDisplay.setAttribute('for', 'handle-select');
     block.querySelector('.settings .handle').prepend(handleDisplay);
 
+    block.querySelector('form .button[type="submit"').style.display = 'none';
+    console.log('Form submit button hidden', block.querySelector('form .button[type="submit"'));
+
     const db = await dbExists();
     let handle;
     if (db) {
