@@ -85,14 +85,6 @@ function generatePayload(form) {
   return payload;
 }
 
-function generateUUID() {
-  return 'xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-    const r = Math.floor(Math.random() * 16);
-    const v = c === 'x' ? r : ((r % 4) + 8);
-    return v.toString(16);
-  });
-}
-
 function nameToFilename(firstName, lastName) {
   // Helper to sanitize a single name part - keep only a-z and A-Z
   const sanitize = (str) => {
@@ -112,6 +104,7 @@ function nameToFilename(firstName, lastName) {
 }
 
 async function handleSubmit(form) {
+  const activation = getMetadata('theme');
   if (form.getAttribute('data-submitting') === 'true') return;
   form.style.cursor = 'wait';
 
@@ -122,7 +115,10 @@ async function handleSubmit(form) {
   submit.disabled = true;
 
   const payload = generatePayload(form);
-  payload.key = generateUUID();
+  let session = localStorage.getItem(`${activation}-session`);
+  session = JSON.parse(session);
+
+  payload.key = session.key;
   form.style.cursor = 'wait';
 
   // not waiting for response
@@ -135,24 +131,18 @@ async function handleSubmit(form) {
     keepalive: true,
   });
 
-  const activation = getMetadata('theme');
-
   form.style.cursor = 'default';
   if (form.dataset.confirmation && activation) {
-    const responseJson = {
-      fn: '',
-      key: payload.key,
-      status: 'init',
-    };
+    
     if (payload && payload.firstName && payload.lastName) {
       const { firstName, lastName } = payload;
       const filename = nameToFilename(firstName, lastName);
-      responseJson.fn = `${filename}-${payload.key}`;
+      session.fn = `${filename}-${session.key}`;
 
       try {
         const res = await sendToExtension({
           type: 'activationSession',
-          payload: responseJson.fn,
+          payload: session.fn,
         });
         console.log('Response:', res); // eslint-disable-line no-console
       } catch (error) {
@@ -160,10 +150,10 @@ async function handleSubmit(form) {
         console.error('Extension ID', extensionId); // eslint-disable-line no-console
       }
 
-      localStorage.setItem(`${activation}-session`, JSON.stringify(responseJson));
+      localStorage.setItem(`${activation}-session`, JSON.stringify(session));
     } else {
       responseJson.status = 'complete';
-      localStorage.setItem(`${activation}-session`, JSON.stringify(responseJson));
+      localStorage.setItem(`${activation}-session`, JSON.stringify(session));
     }
     setTimeout(() => {
       window.location.href = form.dataset.confirmation;
