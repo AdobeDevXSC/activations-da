@@ -30,6 +30,24 @@ function buildHeroBlock(main) {
   }
 }
 
+function generateUUID() {
+  return 'xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = Math.floor(Math.random() * 16);
+    const v = c === 'x' ? r : ((r % 4) + 8);
+    return v.toString(16);
+  });
+}
+
+function startSession(main) {
+  console.log('Starting new session');
+  const activation = getMetadata('theme');
+  const session = {
+    key: generateUUID(),
+    status: 'init'
+  };
+  localStorage.setItem(`${activation}-session`, JSON.stringify(session));
+}
+
 function addEgg(main) {
   const section = document.createElement('div');
   section.append(buildBlock('egg', { elems: [] }));
@@ -66,6 +84,7 @@ function buildAutoBlocks(main) {
   try {
     buildHeroBlock(main);
     if (getMetadata('template') === 'egg') addEgg(main);
+    if (!localStorage.getItem(`${getMetadata('theme')}-session`)) startSession(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);

@@ -199,6 +199,7 @@
 .express-modal-body::-webkit-scrollbar-thumb:hover {
   background: #a8a8a8;
 }
+
 /* Close Button - positioned absolutely over iframe */
 .express-modal-close-btn {
   position: absolute;
@@ -231,6 +232,7 @@
 .express-modal-close-btn:active {
   transform: scale(0.95);
 }
+
 /* Firefly Boards Modal - Non-blocking Overlay */
 .firefly-modal-overlay {
   position: fixed;

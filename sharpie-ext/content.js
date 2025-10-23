@@ -700,6 +700,7 @@
     const style = document.createElement('style');
     style.id = 'firefly-modal-styles';
     style.textContent = `
+    // In the injectFireflyModalStyles() function, around lines 703-714
     .firefly-modal-overlay {
       position: fixed;
       top: 0;
@@ -708,8 +709,9 @@
       bottom: 0;
       z-index: 999999;
       display: flex;
-      align-items: center;
-      justify-content: center;
+      align-items: flex-start;      /* Changed from 'center' to 'flex-start' */
+      justify-content: flex-end;    /* Changed from 'center' to 'flex-end' */
+      padding: 20px;                /* Added padding to give some space from edges */
       pointer-events: none;
     }
     

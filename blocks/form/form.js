@@ -152,8 +152,7 @@ async function handleSubmit(form) {
 
       localStorage.setItem(`${activation}-session`, JSON.stringify(session));
     } else {
-      responseJson.status = 'complete';
-      localStorage.setItem(`${activation}-session`, JSON.stringify(session));
+      localStorage.removeItem(`${activation}-session`);
     }
     setTimeout(() => {
       window.location.href = form.dataset.confirmation;
