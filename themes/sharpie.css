@@ -84,6 +84,7 @@ main>.section {
 }
 
 .intake-form h2+p {
+  margin-bottom: 18px !important;
   font-size: calc(20vw / var(--layout-size));
   line-height: 1.5;
   border-bottom: calc(1vw / var(--layout-size)) solid #dedede;

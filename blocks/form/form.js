@@ -214,10 +214,9 @@ export default async function decorate(block) {
     console.error('Error decorating form block:', error); // eslint-disable-line no-console
     block.textContent = 'Failed to load form. Please try again later.';
   }
-
+  
   const form = block.querySelector('form');
   [...form.elements].forEach((field) => {
-    console.log('Field:', field);
     field.setAttribute('autocomplete', 'one-time-code');
   });
 

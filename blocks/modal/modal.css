@@ -138,3 +138,72 @@ h4#upload-complete+p+p a.button {
 h4#upload-complete+p+p a.button:hover {
   background-color: #274DEA;
 }
+
+/* Firefly Boards Modal - Non-blocking Overlay (Upper Right Corner) */
+.firefly-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999999;
+  display: flex;
+  align-items: flex-start;      /* Positions at top */
+  justify-content: flex-end;    /* Positions at right */
+  padding: 20px;                /* Space from edges */
+  pointer-events: none;
+}
+
+.firefly-modal-overlay.show {
+  pointer-events: auto;
+}
+
+.firefly-modal-wrapper {
+  position: relative;
+  transform: scale(0.7);
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55), opacity 0.3s ease;
+  pointer-events: auto;
+}
+
+.firefly-modal-overlay.show .firefly-modal-wrapper {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.firefly-modal-close-btn {
+  position: absolute;             /* Add this */
+  top: 16px;                      /* Add this */
+  right: 16px;                    /* Add this */
+  z-index: 10;                    /* Add this */
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  font-size: 20px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  padding: 0;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.firefly-modal-close-btn:hover {
+  background: #f0f0f0;
+  border-color: #333;
+  transform: rotate(90deg);
+}
+
+/* AEM Embed custom element styling */
+aem-embed {
+  display: block;
+  width: 700px;
+  min-height: 232px;
+}
+
+/* Keep the existing action buttons and other styles below... */

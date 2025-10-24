@@ -693,82 +693,6 @@
     });
   }
 
-  // Inject modal wrapper styles (for positioning/animation)
-  function injectFireflyModalStyles() {
-    if (document.getElementById('firefly-modal-styles')) return;
-
-    const style = document.createElement('style');
-    style.id = 'firefly-modal-styles';
-    style.textContent = `
-    // In the injectFireflyModalStyles() function, around lines 703-714
-    .firefly-modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 999999;
-      display: flex;
-      align-items: flex-start;      /* Changed from 'center' to 'flex-start' */
-      justify-content: flex-end;    /* Changed from 'center' to 'flex-end' */
-      padding: 20px;                /* Added padding to give some space from edges */
-      pointer-events: none;
-    }
-    
-    .firefly-modal-overlay.show {
-      pointer-events: auto;
-    }
-    
-    .firefly-modal-wrapper {
-      position: relative;
-      transform: scale(0.7);
-      opacity: 0;
-      transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55), opacity 0.3s ease;
-      pointer-events: auto;
-    }
-    
-    .firefly-modal-overlay.show .firefly-modal-wrapper {
-      transform: scale(1);
-      opacity: 1;
-    }
-    
-    .firefly-modal-close-btn {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: rgba(255, 255, 255, 0.2);
-      border: none;
-      color: black;
-      font-size: 20px;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s;
-      padding: 0;
-      line-height: 1;
-      z-index: 10;
-    }
-    
-    .firefly-modal-close-btn:hover {
-      background: rgba(255, 255, 255, 0.4);
-      transform: rotate(90deg);
-    }
-    
-    /* AEM Embed custom element styling */
-    aem-embed {
-      display: block;
-      width: 700px;
-      min-height: 232px;
-    }
-  `;
-    document.head.appendChild(style);
-    console.log('✅ Firefly modal styles injected');
-  }
-
   async function createFireflyModal(options = {}) {
     const {
       title = '🎨 Firefly Boards',
@@ -781,8 +705,6 @@
     // Load AEM Embed component
     await loadAEMEmbedComponent();
 
-    // Inject styles
-    injectFireflyModalStyles();
 
     // Remove any existing modal
     const existingModal = document.getElementById('firefly-custom-modal');
@@ -818,7 +740,6 @@
         if (onClose) onClose();
       }, 400);
     }
-
 
     // Create button container if buttons provided
     let buttonContainer;
@@ -1153,9 +1074,21 @@
     }
   });
 
+  function isEmpty(obj) {
+    for (const prop in obj) {
+      if (Object.hasOwn(obj, prop)) {
+        return false;
+      }
+    }
+  
+    return true;
+  }
   // Initialize
   async function init() {
     let experienceName = await chrome.storage.local.get(['experienceName']);
+    if(isEmpty(experienceName)) {
+      return;
+    }
     experienceName = experienceName.experienceName;
 
     // TEST: Trigger modal after 3 seconds for debugging
@@ -1182,7 +1115,7 @@
     //   });
     // }, 1000);
 
-    if (experienceName.includes('-'))
+    if (experienceName && experienceName.includes('-'))
       experienceName = experienceName.replace(/-/g, '');
     console.log('Experience Name:', experienceName);
     console.log('Experience Name URL:', `${experienceName}Url`);
