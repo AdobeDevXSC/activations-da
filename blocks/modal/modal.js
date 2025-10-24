@@ -24,9 +24,10 @@ export async function createModal(contentNodes) {
   // closeButton.innerHTML = '<span class="icon icon-close"></span>';
   closeButton.addEventListener('click', () => dialog.close());
   // dialog.prepend(closeButton);
-
+  
   const block = buildBlock('modal', '');
   document.querySelector('main').append(block);
+
   decorateBlock(block);
   await loadBlock(block);
 
@@ -52,6 +53,7 @@ export async function createModal(contentNodes) {
   return {
     block,
     showModal: () => {
+      console.log('Showing modal', dialog);
       dialog.showModal();
       // reset scroll position
       setTimeout(() => { dialogContent.scrollTop = 0; }, 0);

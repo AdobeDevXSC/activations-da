@@ -215,6 +215,12 @@ export default async function decorate(block) {
     block.textContent = 'Failed to load form. Please try again later.';
   }
 
+  const form = block.querySelector('form');
+  [...form.elements].forEach((field) => {
+    console.log('Field:', field);
+    field.setAttribute('autocomplete', 'one-time-code');
+  });
+
   if (block.classList.contains('settings')) {
     const handleSel = block.querySelector('.settings .handle > button');
     handleSel.setAttribute('id', 'handle-select');

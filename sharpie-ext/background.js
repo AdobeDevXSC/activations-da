@@ -77,7 +77,7 @@ function handleMiniDownload(item, suggest) {
       const url = item.finalUrl || item.url;
       if(!url.includes('amazonaws.com')) return;
       
-      console.log('[Download URL]:', url);
+      console.log('[Download URL]:', item);
 
       console.log('[Activation Session]:', activationSession);
       console.log('[Sharpie Workstation]:', sharpieWorkstation);

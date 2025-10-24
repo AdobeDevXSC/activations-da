@@ -55,6 +55,15 @@ body.modal-open {
   }
 } */
 
+main > .modal {
+  display: none;
+}
+
+main.modal-wrapper > .modal {
+  display: block;
+  position: absolute;
+}
+
 .modal .close-button {
   /* position: absolute;
   top: 0;
