@@ -30,6 +30,43 @@ function buildHeroBlock(main) {
   }
 }
 
+function generateUUID() {
+  return 'xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = Math.floor(Math.random() * 16);
+    const v = c === 'x' ? r : ((r % 4) + 8);
+    return v.toString(16);
+  });
+}
+
+async function startSession(main) {
+  console.log('Starting new session');
+  const activation = getMetadata('theme');
+  const session = {
+    key: generateUUID(),
+    status: 'init'
+  };
+  localStorage.setItem(`${activation}-session`, JSON.stringify(session));
+  const workstation = activation === 'sharpie' ? localStorage.getItem('sharpie-workstation') : '';
+  
+  const fusionNotification = {
+    key: session.key,
+    workstation: workstation,
+    activation: activation,
+    action: 'Starting new session...'
+  };
+  console.log('Fusion notification:', fusionNotification);
+  const params = Object.entries(fusionNotification).map(([key, value]) => `${key}=${value}`).join('&');
+
+  const wf = `https://hook.app.workfrontfusion.com/olgoqm0vzsgtjnecaq78nl4yplu75a4j?${params}`;
+  const response = await fetch(wf, {
+    method: 'GET',
+  });
+  if(!response.ok) {
+    console.error('Failed to send fusion notification');
+  }
+  console.log('Fusion notification sent successfully');
+}
+
 function addEgg(main) {
   const section = document.createElement('div');
   section.append(buildBlock('egg', { elems: [] }));
@@ -66,6 +103,7 @@ function buildAutoBlocks(main) {
   try {
     buildHeroBlock(main);
     if (getMetadata('template') === 'egg') addEgg(main);
+    if (!localStorage.getItem(`${getMetadata('theme')}-session`)) startSession(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);

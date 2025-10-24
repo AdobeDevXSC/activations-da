@@ -75,6 +75,8 @@ function handleMiniDownload(item, suggest) {
       const placeholders = result.placeholders; // ✅ Now reading from storage
 
       const url = item.finalUrl || item.url;
+      if(!url.includes('amazonaws.com')) return;
+      
       console.log('[Download URL]:', url);
 
       console.log('[Activation Session]:', activationSession);
