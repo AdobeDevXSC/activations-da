@@ -38,7 +38,7 @@ function generateUUID() {
   });
 }
 
-function startSession(main) {
+async function startSession(main) {
   console.log('Starting new session');
   const activation = getMetadata('theme');
   const session = {
@@ -46,6 +46,25 @@ function startSession(main) {
     status: 'init'
   };
   localStorage.setItem(`${activation}-session`, JSON.stringify(session));
+  const workstation = activation === 'sharpie' ? localStorage.getItem('sharpie-workstation') : '';
+  
+  const fusionNotification = {
+    key: session.key,
+    workstation: workstation,
+    activation: activation,
+    action: 'Starting new session...'
+  };
+  console.log('Fusion notification:', fusionNotification);
+  const params = Object.entries(fusionNotification).map(([key, value]) => `${key}=${value}`).join('&');
+
+  const wf = `https://hook.app.workfrontfusion.com/olgoqm0vzsgtjnecaq78nl4yplu75a4j?${params}`;
+  const response = await fetch(wf, {
+    method: 'GET',
+  });
+  if(!response.ok) {
+    console.error('Failed to send fusion notification');
+  }
+  console.log('Fusion notification sent successfully');
 }
 
 function addEgg(main) {
