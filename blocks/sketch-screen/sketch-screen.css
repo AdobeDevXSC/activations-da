@@ -39,13 +39,13 @@ main:has(.express-modal) {
 }
 
 .express-modal video {
-  margin-left: 16px;
-  margin-top: -60px;
-  width: 601px !important;
+  margin-left: calc(16vw / var(--layout-size));
+  margin-top: calc(-60vw / var(--layout-size));
+  width: calc(601vw / var(--layout-size)) !important;
 }
 
 .express-modal .caption {
-  width: 580px !important;
+  width: calc(580vw / var(--layout-size)) !important;
 }
 
 .sketch-screen-wrapper:has(.express-modal) {
@@ -58,8 +58,8 @@ main:has(.express-modal) {
   border-radius: unset !important;
   border: unset !important;
   box-shadow: unset !important;
-  width: unset !important; */
-  width: 1323px;
+  width: unset !important; 
+  width: calc(1323vw / var(--layout-size));*/
 }
 
 .sketch-screen-wrapper .sketch-screen-1 {
@@ -330,6 +330,11 @@ body:has(.sketch-screen-1)::after {
 .sketch-screen .video-placeholder video {
   height: auto;
   width: calc(700vw / var(--layout-size));
+}
+
+.sketch-screen-wrapper>[class*="sketch-screen"]:not(.sketch-screen-1):not(.cola-thank-you):not(.sketch-screen-5) .video-placeholder video {
+  max-height: calc(582vw / var(--layout-size));
+  object-fit: contain;
 }
 
 .sketch-screen.sketch-screen-5 .video-placeholder video {
