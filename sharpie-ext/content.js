@@ -738,7 +738,7 @@
       right: 20px;
       background: rgba(255, 255, 255, 0.2);
       border: none;
-      color: white;
+      color: black;
       font-size: 20px;
       width: 32px;
       height: 32px;
@@ -761,8 +761,8 @@
     /* AEM Embed custom element styling */
     aem-embed {
       display: block;
-      width: 400px;
-      min-height: 200px;
+      width: 700px;
+      min-height: 232px;
     }
   `;
     document.head.appendChild(style);

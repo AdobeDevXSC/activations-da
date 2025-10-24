@@ -55,23 +55,20 @@ function embedVimeo(url, autoplay, background) {
 }
 
 function getVideoElement(source, autoplay, background) {
-  console.log('source', source);
-  console.log('autoplay', autoplay);
-  console.log('background', background);
   const video = document.createElement('video');
   video.setAttribute('playsinline', '');
   video.setAttribute('webkit-playsinline', '');
-  video.muted = true;
-  video.setAttribute('muted', '');
-  video.setAttribute('loop', '');
+  // video.muted = true;
+  // video.setAttribute('muted', '');
+  // video.setAttribute('loop', '');
   // Apply controls and looping based on flags
-  if (background || autoplay) {
-    video.removeAttribute('controls');
-    video.removeAttribute('loop', '');
-  }
-  else {
-    video.controls = true;
-  }
+  // if (background || autoplay) {
+  //   video.removeAttribute('controls');
+  //   video.removeAttribute('loop', '');
+  // }
+  // else {
+  //   video.controls = true;
+  // }
   if (autoplay) {
     video.setAttribute('autoplay', '');
   }
@@ -123,10 +120,8 @@ const loadVideoEmbed = (block, link, autoplay, background) => {
     });
   } else {
     const videoEl = getVideoElement(link, autoplay, background);
-    console.log('videoEl', videoEl);
     block.append(videoEl);
     videoEl.addEventListener('canplay', () => {
-      console.log('canplay');
       block.dataset.embedLoaded = true;
     });
   }
@@ -138,8 +133,7 @@ export default async function decorate(block) {
   block.textContent = '';
   block.dataset.embedLoaded = false;
 
-  const autoplay = true; //block.classList.contains('autoplay');
-  console.log('autoplay', autoplay);
+  const autoplay = block.classList.contains('autoplay');
   if (placeholder) {
     block.classList.add('placeholder');
     const wrapper = document.createElement('div');

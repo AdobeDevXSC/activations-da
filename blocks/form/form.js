@@ -133,7 +133,7 @@ async function handleSubmit(form) {
 
   form.style.cursor = 'default';
   if (form.dataset.confirmation && activation) {
-    
+
     if (payload && payload.firstName && payload.lastName) {
       const { firstName, lastName } = payload;
       const filename = nameToFilename(firstName, lastName);
@@ -164,15 +164,17 @@ async function handleSubmit(form) {
 }
 
 export default async function decorate(block) {
-  // Request the extension ID
-  window.postMessage({ type: 'GET_EXTENSION_ID' }, '*');
-
   window.addEventListener('message', (event) => {
     if (event.data.type === 'EXTENSION_ID') {
       extensionId = event.data.id;
       console.log('Extension ID:', extensionId); // eslint-disable-line no-console
     }
   });
+
+  // Small delay to ensure content script is loaded
+  setTimeout(() => {
+    window.postMessage({ type: 'GET_EXTENSION_ID' }, '*');
+  }, 100);
 
   if (!block) {
     console.error('No block provided to decorate function'); // eslint-disable-line no-console
