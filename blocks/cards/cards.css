@@ -1,26 +1,26 @@
-.cards > ul {
+.cards>ul {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(257px, 1fr));
-  grid-gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(calc(257vw / var(--layout-size)), 1fr));
+  grid-gap: calc(24vw / var(--layout-size));
 }
 
-.cards > ul > li {
-  border: 1px solid #dadada;
+.cards>ul>li {
+  border: calc(1vw / var(--layout-size)) solid #dadada;
   background-color: var(--background-color);
 }
 
 .cards .cards-card-body {
-  margin: 16px;
+  margin: calc(16vw / var(--layout-size));
 }
 
 .cards .cards-card-image {
   line-height: 0;
 }
 
-.cards > ul > li img {
+.cards>ul>li img {
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
