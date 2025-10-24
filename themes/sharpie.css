@@ -161,11 +161,11 @@ main .completion-section h2+p {
   font-size: calc(21vw / var(--layout-size));
 }
 
-main .completion-section h3+p {
+/* main .completion-section h3+p {
   font-size: calc(20vw / var(--layout-size));
   line-height: calc(24vw / var(--layout-size));
   font-weight: bold;
-}
+} */
 
 main .completion-section h3 {
   margin-top: calc(30vw / var(--layout-size));
