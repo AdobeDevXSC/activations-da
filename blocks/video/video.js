@@ -186,7 +186,7 @@ function initSharpieVideo() {
   const videoWrap = document.querySelector('.custom-video .video');
   const vidoeImage = document.querySelector('.video-placeholder-play');
 
-  if (vidoeImage) {
+  if (vidoeImage && link) {
     videoWrap.addEventListener('dblclick', () => link?.classList.add('enabled'));
     videoWrap.addEventListener('contextmenu', () => link?.classList.add('enabled'));
     vidoeImage.addEventListener('dblclick', () => link?.classList.add('enabled'));
