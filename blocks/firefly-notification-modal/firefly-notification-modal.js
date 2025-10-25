@@ -39,6 +39,10 @@ export default function decorate(block) {
         modalId: block.id || 'firefly-notification-modal'
       }
     });
+
+    if (window.location.hostname === 'next.frame.io') {
+      window.location.reload();
+    }
     
     // Dispatch from both the button and the window for maximum compatibility
     closeButton.dispatchEvent(closeEvent);
