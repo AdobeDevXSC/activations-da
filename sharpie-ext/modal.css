@@ -1,3 +1,7 @@
+:root {
+  --layout-size: 19.2;
+}
+
 /* Modal Overlay */
 .express-modal-overlay {
   position: fixed;
@@ -21,20 +25,40 @@
 /* Modal Content */
 .express-modal-content {
   position: relative;
-  width: 1480px;
-  max-width: 95vw; /* Fallback for smaller screens */
-  height: calc(100vh - 148px);
-  max-height: 810px; /* Add max-height to prevent too tall on large screens */
+  width: calc(1708vw / var(--layout-size));
+  max-width: 95vw;
+  /* Fallback for smaller screens */
+  height: calc(100vh - calc(148vw / var(--layout-size)));
+  max-height: calc(810vw / var(--layout-size));
+  /* Add max-height to prevent too tall on large screens */
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  border-radius: 12px;
-  border: 1px solid #DEDEDE;
+  border-radius: calc(12vw / var(--layout-size));
+  border: calc(1vw / var(--layout-size)) solid #DEDEDE;
   background: white;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 calc(20vw / var(--layout-size)) calc(60vw / var(--layout-size)) rgba(0, 0, 0, 0.3);
   transform: scale(0.9);
   transition: transform 0.3s ease;
   overflow: hidden;
+}
+
+.express-modal-content .sketch-screen-4 {
+  border: none !important;
+  box-shadow: unset !important;
+}
+
+.express-modal-content .sketch-screen-4 .caption {
+  height: auto !important;
+}
+
+.express-modal-content .express-modal-close-btn {
+  top: calc(4vw / var(--layout-size));
+  right: calc(7vw / var(--layout-size));
+}
+
+.express-modal-content .sketch-screen-4 .video-placeholder {
+  margin-left: auto !important;
 }
 
 /* Support both iframe (legacy) and aem-embed */
@@ -70,14 +94,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 24px 32px;
-  border-bottom: 1px solid #e0e0e0;
+  padding: calc(24vw / var(--layout-size)) calc(32vw / var(--layout-size));
+  border-bottom: calc(1vw / var(--layout-size)) solid #e0e0e0;
   flex-shrink: 0;
 }
 
 .express-modal-header h2 {
   margin: 0;
-  font-size: 28px;
+  font-size: calc(28vw / var(--layout-size));
   font-weight: 600;
   color: #2c2c2c;
 }
@@ -85,17 +109,17 @@
 .express-modal-close {
   background: none;
   border: none;
-  font-size: 36px;
+  font-size: calc(36vw / var(--layout-size));
   line-height: 1;
   color: #666;
   cursor: pointer;
   padding: 0;
-  width: 40px;
-  height: 40px;
+  width: calc(40vw / var(--layout-size));
+  height: calc(40vw / var(--layout-size));
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 4px;
+  border-radius: calc(4vw / var(--layout-size));
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
@@ -107,38 +131,38 @@
 /* Modal Body */
 .express-modal-body {
   flex: 1;
-  padding: 32px;
+  padding: calc(32vw / var(--layout-size));
   overflow-y: auto;
   color: #2c2c2c;
 }
 
 .express-modal-body p {
-  font-size: 16px;
+  font-size: calc(16vw / var(--layout-size));
   line-height: 1.6;
-  margin: 0 0 16px 0;
+  margin: 0 0 calc(16vw / var(--layout-size)) 0;
 }
 
 .modal-example-content {
-  margin-top: 32px;
-  padding: 24px;
+  margin-top: calc(32vw / var(--layout-size));
+  padding: calc(24vw / var(--layout-size));
   background: #f8f9fa;
-  border-radius: 8px;
+  border-radius: calc(8vw / var(--layout-size));
 }
 
 .modal-example-content h3 {
-  margin: 0 0 16px 0;
-  font-size: 20px;
+  margin: 0 0 calc(16vw / var(--layout-size)) 0;
+  font-size: calc(20vw / var(--layout-size));
   color: #2c2c2c;
 }
 
 .modal-example-content ul {
   margin: 0;
-  padding-left: 24px;
+  padding-left: calc(24vw / var(--layout-size));
 }
 
 .modal-example-content li {
-  margin: 8px 0;
-  font-size: 16px;
+  margin: calc(8vw / var(--layout-size)) 0;
+  font-size: calc(16vw / var(--layout-size));
   line-height: 1.5;
 }
 
@@ -146,18 +170,18 @@
 .express-modal-footer {
   display: flex;
   justify-content: flex-end;
-  gap: 12px;
-  padding: 24px 32px;
-  border-top: 1px solid #e0e0e0;
+  gap: calc(12vw / var(--layout-size));
+  padding: calc(24vw / var(--layout-size)) calc(32vw / var(--layout-size));
+  border-top: calc(1vw / var(--layout-size)) solid #e0e0e0;
   flex-shrink: 0;
 }
 
 /* Modal Buttons */
 .express-modal-btn {
-  padding: 12px 24px;
+  padding: calc(12vw / var(--layout-size)) calc(24vw / var(--layout-size));
   border: none;
-  border-radius: 6px;
-  font-size: 16px;
+  border-radius: calc(6vw / var(--layout-size));
+  font-size: calc(16vw / var(--layout-size));
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -183,17 +207,17 @@
 
 /* Scrollbar styling for modal body */
 .express-modal-body::-webkit-scrollbar {
-  width: 8px;
+  width: calc(8vw / var(--layout-size));
 }
 
 .express-modal-body::-webkit-scrollbar-track {
   background: #f1f1f1;
-  border-radius: 4px;
+  border-radius: calc(4vw / var(--layout-size));
 }
 
 .express-modal-body::-webkit-scrollbar-thumb {
   background: #c1c1c1;
-  border-radius: 4px;
+  border-radius: calc(4vw / var(--layout-size));
 }
 
 .express-modal-body::-webkit-scrollbar-thumb:hover {
@@ -203,15 +227,15 @@
 /* Close Button - positioned absolutely over iframe */
 .express-modal-close-btn {
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: calc(16vw / var(--layout-size));
+  right: calc(16vw / var(--layout-size));
   z-index: 10;
   background: rgba(255, 255, 255, 0.95);
-  border: 1px solid #e0e0e0;
-  width: 44px;
-  height: 44px;
+  border: calc(1vw / var(--layout-size)) solid #e0e0e0;
+  width: calc(44vw / var(--layout-size));
+  height: calc(44vw / var(--layout-size));
   border-radius: 50%;
-  font-size: 32px;
+  font-size: calc(32vw / var(--layout-size));
   line-height: 1;
   color: #666;
   cursor: pointer;
@@ -219,14 +243,14 @@
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 calc(2vw / var(--layout-size)) calc(8vw / var(--layout-size)) rgba(0, 0, 0, 0.15);
 }
 
 .express-modal-close-btn:hover {
   background: white;
   color: #2c2c2c;
   transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 calc(4vw / var(--layout-size)) calc(12vw / var(--layout-size)) rgba(0, 0, 0, 0.2);
 }
 
 .express-modal-close-btn:active {
@@ -236,8 +260,8 @@
 /* Firefly Boards Modal - Non-blocking Overlay */
 .firefly-modal-overlay {
   position: fixed;
-  top: 20px;
-  right: 20px;
+  top: calc(20vw / var(--layout-size));
+  right: calc(20vw / var(--layout-size));
   z-index: 999999;
   pointer-events: none;
 }
@@ -248,13 +272,13 @@
 
 .firefly-modal-content {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  max-width: 400px;
-  width: 400px;
+  border-radius: calc(16vw / var(--layout-size));
+  box-shadow: 0 calc(8vw / var(--layout-size)) calc(32vw / var(--layout-size)) rgba(0, 0, 0, 0.3);
+  max-width: calc(400vw / var(--layout-size));
+  width: calc(400vw / var(--layout-size));
   overflow: hidden;
   position: relative;
-  transform: translateX(450px);
+  transform: translateX(calc(450vw / var(--layout-size)));
   transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   pointer-events: auto;
 }
@@ -264,22 +288,22 @@
 }
 
 .firefly-modal-header {
-  padding: 20px;
+  padding: calc(20vw / var(--layout-size));
   background: rgba(255, 255, 255, 0.1);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: calc(1vw / var(--layout-size)) solid rgba(255, 255, 255, 0.2);
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
 .firefly-modal-title {
-  font-size: 20px;
+  font-size: calc(20vw / var(--layout-size));
   font-weight: 700;
   color: white;
   margin: 0;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: calc(10vw / var(--layout-size));
   flex: 1;
 }
 
@@ -291,9 +315,9 @@
   background: rgba(255, 255, 255, 0.2);
   border: none;
   color: white;
-  font-size: 20px;
-  width: 32px;
-  height: 32px;
+  font-size: calc(20vw / var(--layout-size));
+  width: calc(32vw / var(--layout-size));
+  height: calc(32vw / var(--layout-size));
   border-radius: 50%;
   cursor: pointer;
   display: flex;
@@ -305,8 +329,8 @@
   flex-shrink: 0;
 
   position: absolute;
-  top: -13px;
-  right: -13px;
+  top: calc(-13vw / var(--layout-size));
+  right: calc(-13vw / var(--layout-size));
   z-index: 10;
 }
 
@@ -316,16 +340,16 @@
 }
 
 .firefly-modal-body {
-  padding: 20px;
+  padding: calc(20vw / var(--layout-size));
   color: white;
-  max-height: 400px;
+  max-height: calc(400vw / var(--layout-size));
   overflow-y: auto;
 }
 
 .firefly-modal-body p {
-  margin: 0 0 12px 0;
+  margin: 0 0 calc(12vw / var(--layout-size)) 0;
   line-height: 1.6;
-  font-size: 15px;
+  font-size: calc(15vw / var(--layout-size));
 }
 
 .firefly-modal-body p:last-child {
@@ -334,23 +358,28 @@
 
 /* Loading spinner */
 .firefly-modal-spinner {
-  border: 3px solid rgba(255, 255, 255, 0.3);
-  border-top: 3px solid white;
+  border: calc(3vw / var(--layout-size)) solid rgba(255, 255, 255, 0.3);
+  border-top: calc(3vw / var(--layout-size)) solid white;
   border-radius: 50%;
-  width: 32px;
-  height: 32px;
+  width: calc(32vw / var(--layout-size));
+  height: calc(32vw / var(--layout-size));
   animation: firefly-spin 1s linear infinite;
-  margin: 12px auto;
+  margin: calc(12vw / var(--layout-size)) auto;
 }
 
 @keyframes firefly-spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Auto-dismiss progress bar (optional) */
 .firefly-modal-progress {
-  height: 3px;
+  height: calc(3vw / var(--layout-size));
   background: rgba(255, 255, 255, 0.3);
   position: absolute;
   bottom: 0;
@@ -367,40 +396,45 @@
 }
 
 @keyframes firefly-progress-shrink {
-  from { transform: scaleX(1); }
-  to { transform: scaleX(0); }
+  from {
+    transform: scaleX(1);
+  }
+
+  to {
+    transform: scaleX(0);
+  }
 }
 
 /* Action buttons in modal body */
 .firefly-modal-actions {
   display: flex;
-  gap: 10px;
-  margin-top: 20px;
-  padding-top: 16px;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  gap: calc(10vw / var(--layout-size));
+  margin-top: calc(20vw / var(--layout-size));
+  padding-top: calc(16vw / var(--layout-size));
+  border-top: calc(1vw / var(--layout-size)) solid rgba(255, 255, 255, 0.2);
 }
 
 .firefly-modal-action-btn {
   flex: 1;
-  padding: 12px 20px;
-  border: 2px solid rgba(255, 255, 255, 0.4);
+  padding: calc(12vw / var(--layout-size)) calc(20vw / var(--layout-size));
+  border: calc(2vw / var(--layout-size)) solid rgba(255, 255, 255, 0.4);
   background: rgba(255, 255, 255, 0.2);
   color: white;
-  border-radius: 8px;
-  font-size: 14px;
+  border-radius: calc(8vw / var(--layout-size));
+  font-size: calc(14vw / var(--layout-size));
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: calc(6vw / var(--layout-size));
 }
 
 .firefly-modal-action-btn:hover {
   background: rgba(255, 255, 255, 0.3);
   border-color: rgba(255, 255, 255, 0.6);
-  transform: translateY(-2px);
+  transform: translateY(calc(-2vw / var(--layout-size)));
 }
 
 .firefly-modal-action-btn:active {
@@ -423,17 +457,17 @@
     width: 95vw;
     height: 90vh;
   }
-  
+
   .express-modal-header,
   .express-modal-footer {
-    padding: 16px 20px;
+    padding: calc(16vw / var(--layout-size)) calc(20vw / var(--layout-size));
   }
-  
+
   .express-modal-body {
-    padding: 20px;
+    padding: calc(20vw / var(--layout-size));
   }
-  
+
   .express-modal-header h2 {
-    font-size: 22px;
+    font-size: calc(22vw / var(--layout-size));
   }
 }
