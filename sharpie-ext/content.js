@@ -10,6 +10,44 @@
   });
 })();
 
+// Add this listener anywhere in your content.js file (ideally near the top)
+(function listenForFireflyModalClose() {
+  console.log('🎧 Setting up firefly modal close listener'); // eslint-disable-line no-console
+  
+  // Listen on window for maximum compatibility
+  window.addEventListener('firefly-modal-close', (event) => {
+    console.log('🔔 Firefly modal closed!', event.detail); // eslint-disable-line no-console
+    
+    // Access event details
+    const { timestamp, modalId } = event.detail;
+    
+    // Do whatever you need when modal closes
+    // For example:
+    // - Send message to background script
+    // - Update UI
+    // - Track analytics
+    // - etc.
+    
+    console.log(`Modal ${modalId} closed at ${new Date(timestamp).toISOString()}`); // eslint-disable-line no-console
+    
+    // Example: Send to background script
+    try {
+      chrome.runtime.sendMessage({
+        type: 'FIREFLY_MODAL_CLOSED',
+        timestamp,
+        modalId
+      });
+    } catch (error) {
+      console.log('Could not send to background:', error); // eslint-disable-line no-console
+    }
+  });
+  
+  // Also listen on document for redundancy
+  document.addEventListener('firefly-modal-close', (event) => {
+    console.log('🔔 Firefly modal close event (document level)', event.detail); // eslint-disable-line no-console
+  });
+})();
+
 (function () {
   'use strict';
 
@@ -722,11 +760,11 @@
     modalWrapper.className = 'firefly-modal-wrapper';
 
     // Create close button
-    const closeButton = document.createElement('button');
-    closeButton.className = 'firefly-modal-close-btn';
-    closeButton.innerHTML = '&times;';
-    closeButton.setAttribute('aria-label', 'Dismiss');
-
+    // const closeButton = document.createElement('button');
+    // closeButton.className = 'firefly-modal-close-btn';
+    // closeButton.innerHTML = '&times;';
+    // closeButton.setAttribute('aria-label', 'Dismiss');
+    
     // Create AEM Embed element
     const aemEmbed = document.createElement('aem-embed');
     aemEmbed.setAttribute('url', url);
@@ -798,8 +836,9 @@
     }
 
     // Append elements
-    modalWrapper.appendChild(closeButton);
+    // modalWrapper.appendChild(closeButton);
     modalWrapper.appendChild(aemEmbed);
+
     if (buttonContainer) {
       modalWrapper.appendChild(buttonContainer);  // Positioned absolutely, so it floats over the aemEmbed
     }
@@ -830,10 +869,10 @@
     }
 
     // Close button event
-    closeButton.addEventListener('click', (e) => {
-      e.stopPropagation();
-      closeModal();
-    });
+    // closeButton.addEventListener('click', (e) => {
+    //   e.stopPropagation();
+    //   closeModal();
+    // });
 
     // ESC key to dismiss
     const escKeyListener = (e) => {
@@ -1092,28 +1131,28 @@
     experienceName = experienceName.experienceName;
 
     // TEST: Trigger modal after 3 seconds for debugging
-    // setTimeout(() => {
-    //   console.log('🧪 Test: Creating modal...');
-    //   createFireflyModal({
-    //     url: `${MODAL_URL}firefly-services-done`,
-    //     buttons: [
-    //       {
-    //         label: 'Cancel',
-    //         primary: false,
-    //         onClick: () => {
-    //           console.log('Cancel clicked');
-    //         }
-    //       },
-    //       {
-    //         label: 'Refresh Page',
-    //         primary: true,
-    //         onClick: () => {
-    //           window.location.reload();
-    //         }
-    //       }
-    //     ]
-    //   });
-    // }, 1000);
+    setTimeout(() => {
+      console.log('🧪 Test: Creating modal...');
+      createFireflyModal({
+        url: `${MODAL_URL}firefly-services-done`,
+        buttons: [
+          {
+            label: 'Cancel',
+            primary: false,
+            onClick: () => {
+              console.log('Cancel clicked');
+            }
+          },
+          {
+            label: 'Refresh Page',
+            primary: true,
+            onClick: () => {
+              window.location.reload();
+            }
+          }
+        ]
+      });
+    }, 1000);
 
     if (experienceName && experienceName.includes('-'))
       experienceName = experienceName.replace(/-/g, '');

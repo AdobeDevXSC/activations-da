@@ -1,13 +1,9 @@
 export default function decorate(block) {
-  console.log('🎨 [Firefly Notification Modal] Block decorated');
   let h2 = '';
   [...block.children].forEach(row => {
-    console.log('Row:', row);
     const icon = row.querySelector('span.icon');
     if (!icon) {
-      console.log('H2:', h2);
       if (row.querySelector('div > p')) {
-        console.log('Paragraph:', row);
         row.prepend(h2);
       } else {
         h2 = row.querySelector('div:has(h2)');
@@ -29,6 +25,30 @@ export default function decorate(block) {
   closeButton.className = 'firefly-modal-close-btn';
   closeButton.innerHTML = '&times;';
   closeButton.setAttribute('aria-label', 'Dismiss');
+  
+  // Add click event to dispatch custom event
+  closeButton.addEventListener('click', () => {
+    console.log('🔔 Firefly modal close button clicked'); // eslint-disable-line no-console
+    
+    // Dispatch custom event that bubbles up
+    const closeEvent = new CustomEvent('firefly-modal-close', {
+      bubbles: true,      // Event bubbles up through DOM
+      composed: true,     // Event crosses shadow DOM boundaries
+      detail: {
+        timestamp: Date.now(),
+        modalId: block.id || 'firefly-notification-modal'
+      }
+    });
+    
+    // Dispatch from both the button and the window for maximum compatibility
+    closeButton.dispatchEvent(closeEvent);
+    window.dispatchEvent(closeEvent);
+    
+    console.log('✅ firefly-modal-close event dispatched'); // eslint-disable-line no-console
+    
+    // Hide the modal
+    wrapper.style.display = 'none';
+  });
   
   // Append button to wrapper (not to block)
   wrapper.appendChild(closeButton);
