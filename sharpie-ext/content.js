@@ -27,7 +27,7 @@
     // - Update UI
     // - Track analytics
     // - etc.
-    console.log('🔔 Firefly modal closed!', window.location.hostname);
+    console.log('🔔 Modal on', window.location.hostname);
     
     console.log(`Modal ${modalId} closed at ${new Date(timestamp).toISOString()}`); // eslint-disable-line no-console
     
