@@ -39,9 +39,9 @@ function generateUUID() {
 }
 
 async function startSession(main) {
-  console.log('Starting new session');
   const activation = getMetadata('theme');
   if (!activation) return;
+  console.log('Starting new session');
   const session = {
     key: generateUUID(),
     status: 'init'

@@ -8,30 +8,37 @@
 
 /* Firefly Notification Modal Block */
 .firefly-notification-modal {
-  /* background: linear-gradient(135deg, var(--modal-gradient-start, #667eea) 0%, var(--modal-gradient-end, #764ba2) 100%); */
-  background: white;
+ background: white;
   border-radius: 13.68px;
   max-width: 687px;
   border: 10px solid #000;
-  width: 687px;
-  height: 232px;
+
+  display: inline-flex;
+  padding: 40px 35px;
+  flex-direction: row;
+  gap: 16.413px;
+
+  width: 507px;
+  height: 179px;
+
   overflow: hidden;
   position: relative;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-
+  
   border-image-source: url('https://main--activations-da--adobedevxsc.aem.live/coca-cola/assets/media_114daa25ded116ee560a9032294b531571c2289e4.png');
   border-image-slice: 1;
   border-image-width: 10px;
   border-image-outset: 0;
   border-image-repeat: stretch;
-  
+
   /* Use clip-path to create rounded corners */
   clip-path: inset(0 round 13.68px);
-  box-shadow: 0px 0px 2.73543px rgba(0, 0, 0, 0.12), 0px 2.73543px 8.2063px rgba(0, 0, 0, 0.04), 0px 5.47087px 16.4126px rgba(0, 0, 0, 0.08)!important;
   border-radius: 13.6772px !important;
   font-family: "adobe-clean", sans-serif !important;
-  
+
+  align-items: center;
+
 }
+
 
 .firefly-notification-modal img {
   width: 20px;
@@ -42,52 +49,40 @@
 /* ... rest of your existing CSS ... */
 
 /* First div wrapper (header section) */
-.firefly-notification-modal > div:first-child {
-  padding: 68px 68px 20px 68px;
-  background: rgba(255, 255, 255, 0.1);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+.firefly-notification-modal>div:first-child {
+  width: 75px;
+  height: 75px;
+  flex-shrink: 0;
 }
 
-/* Remove nested div padding/margin */
-.firefly-notification-modal > div > div {
-  margin: 0;
-  padding: 0;
-}
 
 /* Header title styling */
 .firefly-notification-modal h2 {
+  font-size: 30.09px !important;
+  font-style: normal;
+  font-weight: 800 !important;
+  line-height: 35.561px !important;
+
   font-size: 20px;
   font-weight: 700;
-  font-family: 'adobe-clean', Arial, Helvetica, sans-serif;
-  color: black;
+
   margin: 0;
   padding: 0;
-  line-height: 1.3;
 
-  font-weight: 800 !important;
-  font-size: 36.0898px !important;
-  line-height: 36px !important;
   color: #000000 !important;
   font-family: "adobe-clean", sans-serif !important;
 }
 
-/* Add emoji support for title */
-.firefly-notification-modal h2::before {
-  content: '';
-  margin-right: 10px;
-}
-
 /* Second div wrapper (body section) */
-.firefly-notification-modal > div:nth-child(2) {
-  padding:0px 20px 20px 77px;
-  font-family: 'adobe-clean', Arial, Helvetica, sans-serif;
-  color: black;
-  max-height: 400px;
-  overflow-y: auto;
+.firefly-notification-modal>div:nth-child(2) {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
 }
 
 /* Body content */
-.firefly-notification-modal > div:nth-child(2) p {
+.firefly-notification-modal>div:nth-child(2) p {
   margin: 0 0 12px 0;
   line-height: 1.6;
   font-size: 15px;
@@ -101,47 +96,8 @@
   font-family: "adobe-clean", sans-serif !important;
 }
 
-.firefly-notification-modal > div:nth-child(2) p:last-child {
+.firefly-notification-modal>div:nth-child(2) p:last-child {
   margin-bottom: 0;
-}
-
-/* Optional: Loading spinner */
-.firefly-notification-modal .spinner {
-  border: 3px solid rgba(255, 255, 255, 0.3);
-  border-top: 3px solid white;
-  border-radius: 50%;
-  width: 32px;
-  height: 32px;
-  animation: firefly-spin 1s linear infinite;
-  margin: 12px auto;
-}
-
-@keyframes firefly-spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* Progress bar (for auto-dismiss) */
-.firefly-notification-modal .progress {
-  height: 3px;
-  background: rgba(255, 255, 255, 0.3);
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
-
-.firefly-notification-modal .progress-bar {
-  height: 100%;
-  background: white;
-  width: 100%;
-  transform-origin: left;
-  animation: firefly-progress-shrink 5s linear forwards;
-}
-
-@keyframes firefly-progress-shrink {
-  from { transform: scaleX(1); }
-  to { transform: scaleX(0); }
 }
 
 /* Hidden state */
@@ -150,21 +106,21 @@
 }
 
 /* Scrollbar styling for body content */
-.firefly-notification-modal > div:nth-child(2)::-webkit-scrollbar {
+.firefly-notification-modal>div:nth-child(2)::-webkit-scrollbar {
   width: 6px;
 }
 
-.firefly-notification-modal > div:nth-child(2)::-webkit-scrollbar-track {
+.firefly-notification-modal>div:nth-child(2)::-webkit-scrollbar-track {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 3px;
 }
 
-.firefly-notification-modal > div:nth-child(2)::-webkit-scrollbar-thumb {
+.firefly-notification-modal>div:nth-child(2)::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.3);
   border-radius: 3px;
 }
 
-.firefly-notification-modal > div:nth-child(2)::-webkit-scrollbar-thumb:hover {
+.firefly-notification-modal>div:nth-child(2)::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.5);
 }
 
