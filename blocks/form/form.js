@@ -172,8 +172,6 @@ export default async function decorate(block) {
     // Only accept messages from same origin
     if (event.source !== window) return;
 
-    console.log('📨 Message received:', event.data); // eslint-disable-line no-console
-
     if (event.data.type === 'EXTENSION_ID') {
       extensionId = event.data.id;
       console.log('✅ Extension ID received:', extensionId); // eslint-disable-line no-console
