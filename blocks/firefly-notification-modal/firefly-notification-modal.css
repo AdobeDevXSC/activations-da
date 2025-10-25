@@ -8,7 +8,7 @@
 
 /* Firefly Notification Modal Block */
 .firefly-notification-modal {
- background: white;
+  background: white;
   border-radius: 13.68px;
   max-width: 687px;
   border: 10px solid #000;
@@ -23,8 +23,8 @@
 
   overflow: hidden;
   position: relative;
-  
-  border-image-source: url('https://main--activations-da--adobedevxsc.aem.live/coca-cola/assets/media_114daa25ded116ee560a9032294b531571c2289e4.png');
+
+  border-image-source: url('https://main--activations-da--adobedevxsc.aem.page/sharpie/assets/media_172d81f0b573f353eda6bc0fb0560c6ab612ea2f0.jpg');
   border-image-slice: 1;
   border-image-width: 10px;
   border-image-outset: 0;
@@ -36,6 +36,8 @@
   font-family: "adobe-clean", sans-serif !important;
 
   align-items: center;
+
+  z-index: 1;
 
 }
 
@@ -123,6 +125,52 @@
 .firefly-notification-modal>div:nth-child(2)::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.5);
 }
+
+.firefly-modal-close-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: #000;
+  font-size: 20px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  padding: 0;
+  line-height: 1;
+  flex-shrink: 0;
+
+  position: absolute;
+  top: -22px;   /* Completely outside the border */
+  right: -16px;
+  z-index: 10;
+
+  display: flex;
+  width: 51.51px;
+  height: 51.51px;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 49.61px;
+  background: var(--white, #FFF);
+  box-shadow: 0 5.812px 11.623px 0 rgba(0, 0, 0, 0.10);
+}
+
+.firefly-modal-close-btn:hover {
+  background: rgba(255, 255, 255, 0.4);
+  transform: rotate(90deg);
+}
+
+/* Add wrapper styles */
+.firefly-modal-wrapper {
+  position: relative;
+  display: inline-block;
+  margin: 20px;
+}
+
 
 .egg,
 main .egg,
