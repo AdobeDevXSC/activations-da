@@ -132,6 +132,7 @@ export function decorateMain(main) {
 async function decorateTemplateAndTheme() {
   await libDecorateTemplateAndTheme();
   const theme = getMetadata('theme');
+  console.log('🔔 Theme:', theme);
   theme && loadCSS(`${window.hlx.codeBasePath}/themes/${theme}.css`);
 }
 
