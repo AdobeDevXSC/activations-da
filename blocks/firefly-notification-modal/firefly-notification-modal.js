@@ -1,22 +1,43 @@
 export default function decorate(block) {
-  let h2 = '';
+  console.log('🎨 [Firefly Modal] Starting decoration'); // eslint-disable-line no-console
+  
+  // Create two main containers
+  const iconContainer = document.createElement('div');
+  iconContainer.className = 'firefly-modal-icon';
+  
+  const contentContainer = document.createElement('div');
+  contentContainer.className = 'firefly-modal-content';
+  
+  // Process all child divs
   [...block.children].forEach(row => {
+    // Find the icon
     const icon = row.querySelector('span.icon');
-    if (!icon) {
-      if (row.querySelector('div > p')) {
-        row.prepend(h2);
-      } else {
-        h2 = row.querySelector('div:has(h2)');
-        row.remove();
+    
+    if (icon) {
+      // If this row has an icon, move just the icon to iconContainer
+      iconContainer.appendChild(icon);
+    } else {
+      // Everything else goes into contentContainer
+      // Extract the actual content (h2, p, links)
+      const content = row.querySelector('div');
+      if (content) {
+        contentContainer.appendChild(content);
       }
     }
   });
-
-  // Create a wrapper container
+  
+  // Clear the block
+  block.innerHTML = '';
+  
+  // Append the two containers
+  block.appendChild(iconContainer);
+  block.appendChild(contentContainer);
+  
+  // Create a wrapper container for positioning
   const wrapper = document.createElement('div');
   wrapper.className = 'firefly-modal-wrapper';
   
-  // Move the block's content into the wrapper (before wrapping)
+  // Move the block into the wrapper
   block.parentElement.insertBefore(wrapper, block);
   wrapper.appendChild(block);
   
@@ -32,17 +53,13 @@ export default function decorate(block) {
     
     // Dispatch custom event that bubbles up
     const closeEvent = new CustomEvent('firefly-modal-close', {
-      bubbles: true,      // Event bubbles up through DOM
-      composed: true,     // Event crosses shadow DOM boundaries
+      bubbles: true,
+      composed: true,
       detail: {
         timestamp: Date.now(),
         modalId: block.id || 'firefly-notification-modal'
       }
     });
-
-    if (window.location.hostname === 'next.frame.io') {
-      window.location.reload();
-    }
     
     // Dispatch from both the button and the window for maximum compatibility
     closeButton.dispatchEvent(closeEvent);
@@ -56,4 +73,6 @@ export default function decorate(block) {
   
   // Append button to wrapper (not to block)
   wrapper.appendChild(closeButton);
+  
+  console.log('✅ [Firefly Modal] Decoration complete'); // eslint-disable-line no-console
 }
