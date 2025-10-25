@@ -1132,28 +1132,28 @@
     experienceName = experienceName.experienceName;
 
     // TEST: Trigger modal after 3 seconds for debugging
-    // setTimeout(() => {
-    //   console.log('🧪 Test: Creating modal...');
-    //   createFireflyModal({
-    //     url: `${MODAL_URL}firefly-services-done`,
-    //     buttons: [
-    //       {
-    //         label: 'Cancel',
-    //         primary: false,
-    //         onClick: () => {
-    //           console.log('Cancel clicked');
-    //         }
-    //       },
-    //       {
-    //         label: 'Refresh Page',
-    //         primary: true,
-    //         onClick: () => {
-    //           window.location.reload();
-    //         }
-    //       }
-    //     ]
-    //   });
-    // }, 1000);
+    setTimeout(() => {
+      console.log('🧪 Test: Creating modal...');
+      createFireflyModal({
+        url: `${MODAL_URL}firefly-services-done`,
+        buttons: [
+          {
+            label: 'Cancel',
+            primary: false,
+            onClick: () => {
+              console.log('Cancel clicked');
+            }
+          },
+          {
+            label: 'Refresh Page',
+            primary: true,
+            onClick: () => {
+              window.location.reload();
+            }
+          }
+        ]
+      });
+    }, 1000);
 
     if (experienceName && experienceName.includes('-'))
       experienceName = experienceName.replace(/-/g, '');

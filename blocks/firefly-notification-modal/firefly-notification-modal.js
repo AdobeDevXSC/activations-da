@@ -1,6 +1,12 @@
 export default function decorate(block) {
   console.log('🎨 [Firefly Modal] Starting decoration'); // eslint-disable-line no-console
   
+  // Safety check
+  if (!block || !block.parentElement) {
+    console.error('❌ [Firefly Modal] Block or parent element is null'); // eslint-disable-line no-console
+    return;
+  }
+  
   // Create two main containers
   const iconContainer = document.createElement('div');
   iconContainer.className = 'firefly-modal-icon';
@@ -37,8 +43,15 @@ export default function decorate(block) {
   const wrapper = document.createElement('div');
   wrapper.className = 'firefly-modal-wrapper';
   
+  // Store reference to parent before manipulation
+  const parent = block.parentElement;
+  if (!parent) {
+    console.error('❌ [Firefly Modal] No parent element found'); // eslint-disable-line no-console
+    return;
+  }
+  
   // Move the block into the wrapper
-  block.parentElement.insertBefore(wrapper, block);
+  parent.insertBefore(wrapper, block);
   wrapper.appendChild(block);
   
   // Create close button as a sibling to the modal
