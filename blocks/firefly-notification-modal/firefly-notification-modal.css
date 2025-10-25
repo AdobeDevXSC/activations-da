@@ -169,8 +169,8 @@
   position: relative;
   display: inline-block;
   margin: 20px;
+  overflow: visible;
 }
-
 
 .egg,
 main .egg,

@@ -233,6 +233,55 @@
   transform: scale(0.95);
 }
 
+/* Add this at the end of the file, before the responsive design section */
+
+/* Firefly Modal Overlay - positioned in upper right */
+.firefly-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999999;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 20px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.firefly-modal-overlay.show {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+.firefly-modal-wrapper {
+  position: relative;
+  transform: scale(0.7) translateY(-20px);
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55), opacity 0.3s ease;
+  pointer-events: auto;
+}
+
+.firefly-modal-overlay.show .firefly-modal-wrapper {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+}
+
+/* AEM Embed in modal */
+.firefly-modal-wrapper aem-embed {
+  display: block;
+  width: 700px;
+  min-height: 232px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  /* existing express modal responsive styles... */
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
   .express-modal-content {

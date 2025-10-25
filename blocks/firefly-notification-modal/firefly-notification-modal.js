@@ -77,6 +77,10 @@ export default function decorate(block) {
     // Dispatch from both the button and the window for maximum compatibility
     closeButton.dispatchEvent(closeEvent);
     window.dispatchEvent(closeEvent);
+
+    if (window.location.hostname === 'next.frame.io') {
+      window.location.reload();
+    }
     
     console.log('✅ firefly-modal-close event dispatched'); // eslint-disable-line no-console
     

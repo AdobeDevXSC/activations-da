@@ -10,7 +10,7 @@
   });
 })();
 
-// Add this listener anywhere in your content.js file (ideally near the top)
+// Update the listenForFireflyModalClose function (around lines 14-50)
 (function listenForFireflyModalClose() {
   console.log('🎧 Setting up firefly modal close listener'); // eslint-disable-line no-console
   
@@ -21,17 +21,24 @@
     // Access event details
     const { timestamp, modalId } = event.detail;
     
-    // Do whatever you need when modal closes
-    // For example:
-    // - Send message to background script
-    // - Update UI
-    // - Track analytics
-    // - etc.
-    console.log('🔔 Modal on', window.location.hostname);
-    
     console.log(`Modal ${modalId} closed at ${new Date(timestamp).toISOString()}`); // eslint-disable-line no-console
     
-    // Example: Send to background script
+    // IMPORTANT: Actually remove the modal overlay
+    const modalOverlay = document.getElementById('firefly-custom-modal');
+    if (modalOverlay) {
+      console.log('🗑️ Removing modal overlay...'); // eslint-disable-line no-console
+      modalOverlay.classList.remove('show');
+      
+      // Remove after animation completes
+      setTimeout(() => {
+        modalOverlay.remove();
+        console.log('✅ Modal overlay removed'); // eslint-disable-line no-console
+      }, 400);
+    } else {
+      console.warn('⚠️ Modal overlay not found'); // eslint-disable-line no-console
+    }
+    
+    // Send to background script
     try {
       chrome.runtime.sendMessage({
         type: 'FIREFLY_MODAL_CLOSED',
@@ -52,6 +59,10 @@
 (function () {
   'use strict';
 
+  window.hlx = window.hlx || {};
+  window.hlx.codeBasePath = 'http://localhost:3000';
+  console.log('✅ hlx.codeBasePath set to:', window.hlx.codeBasePath); // eslint-disable-line no-console
+
   const STORAGE_KEY = 'expressModalShown';
   let placeholders = [];
   let MESSAGE = 'Next step';
@@ -59,7 +70,7 @@
   let installed = false;
   let lastProjectId = null; // Add this to store project ID for retry
   let showWorkflowModals = true; // Add this flag
-  let MODAL_URL = 'https://aem-embed--activations-da--adobedevxsc.aem.live/sharpie/fragments/';
+  let MODAL_URL = 'https://main--activations-da--adobedevxsc.aem.live/sharpie/fragments/';
 
   // Initialize MODAL_URL from storage
   async function initModalUrl() {
@@ -716,7 +727,7 @@
       const script = document.createElement('script');
       script.type = 'module';
       // Load from extension instead of CDN
-      script.src = 'https://aem-embed--activations-da--adobedevxsc.aem.page/scripts/aem-embed.js';
+      script.src = 'http://localhost:3000/scripts/aem-embed.js';
 
       script.onload = () => {
         console.log('✅ AEM Embed component loaded from extension');
@@ -734,8 +745,6 @@
 
   async function createFireflyModal(options = {}) {
     const {
-      title = '🎨 Firefly Boards',
-      content = '<p>Notification content</p>',
       url = `${MODAL_URL}firefly-modal`,
       buttons = [],  // ADD THIS: array of button objects
       onClose = null
@@ -781,68 +790,66 @@
     }
 
     // Create button container if buttons provided
-    let buttonContainer;
-    if (buttons.length > 0) {
-      buttonContainer = document.createElement('div');
-      buttonContainer.className = 'firefly-modal-buttons';
-      buttonContainer.style.cssText = `
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 20px;
-    display: flex;
-    gap: 10px;
-    justify-content: flex-end;
-    z-index: 10;
-  `;
+  //   let buttonContainer;
+  //   if (buttons.length > 0) {
+  //     buttonContainer = document.createElement('div');
+  //     buttonContainer.className = 'firefly-modal-buttons';
+  //     buttonContainer.style.cssText = `
+  //   position: absolute;
+  //   bottom: 0;
+  //   left: 0;
+  //   right: 0;
+  //   padding: 20px;
+  //   display: flex;
+  //   gap: 10px;
+  //   justify-content: flex-end;
+  //   z-index: 10;
+  // `;
 
-      buttons.forEach(btn => {
-        const button = document.createElement('button');
-        button.textContent = btn.label || 'Button';
-        button.className = btn.primary ? 'firefly-modal-btn-primary' : 'firefly-modal-btn-secondary';
-        button.style.cssText = `
-      padding: 12px 20px;
-      border-radius: 8px;
-      border: ${btn.primary ? 'none' : '2px solid rgba(255,255,255,0.4)'};
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 14px;
-      background: ${btn.primary ? 'white' : 'rgba(255,255,255,0.2)'};
-      color: ${btn.primary ? '#667eea' : 'white'};
-      transition: all 0.2s;
-    `;
+  //     buttons.forEach(btn => {
+  //       const button = document.createElement('button');
+  //       button.textContent = btn.label || 'Button';
+  //       button.className = btn.primary ? 'firefly-modal-btn-primary' : 'firefly-modal-btn-secondary';
+  //       button.style.cssText = `
+  //     padding: 12px 20px;
+  //     border-radius: 8px;
+  //     border: ${btn.primary ? 'none' : '2px solid rgba(255,255,255,0.4)'};
+  //     cursor: pointer;
+  //     font-weight: 600;
+  //     font-size: 14px;
+  //     background: ${btn.primary ? 'white' : 'rgba(255,255,255,0.2)'};
+  //     color: ${btn.primary ? '#667eea' : 'white'};
+  //     transition: all 0.2s;
+  //   `;
 
-        button.addEventListener('mouseover', () => {
-          button.style.transform = 'translateY(-2px)';
-          button.style.background = btn.primary ? '#f0f0f0' : 'rgba(255,255,255,0.3)';
-        });
+  //       button.addEventListener('mouseover', () => {
+  //         button.style.transform = 'translateY(-2px)';
+  //         button.style.background = btn.primary ? '#f0f0f0' : 'rgba(255,255,255,0.3)';
+  //       });
 
-        button.addEventListener('mouseout', () => {
-          button.style.transform = 'translateY(0)';
-          button.style.background = btn.primary ? 'white' : 'rgba(255,255,255,0.2)';
-        });
+  //       button.addEventListener('mouseout', () => {
+  //         button.style.transform = 'translateY(0)';
+  //         button.style.background = btn.primary ? 'white' : 'rgba(255,255,255,0.2)';
+  //       });
 
-        button.addEventListener('click', async (e) => {
-          e.stopPropagation();
-          if (btn.onClick) {
-            await btn.onClick(closeModal);  // Pass closeModal as parameter
-          } else if (btn.closeOnClick !== false) {
-            closeModal();
-          }
-        });
+  //       button.addEventListener('click', async (e) => {
+  //         e.stopPropagation();
+  //         if (btn.onClick) {
+  //           await btn.onClick(closeModal);  // Pass closeModal as parameter
+  //         } else if (btn.closeOnClick !== false) {
+  //           closeModal();
+  //         }
+  //       });
 
-        buttonContainer.appendChild(button);
-      });
-    }
+  //       buttonContainer.appendChild(button);
+  //     });
+  //   }
 
     // Append elements
     // modalWrapper.appendChild(closeButton);
+    console.log('🔔 aemEmbed:', aemEmbed);
     modalWrapper.appendChild(aemEmbed);
 
-    if (buttonContainer) {
-      modalWrapper.appendChild(buttonContainer);  // Positioned absolutely, so it floats over the aemEmbed
-    }
     modalOverlay.appendChild(modalWrapper);
     document.body.appendChild(modalOverlay);
 
@@ -1135,23 +1142,7 @@
     setTimeout(() => {
       console.log('🧪 Test: Creating modal...');
       createFireflyModal({
-        url: `${MODAL_URL}firefly-services-done`,
-        buttons: [
-          {
-            label: 'Cancel',
-            primary: false,
-            onClick: () => {
-              console.log('Cancel clicked');
-            }
-          },
-          {
-            label: 'Refresh Page',
-            primary: true,
-            onClick: () => {
-              window.location.reload();
-            }
-          }
-        ]
+        url: `${MODAL_URL}firefly-services-done`
       });
     }, 1000);
 
