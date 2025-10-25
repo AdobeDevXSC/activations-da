@@ -1,3 +1,7 @@
+:root {
+  --layout-size: 19.2;
+}
+
 body.modal-open {
   overflow: hidden;
 }
@@ -9,21 +13,21 @@ body.modal-open {
 .modal dialog {
   overscroll-behavior: none;
   overflow-y: hidden;
-  border: 1px solid var(--dark-color);
+  border: calc(1vw / var(--layout-size)) solid var(--dark-color);
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding: 56px;
-  gap: 40px;
+  padding: calc(56vw / var(--layout-size));
+  gap: calc(40vw / var(--layout-size));
   isolation: isolate;
   position: relative;
-  width: 720px;
-  min-width: 328px;
-  max-width: 720px;
+  width: calc(720vw / var(--layout-size));
+  min-width: calc(328vw / var(--layout-size));
+  max-width: calc(720vw / var(--layout-size));
   height: auto;
   max-height: fit-content;
   background: #FFF;
-  border-radius: 15px;
+  border-radius: calc(15vw / var(--layout-size));
 }
 
 .modal-wrapper .modal-content {
@@ -37,10 +41,15 @@ body.modal-open {
   overflow-y: auto;
   overscroll-behavior: none;
   width: 100%;
-  max-height: calc(100dvh - (2 * var(--header-height)) - 48px);
-  padding: 24px;
+  max-height: calc(100dvh - (2 * var(--header-height)) - calc(48vw / var(--layout-size)));
+  padding: calc(24vw / var(--layout-size));
   padding-top: 0;
-  margin-top: 44px;
+  margin-top: calc(44vw / var(--layout-size));
+}
+
+.modal dialog .modal-content .section .default-content-wrapper p img {
+  width: 100%;
+  max-width: 100%;
 }
 
 /* @media (width >= 900px) {
@@ -55,11 +64,11 @@ body.modal-open {
   }
 } */
 
-main > .modal {
+main>.modal {
   display: none;
 }
 
-main.modal-wrapper > .modal {
+main.modal-wrapper>.modal {
   display: block;
   position: absolute;
 }
@@ -81,8 +90,8 @@ main.modal-wrapper > .modal {
 
 .modal .close-button .icon.icon-close {
   content: '';
-  width: 24px;
-  height: 24px;
+  width: calc(24vw / var(--layout-size));
+  height: calc(24vw / var(--layout-size));
 }
 
 .modal .close-button .icon.icon-close::before,
@@ -94,9 +103,9 @@ main.modal-wrapper > .modal {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) rotate(45deg);
-  width: 24px;
-  height: 2px;
-  border-radius: 2px;
+  width: calc(24vw / var(--layout-size));
+  height: calc(2vw / var(--layout-size));
+  border-radius: calc(2vw / var(--layout-size));
   background-color: currentcolor;
 }
 
@@ -110,29 +119,30 @@ main.modal-wrapper > .modal {
 
 h4#upload-complete {
   font-weight: 700;
-  font-size: 36px;
+  font-size: calc(36vw / var(--layout-size));
   line-height: 125%;
   font-family: adobe-clean, arial, helvetica, sans-serif;
   color: #2c2c2c;
-  margin: 0 0 16px;
+  margin: 0 0 calc(16vw / var(--layout-size));
 }
 
 h4#upload-complete+p {
   font-family: adobe-clean, arial, helvetica, sans-serif;
   color: #2c2c2c;
   font-weight: 400;
-  font-size: 20px;
+  font-size: calc(20vw / var(--layout-size));
   line-height: 150%;
   margin: 0;
 }
 
 h4#upload-complete+p+p a {
-  margin: 35px 0 0;
+  margin: calc(35vw / var(--layout-size)) 0 0;
 }
 
 h4#upload-complete+p+p a.button {
   background-color: #3B63FB;
-  padding: 10px 32px;
+  padding: calc(10vw / var(--layout-size)) calc(32vw / var(--layout-size));
+  font-size: calc(16vw / var(--layout-size));
 }
 
 h4#upload-complete+p+p a.button:hover {
@@ -148,9 +158,12 @@ h4#upload-complete+p+p a.button:hover {
   bottom: 0;
   z-index: 999999;
   display: flex;
-  align-items: flex-start;      /* Positions at top */
-  justify-content: flex-end;    /* Positions at right */
-  padding: 20px;                /* Space from edges */
+  align-items: flex-start;
+  /* Positions at top */
+  justify-content: flex-end;
+  /* Positions at right */
+  padding: calc(20vw / var(--layout-size));
+  /* Space from edges */
   pointer-events: none;
 }
 
@@ -172,16 +185,20 @@ h4#upload-complete+p+p a.button:hover {
 }
 
 .firefly-modal-close-btn {
-  position: absolute;             /* Add this */
-  top: 16px;                      /* Add this */
-  right: 16px;                    /* Add this */
-  z-index: 10;                    /* Add this */
+  position: absolute;
+  /* Add this */
+  top: calc(16vw / var(--layout-size));
+  /* Add this */
+  right: calc(16vw / var(--layout-size));
+  /* Add this */
+  z-index: 10;
+  /* Add this */
   background: rgba(255, 255, 255, 0.2);
   border: none;
   color: white;
-  font-size: 20px;
-  width: 32px;
-  height: 32px;
+  font-size: calc(20vw / var(--layout-size));
+  width: calc(32vw / var(--layout-size));
+  height: calc(32vw / var(--layout-size));
   border-radius: 50%;
   cursor: pointer;
   display: flex;
@@ -202,8 +219,8 @@ h4#upload-complete+p+p a.button:hover {
 /* AEM Embed custom element styling */
 aem-embed {
   display: block;
-  width: 700px;
-  min-height: 232px;
+  width: calc(700vw / var(--layout-size));
+  min-height: calc(232vw / var(--layout-size));
 }
 
 /* Keep the existing action buttons and other styles below... */
