@@ -4,6 +4,34 @@
   /* CSS variables if needed */
   --modal-gradient-start: #667eea;
   --modal-gradient-end: #764ba2;
+  --background-color: transparent;
+  --light-color: #f8f8f8;
+  --dark-color: #505050;
+  --text-color: #131313;
+  --link-color: #3b63fb;
+  --link-hover-color: #1d3ecf;
+  --layout-size: 19.2;
+  /* fonts */
+  --body-font-family: "adobe-clean", arial, helvetica, sans-serif;
+  --heading-font-family: adobe-clean-display, sans-serif;
+
+  /* body sizes */
+  --body-font-size-m: calc(22vw / var(--layout-size));
+  --body-font-size-s: calc(19vw / var(--layout-size));
+  --body-font-size-xs: calc(17vw / var(--layout-size));
+
+  /* heading sizes */
+  --heading-font-size-xxl: calc(55vw / var(--layout-size));
+  --heading-font-size-xl: calc(44vw / var(--layout-size));
+  --heading-font-size-l: calc(34vw / var(--layout-size));
+  --heading-font-size-m: calc(27vw / var(--layout-size));
+  --heading-font-size-s: calc(24vw / var(--layout-size));
+  --heading-font-size-xs: calc(22vw / var(--layout-size));
+
+  /* nav heights */
+  --nav-height: calc(64vw / var(--layout-size));
+  --breadcrumbs-height: calc(34vw / var(--layout-size));
+  --header-height: var(--nav-height);
 }
 
 /* Firefly Notification Modal Block */
@@ -181,6 +209,32 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.firefly-notification-modal .button {
+  display: inline-flex;
+  min-width: 108.577px;
+  justify-content: center;
+  align-items: flex-start;
+  border-radius: 24.128px;
+  margin: calc(12vw / var(--layout-size)) 0 !important;
+  border: calc(2vw / var(--layout-size)) solid transparent !important;
+  border-radius: 2.4em;
+  padding: 0.5em 1.2em;
+  font-family: var(--body-font-family);
+  font-style: normal;
+  font-weight: 500 !important;
+  line-height: 1.25 !important;
+  text-align: center;
+  text-decoration: none;
+  background-color: var(--link-color) !important;
+  color: white !important;
+}
+
+.firefly-notification-modal .button[title="Retry"] {
+  background-color: white !important;
+  color: var(--text-color) !important;
+  border: calc(2vw / var(--layout-size)) solid var(--text-color) !important;
 }
 
 .firefly-notification-modal span.icon img {

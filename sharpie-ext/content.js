@@ -722,16 +722,6 @@
     // Create wrapper
     const modalWrapper = document.createElement('div');
     modalWrapper.className = 'firefly-modal-wrapper';
-
-    // Create close button
-    // const closeButton = document.createElement('button');
-    // closeButton.className = 'firefly-modal-close-btn';
-    // closeButton.innerHTML = '&times;';
-    // closeButton.setAttribute('aria-label', 'Dismiss');
-
-    const projectScript = document.createElement('script');
-    projectScript.textContent = `const _wsId = '${lastProjectId}';`;
-    document.body.appendChild(projectScript);
     
     // Create AEM Embed element
     const aemEmbed = document.createElement('aem-embed');
@@ -1100,7 +1090,7 @@
     // setTimeout(() => {
     //   console.log('🧪 Test: Creating modal...');
     //   createFireflyModal({
-    //     url: `${MODAL_URL}firefly-services-done`
+    //     url: `${MODAL_URL}boards-mini-placed`
     //   });
     // }, 1000);
 
