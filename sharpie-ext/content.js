@@ -1139,12 +1139,12 @@
     experienceName = experienceName.experienceName;
 
     // TEST: Trigger modal after 3 seconds for debugging
-    setTimeout(() => {
-      console.log('🧪 Test: Creating modal...');
-      createFireflyModal({
-        url: `${MODAL_URL}firefly-services-done`
-      });
-    }, 1000);
+    // setTimeout(() => {
+    //   console.log('🧪 Test: Creating modal...');
+    //   createFireflyModal({
+    //     url: `${MODAL_URL}firefly-services-done`
+    //   });
+    // }, 1000);
 
     if (experienceName && experienceName.includes('-'))
       experienceName = experienceName.replace(/-/g, '');

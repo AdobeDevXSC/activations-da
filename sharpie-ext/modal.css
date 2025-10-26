@@ -236,7 +236,7 @@
 /* Add this at the end of the file, before the responsive design section */
 
 /* Firefly Modal Overlay - positioned in upper right */
-.firefly-modal-overlay {
+aem-embed .firefly-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -252,12 +252,12 @@
   transition: opacity 0.3s ease;
 }
 
-.firefly-modal-overlay.show {
+aem-embed .firefly-modal-overlay.show {
   pointer-events: auto;
   opacity: 1;
 }
 
-.firefly-modal-wrapper {
+aem-embed .firefly-modal-wrapper {
   position: relative;
   transform: scale(0.7) translateY(-20px);
   opacity: 0;
@@ -265,13 +265,13 @@
   pointer-events: auto;
 }
 
-.firefly-modal-overlay.show .firefly-modal-wrapper {
+aem-embed .firefly-modal-overlay.show .firefly-modal-wrapper {
   transform: scale(1) translateY(0);
   opacity: 1;
 }
 
 /* AEM Embed in modal */
-.firefly-modal-wrapper aem-embed {
+aem-embed .firefly-modal-wrapper aem-embed {
   display: block;
   width: 700px;
   min-height: 232px;

@@ -144,7 +144,8 @@
   flex-shrink: 0;
 
   position: absolute;
-  top: -22px;   /* Completely outside the border */
+  top: -22px;
+  /* Completely outside the border */
   right: -16px;
   z-index: 10;
 
@@ -170,6 +171,23 @@
   display: inline-block;
   margin: 20px;
   overflow: visible;
+}
+
+.firefly-notification-modal span {
+  width: 75px;
+  height: 75px;
+  border-radius: 50px;
+  background: #E6E6E6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.firefly-notification-modal span.icon img {
+  display: block;
+  margin: auto;
+  width: 42.9px;
+  height: 42.9px;
 }
 
 .egg,
