@@ -681,7 +681,7 @@
       const script = document.createElement('script');
       script.type = 'module';
       // Load from extension instead of CDN
-      script.src = 'http://localhost:3000/scripts/aem-embed.js';
+      script.src = '/scripts/aem-embed.js';
 
       script.onload = () => {
         console.log('✅ AEM Embed component loaded from extension');

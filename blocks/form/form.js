@@ -270,7 +270,7 @@ export default async function decorate(block) {
     let handle;
     if (db) {
       handle = await loadHandle();
-      handleDisplay.textContent = `Folder selected: ${handle.name}`;
+      handleDisplay.textContent = `Folder selected: ${handle?.name}`;
     } else {
       handleDisplay.textContent = 'No handle selected';
     }
