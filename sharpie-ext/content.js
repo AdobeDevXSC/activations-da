@@ -683,7 +683,7 @@
       // Load from extension instead of CDN
       //MODAL_URL = 'https://main--activations-da--adobedevxsc.aem.live/sharpie/fragments/';
       const url = new URL(MODAL_URL);
-      script.src = `${url.host}/scripts/aem-embed.js`;
+      script.src = `${url.origin}/scripts/aem-embed.js`;
 
       script.onload = () => {
         console.log('✅ AEM Embed component loaded from extension');
