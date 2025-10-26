@@ -37,9 +37,9 @@
   overflow: hidden;
 }
 
-/* Support both iframe (legacy) and aem-embed */
+/* Support both iframe (legacy) and */
 .express-modal-content iframe,
-.express-modal-content aem-embed {
+.express-modal-content {
   width: 100%;
   height: 100%;
   flex: 1;
@@ -49,7 +49,7 @@
 }
 
 /* Remove any default margins/padding from embedded content */
-.express-modal-content aem-embed {
+.express-modal-content {
   margin: 0 !important;
   padding: 0 !important;
 }
@@ -236,7 +236,7 @@
 /* Add this at the end of the file, before the responsive design section */
 
 /* Firefly Modal Overlay - positioned in upper right */
-aem-embed .firefly-modal-overlay {
+.firefly-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -252,12 +252,12 @@ aem-embed .firefly-modal-overlay {
   transition: opacity 0.3s ease;
 }
 
-aem-embed .firefly-modal-overlay.show {
+.firefly-modal-overlay.show {
   pointer-events: auto;
   opacity: 1;
 }
 
-aem-embed .firefly-modal-wrapper {
+.firefly-modal-wrapper {
   position: relative;
   transform: scale(0.7) translateY(-20px);
   opacity: 0;
@@ -265,13 +265,13 @@ aem-embed .firefly-modal-wrapper {
   pointer-events: auto;
 }
 
-aem-embed .firefly-modal-overlay.show .firefly-modal-wrapper {
+.firefly-modal-overlay.show .firefly-modal-wrapper {
   transform: scale(1) translateY(0);
   opacity: 1;
 }
 
 /* AEM Embed in modal */
-aem-embed .firefly-modal-wrapper aem-embed {
+.firefly-modal-wrapper {
   display: block;
   width: 700px;
   min-height: 232px;

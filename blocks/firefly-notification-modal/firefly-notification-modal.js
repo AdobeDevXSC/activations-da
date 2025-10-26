@@ -1,8 +1,8 @@
 //import { fetchPlaceholders } from '../../scripts/placeholders.js';
 
 export default async function decorate(block) {
-  // const placeholders = window.placeholders || await fetchPlaceholders('sharpie');
-  //console.log('Placeholders:', placeholders);
+  const placeholders = window.placeholders || await fetchPlaceholders('sharpie');
+  console.log('Placeholders:', placeholders);
   console.log('🎨 [Firefly Modal] Starting decoration'); // eslint-disable-line no-console
 
   // Safety check
@@ -130,31 +130,31 @@ export default async function decorate(block) {
   // Append button to wrapper (not to block)
   wrapper.appendChild(closeButton);
 
-  // const retryButton = block.querySelector('a[title="Retry"]');
-  // if (retryButton) {
-  //   retryButton.addEventListener('click', () => {
-  //     console.log('🔔 Firefly modal retry button clicked'); // eslint-disable-line no-console
+  const retryButton = block.querySelector('a[title="Retry"]');
+  if (retryButton) {
+    retryButton.addEventListener('click', () => {
+      console.log('🔔 Firefly modal retry button clicked'); // eslint-disable-line no-console
      
-  //     let workstation = placeholders[localStorage.getItem('sharpie-workstation') || 'workstation-01'];
-  //     console.log('Found workstation:', workstation);
+      let workstation = placeholders[localStorage.getItem('sharpie-workstation') || 'workstation-01'];
+      console.log('Found workstation:', workstation);
 
-  //     if (!workstation) {
-  //       console.error('❌ Workstation not found in placeholders!');
-  //       return;
-  //     }
+      if (!workstation) {
+        console.error('❌ Workstation not found in placeholders!');
+        return;
+      }
 
 
-  //     const match = workstation.split('/').pop();
-  //     const projectId = match || null;
-  //     console.log('Project ID:', projectId);
+      const match = workstation.split('/').pop();
+      const projectId = match || null;
+      console.log('Project ID:', projectId);
 
-  //     if (window.location.hostname === 'firefly.adobe.com') {
-  //       window.dispatchEvent(new CustomEvent('executeSharpieWorkflow', {
-  //         detail: { workstationId: projectId }
-  //       }));
-  //     }
-  //   });
-  // }
+      if (window.location.hostname === 'firefly.adobe.com') {
+        window.dispatchEvent(new CustomEvent('executeSharpieWorkflow', {
+          detail: { workstationId: projectId }
+        }));
+      }
+    });
+  }
 
   console.log('✅ [Firefly Modal] Decoration complete'); // eslint-disable-line no-console
 }
