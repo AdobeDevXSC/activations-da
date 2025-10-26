@@ -14,7 +14,7 @@
   'use strict';
 
   window.hlx = window.hlx || {};
-  window.hlx.codeBasePath = 'http://localhost:3000';
+  window.hlx.codeBasePath = 'https://main--activations-da--adobedevxsc.aem.live';
   console.log('✅ hlx.codeBasePath set to:', window.hlx.codeBasePath); // eslint-disable-line no-console
 
   const STORAGE_KEY = 'expressModalShown';
