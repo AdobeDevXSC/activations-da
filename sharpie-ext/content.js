@@ -681,7 +681,7 @@
       const script = document.createElement('script');
       script.type = 'module';
       // Load from extension instead of CDN
-      MODAL_URL = 'https://main--activations-da--adobedevxsc.aem.live/sharpie/fragments/';
+      //MODAL_URL = 'https://main--activations-da--adobedevxsc.aem.live/sharpie/fragments/';
       const url = new URL(MODAL_URL);
       script.src = `${url.host}/scripts/aem-embed.js`;
 
