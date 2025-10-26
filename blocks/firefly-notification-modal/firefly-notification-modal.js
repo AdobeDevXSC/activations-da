@@ -131,7 +131,6 @@ export default async function decorate(block) {
     retryButton.addEventListener('click', (e) => {
       e.preventDefault();
       console.log('🔔 Firefly modal retry button clicked'); // eslint-disable-line no-console
-      console.log('Placeholders:', placeholders);
       let workstation = placeholders[localStorage.getItem('sharpie-workstation') || 'workstation-01'];
       console.log('Found workstation:', workstation);
 
