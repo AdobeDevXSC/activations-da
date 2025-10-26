@@ -1,4 +1,4 @@
-//import { fetchPlaceholders } from '../../scripts/placeholders.js';
+import { fetchPlaceholders } from '../../scripts/placeholders.js';
 
 export default async function decorate(block) {
   const placeholders = window.placeholders || await fetchPlaceholders('sharpie');
