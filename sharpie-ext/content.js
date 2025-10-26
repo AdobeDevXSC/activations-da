@@ -728,6 +728,10 @@
     // closeButton.className = 'firefly-modal-close-btn';
     // closeButton.innerHTML = '&times;';
     // closeButton.setAttribute('aria-label', 'Dismiss');
+
+    const projectScript = document.createElement('script');
+    projectScript.textContent = `const _wsId = '${lastProjectId}';`;
+    document.body.appendChild(projectScript);
     
     // Create AEM Embed element
     const aemEmbed = document.createElement('aem-embed');

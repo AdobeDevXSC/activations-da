@@ -362,15 +362,6 @@ body:has(.sketch-screen-1)::after {
   max-width: calc(635vw / var(--layout-size));
 }
 
-
-/* .sketch-screen.sketch-screen-5 .video-placeholder {
-  max-width: calc(1300vw / var(--layout-size));
-  margin: auto;
-} */
-
-
-
-
 .sketch-screen-container>.default-content-wrapper>p>picture>img {
   width: calc(350vw / var(--layout-size));
 }

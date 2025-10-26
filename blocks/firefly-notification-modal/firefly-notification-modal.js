@@ -44,10 +44,6 @@ export default async function decorate(block) {
   block.appendChild(contentContainer);
 
 
-  //window.dispatchEvent(new CustomEvent('executeSharpieWorkflow', {
-  //  detail: { workstationId: projectId }
-  //}));
-
   const dismissButton = block.querySelector('a[title="Dismiss"]');
   if (dismissButton) {
     // Add click event to dispatch custom event
@@ -132,18 +128,25 @@ export default async function decorate(block) {
       e.preventDefault();
       console.log('🔔 Firefly modal retry button clicked'); // eslint-disable-line no-console
       
-      if (!workstation) {
-        console.error('❌ Workstation not found in placeholders!');
-        return;
-      }
-
-      const projectId = '737615e-c33f-4acf-9c89-6757b91284f9';
-      
+     
       if (window.location.hostname === 'firefly.adobe.com') {
         window.dispatchEvent(new CustomEvent('executeSharpieWorkflow', {
-          detail: { workstationId: projectId }
+          detail: { workstationId: '' }
         }));
       }
+
+      const closeEvent = new CustomEvent('firefly-modal-close', {
+        bubbles: true,
+        composed: true,
+        detail: {
+          timestamp: Date.now(),
+          modalId: block.id || 'firefly-notification-modal'
+        }
+      });
+
+      retryButton.dispatchEvent(closeEvent);
+      window.dispatchEvent(closeEvent);
+      window.location.reload();
     });
   }
 
