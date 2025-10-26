@@ -131,8 +131,7 @@ export default async function decorate(block) {
     retryButton.addEventListener('click', (e) => {
       e.preventDefault();
       console.log('🔔 Firefly modal retry button clicked'); // eslint-disable-line no-console
-      console.log('Found workstation:', workstation);
-
+      
       if (!workstation) {
         console.error('❌ Workstation not found in placeholders!');
         return;
