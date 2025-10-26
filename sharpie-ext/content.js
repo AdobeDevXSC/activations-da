@@ -10,52 +10,6 @@
   });
 })();
 
-// Update the listenForFireflyModalClose function (around lines 14-50)
-(function listenForFireflyModalClose() {
-  console.log('🎧 Setting up firefly modal close listener'); // eslint-disable-line no-console
-  
-  // Listen on window for maximum compatibility
-  window.addEventListener('firefly-modal-close', (event) => {
-    console.log('🔔 Firefly modal closed!', event.detail); // eslint-disable-line no-console
-    
-    // Access event details
-    const { timestamp, modalId } = event.detail;
-    
-    console.log(`Modal ${modalId} closed at ${new Date(timestamp).toISOString()}`); // eslint-disable-line no-console
-    
-    // IMPORTANT: Actually remove the modal overlay
-    const modalOverlay = document.getElementById('firefly-custom-modal');
-    if (modalOverlay) {
-      console.log('🗑️ Removing modal overlay...'); // eslint-disable-line no-console
-      modalOverlay.classList.remove('show');
-      
-      // Remove after animation completes
-      setTimeout(() => {
-        modalOverlay.remove();
-        console.log('✅ Modal overlay removed'); // eslint-disable-line no-console
-      }, 400);
-    } else {
-      console.warn('⚠️ Modal overlay not found'); // eslint-disable-line no-console
-    }
-    
-    // Send to background script
-    try {
-      chrome.runtime.sendMessage({
-        type: 'FIREFLY_MODAL_CLOSED',
-        timestamp,
-        modalId
-      });
-    } catch (error) {
-      console.log('Could not send to background:', error); // eslint-disable-line no-console
-    }
-  });
-  
-  // Also listen on document for redundancy
-  document.addEventListener('firefly-modal-close', (event) => {
-    console.log('🔔 Firefly modal close event (document level)', event.detail); // eslint-disable-line no-console
-  });
-})();
-
 (function () {
   'use strict';
 
@@ -1139,12 +1093,12 @@
     experienceName = experienceName.experienceName;
 
     // TEST: Trigger modal after 3 seconds for debugging
-    // setTimeout(() => {
-    //   console.log('🧪 Test: Creating modal...');
-    //   createFireflyModal({
-    //     url: `${MODAL_URL}firefly-services-done`
-    //   });
-    // }, 1000);
+    setTimeout(() => {
+      console.log('🧪 Test: Creating modal...');
+      createFireflyModal({
+        url: `${MODAL_URL}firefly-services-done`
+      });
+    }, 1000);
 
     if (experienceName && experienceName.includes('-'))
       experienceName = experienceName.replace(/-/g, '');
@@ -1316,4 +1270,50 @@
     init();
   }
 
+})();
+
+// Update the listenForFireflyModalClose function (around lines 14-50)
+(function listenForFireflyModalClose() {
+  console.log('🎧 Setting up firefly modal close listener'); // eslint-disable-line no-console
+  
+  // Listen on window for maximum compatibility
+  window.addEventListener('firefly-modal-close', (event) => {
+    console.log('🔔 Firefly modal closed!', event.detail); // eslint-disable-line no-console
+    
+    // Access event details
+    const { timestamp, modalId } = event.detail;
+    
+    console.log(`Modal ${modalId} closed at ${new Date(timestamp).toISOString()}`); // eslint-disable-line no-console
+    
+    // IMPORTANT: Actually remove the modal overlay
+    const modalOverlay = document.getElementById('firefly-custom-modal');
+    if (modalOverlay) {
+      console.log('🗑️ Removing modal overlay...'); // eslint-disable-line no-console
+      modalOverlay.classList.remove('show');
+      
+      // Remove after animation completes
+      setTimeout(() => {
+        modalOverlay.remove();
+        console.log('✅ Modal overlay removed'); // eslint-disable-line no-console
+      }, 400);
+    } else {
+      console.warn('⚠️ Modal overlay not found'); // eslint-disable-line no-console
+    }
+    
+    // Send to background script
+    try {
+      chrome.runtime.sendMessage({
+        type: 'FIREFLY_MODAL_CLOSED',
+        timestamp,
+        modalId
+      });
+    } catch (error) {
+      console.log('Could not send to background:', error); // eslint-disable-line no-console
+    }
+  });
+  
+  // Also listen on document for redundancy
+  document.addEventListener('firefly-modal-close', (event) => {
+    console.log('🔔 Firefly modal close event (document level)', event.detail); // eslint-disable-line no-console
+  });
 })();
