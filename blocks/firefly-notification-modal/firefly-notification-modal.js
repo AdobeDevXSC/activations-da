@@ -1,8 +1,4 @@
-import { fetchPlaceholders } from '../../scripts/placeholders.js';
-
 export default async function decorate(block) {
-  const placeholders = window.placeholders || await fetchPlaceholders('sharpie');
-  console.log('Placeholders:', placeholders);
   console.log('🎨 [Firefly Modal] Starting decoration'); // eslint-disable-line no-console
 
   // Safety check
@@ -135,7 +131,7 @@ export default async function decorate(block) {
     retryButton.addEventListener('click', (e) => {
       e.preventDefault();
       console.log('🔔 Firefly modal retry button clicked'); // eslint-disable-line no-console
-     
+      console.log('Placeholders:', placeholders);
       let workstation = placeholders[localStorage.getItem('sharpie-workstation') || 'workstation-01'];
       console.log('Found workstation:', workstation);
 
@@ -144,11 +140,8 @@ export default async function decorate(block) {
         return;
       }
 
-
-      const match = workstation.split('/').pop();
-      const projectId = match || null;
-      console.log('Project ID:', projectId);
-
+      const projectId = '737615e-c33f-4acf-9c89-6757b91284f9';
+      
       if (window.location.hostname === 'firefly.adobe.com') {
         window.dispatchEvent(new CustomEvent('executeSharpieWorkflow', {
           detail: { workstationId: projectId }
