@@ -55,9 +55,9 @@ export default async function decorate(block) {
   const dismissButton = block.querySelector('a[title="Dismiss"]');
   if (dismissButton) {
     // Add click event to dispatch custom event
-    dismissButton.addEventListener('click', () => {
+    dismissButton.addEventListener('click', (e) => {
       console.log('🔔 Firefly modal close button clicked'); // eslint-disable-line no-console
-
+      e.preventDefault();
       // Dispatch custom event that bubbles up
       const closeEvent = new CustomEvent('firefly-modal-close', {
         bubbles: true,
@@ -100,9 +100,9 @@ export default async function decorate(block) {
   closeButton.setAttribute('aria-label', 'Dismiss');
 
   // Add click event to dispatch custom event
-  closeButton.addEventListener('click', () => {
+  closeButton.addEventListener('click', (e) => {
     console.log('🔔 Firefly modal close button clicked'); // eslint-disable-line no-console
-
+    e.preventDefault();
     // Dispatch custom event that bubbles up
     const closeEvent = new CustomEvent('firefly-modal-close', {
       bubbles: true,
@@ -132,7 +132,8 @@ export default async function decorate(block) {
 
   const retryButton = block.querySelector('a[title="Retry"]');
   if (retryButton) {
-    retryButton.addEventListener('click', () => {
+    retryButton.addEventListener('click', (e) => {
+      e.preventDefault();
       console.log('🔔 Firefly modal retry button clicked'); // eslint-disable-line no-console
      
       let workstation = placeholders[localStorage.getItem('sharpie-workstation') || 'workstation-01'];
