@@ -105,6 +105,7 @@ function nameToFilename(firstName, lastName) {
 
 async function handleSubmit(form) {
   const activation = getMetadata('theme');
+  if (!activation) return;
   if (form.getAttribute('data-submitting') === 'true') return;
   form.style.cursor = 'wait';
 
