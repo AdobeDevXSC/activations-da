@@ -2,6 +2,34 @@
 :host {
   /* CSS variables if needed */
   --layout-size: 19.2;
+  --background-color: white;
+  --light-color: #f8f8f8;
+  --dark-color: #505050;
+  --text-color: #131313;
+  --link-color: #3b63fb;
+  --link-hover-color: #1d3ecf;
+  --layout-size: 19.2;
+  /* fonts */
+  --body-font-family: "adobe-clean", arial, helvetica, sans-serif;
+  --heading-font-family: adobe-clean-display, sans-serif;
+
+  /* body sizes */
+  --body-font-size-m: calc(22vw / var(--layout-size));
+  --body-font-size-s: calc(19vw / var(--layout-size));
+  --body-font-size-xs: calc(17vw / var(--layout-size));
+
+  /* heading sizes */
+  --heading-font-size-xxl: calc(55vw / var(--layout-size));
+  --heading-font-size-xl: calc(44vw / var(--layout-size));
+  --heading-font-size-l: calc(34vw / var(--layout-size));
+  --heading-font-size-m: calc(27vw / var(--layout-size));
+  --heading-font-size-s: calc(24vw / var(--layout-size));
+  --heading-font-size-xs: calc(22vw / var(--layout-size));
+
+  /* nav heights */
+  --nav-height: calc(64vw / var(--layout-size));
+  --breadcrumbs-height: calc(34vw / var(--layout-size));
+  --header-height: var(--nav-height);
 }
 
 .sketch-screen-wrapper>[class*="sketch-screen"]:not(.sketch-screen-1):not(.cola-thank-you) {
@@ -361,15 +389,6 @@ body:has(.sketch-screen-1)::after {
 .sketch-screen.sketch-screen-4 .video-placeholder {
   max-width: calc(635vw / var(--layout-size));
 }
-
-
-/* .sketch-screen.sketch-screen-5 .video-placeholder {
-  max-width: calc(1300vw / var(--layout-size));
-  margin: auto;
-} */
-
-
-
 
 .sketch-screen-container>.default-content-wrapper>p>picture>img {
   width: calc(350vw / var(--layout-size));

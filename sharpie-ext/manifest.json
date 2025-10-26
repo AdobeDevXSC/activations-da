@@ -62,6 +62,8 @@
         "https://ext--activations-da--adobedevxsc.aem.page/*",
         "https://aem-embed--activations-da--adobedevxsc.aem.page/*",
         "https://aem-embed--activations-da--adobedevxsc.aem.live/*",
+        "https://firefly-modal--activations-da--adobedevxsc.aem.page/*",
+        "https://firefly-modal--activations-da--adobedevxsc.aem.live/*",
         "http://localhost:3000/*",
         "https://experience.adobe.com/*"
       ]
@@ -80,6 +82,8 @@
         "https://ext--activations-da--adobedevxsc.aem.page/*",
         "https://aem-embed--activations-da--adobedevxsc.aem.page/*",
         "https://aem-embed--activations-da--adobedevxsc.aem.live/*",
+        "https://firefly-modal--activations-da--adobedevxsc.aem.page/*",
+        "https://firefly-modal--activations-da--adobedevxsc.aem.live/*",
         "http://localhost:3000/*",
         "https://experience.adobe.com/*"
       ],

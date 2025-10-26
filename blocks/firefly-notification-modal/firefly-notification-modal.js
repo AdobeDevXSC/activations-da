@@ -1,79 +1,154 @@
-export default function decorate(block) {
-  console.log('🎨 [Firefly Notification Modal] Block decorated');
-  
-  // Get configuration from data attributes if present
-  const title = block.dataset.title || block.querySelector('h2')?.textContent || '🎨 Firefly Boards';
-  const content = block.dataset.content || block.querySelector('p')?.innerHTML || 'Notification content';
-  const autoDismiss = block.dataset.autoDismiss === 'true';
-  const dismissAfter = parseInt(block.dataset.dismissAfter || '5000', 10);
+export default async function decorate(block) {
+  console.log('🎨 [Firefly Modal] Starting decoration'); // eslint-disable-line no-console
 
-  // Setup auto-dismiss if configured from data attributes
-  if (autoDismiss) {
-    console.log('⏰ [Firefly Notification Modal] Auto-dismiss from data attribute');
-    setupAutoDismiss(block, dismissAfter);
+  // Safety check
+  if (!block || !block.parentElement) {
+    console.error('❌ [Firefly Modal] Block or parent element is null'); // eslint-disable-line no-console
+    return;
   }
 
-  // Store reference for external updates - ATTACH METHODS FIRST!
-  block.updateModal = (options) => {
-    console.log('📝 [Firefly Notification Modal] Update called:', options);
-    
-    if (options.title) {
-      const titleElement = block.querySelector('h2');
-      if (titleElement) titleElement.textContent = options.title;
-    }
-    
-    if (options.content) {
-      const contentElement = block.querySelector('p');
-      if (contentElement) contentElement.innerHTML = options.content;
-    }
-    
-    if (options.autoDismiss === true) {
-      console.log('⏰ [Firefly Notification Modal] Setting up auto-dismiss:', options.dismissAfter);
-      setupAutoDismiss(block, options.dismissAfter || 5000);
-    }
-  };
+  // Create two main containers
+  const iconContainer = document.createElement('div');
+  iconContainer.className = 'firefly-modal-icon';
 
-  block.closeModal = () => {
-    console.log('🔔 [Firefly Notification Modal] Close requested');
-    const dismissEvent = new CustomEvent('firefly-modal-dismiss', { 
-      bubbles: true, 
-      composed: true 
-    });
-    block.dispatchEvent(dismissEvent);
-  };
+  const contentContainer = document.createElement('div');
+  contentContainer.className = 'firefly-modal-content';
 
-  // NOW dispatch ready event AFTER methods are attached
-  console.log('✅ [Firefly Notification Modal] Methods attached, dispatching ready event');
-  const readyEvent = new CustomEvent('firefly-modal-ready', { 
-    bubbles: true, 
-    composed: true,  // This allows it to bubble through shadow DOM
-    detail: { block }
+  // Process all child divs
+  [...block.children].forEach(row => {
+    // Find the icon
+    const icon = row.querySelector('span.icon');
+
+    if (icon) {
+      // If this row has an icon, move just the icon to iconContainer
+      iconContainer.appendChild(icon);
+    } else {
+      // Everything else goes into contentContainer
+      // Extract the actual content (h2, p, links)
+      const content = row.querySelector('div');
+      if (content) {
+        contentContainer.appendChild(content);
+      }
+    }
   });
-  block.dispatchEvent(readyEvent);
-  console.log('✅ [Firefly Notification Modal] Ready event dispatched');
-}
 
-function setupAutoDismiss(block, delay) {
-  console.log('⏰ [setupAutoDismiss] Called with delay:', delay);
-  
-  // Remove any existing progress bars first
-  const existingProgress = block.querySelector('.progress');
-  if (existingProgress) {
-    existingProgress.remove();
+  [...contentContainer.querySelectorAll('a')].forEach(anchor => {
+    anchor.classList.add('button');
+  });
+
+  // Clear the block
+  block.innerHTML = '';
+
+  // Append the two containers
+  block.appendChild(iconContainer);
+  block.appendChild(contentContainer);
+
+
+  const dismissButton = block.querySelector('a[title="Dismiss"]');
+  if (dismissButton) {
+    // Add click event to dispatch custom event
+    dismissButton.addEventListener('click', (e) => {
+      console.log('🔔 Firefly modal close button clicked'); // eslint-disable-line no-console
+      e.preventDefault();
+      // Dispatch custom event that bubbles up
+      const closeEvent = new CustomEvent('firefly-modal-close', {
+        bubbles: true,
+        composed: true,
+        detail: {
+          timestamp: Date.now(),
+          modalId: block.id || 'firefly-notification-modal'
+        }
+      });
+
+      // Dispatch from both the button and the window for maximum compatibility
+      dismissButton.dispatchEvent(closeEvent);
+      window.dispatchEvent(closeEvent);
+      console.log('✅ firefly-modal-close event dispatched'); // eslint-disable-line no-console
+
+      // Hide the modal
+      wrapper.style.display = 'none';
+    });
   }
-  
-  // Add progress bar
-  const progressHTML = `
-    <div class="progress">
-      <div class="progress-bar" style="animation-duration: ${delay}ms;"></div>
-    </div>
-  `;
-  block.insertAdjacentHTML('beforeend', progressHTML);
-  console.log('📊 [setupAutoDismiss] Progress bar added');
 
-  // Auto-close after delay
-  setTimeout(() => {
-    console.log('⏰ [setupAutoDismiss] Timeout fired, triggering dismiss');
-    block.closeModal();
-  }, delay);
+  // Create a wrapper container for positioning
+  const wrapper = document.createElement('div');
+  wrapper.className = 'firefly-modal-wrapper';
+
+  // Store reference to parent before manipulation
+  const parent = block.parentElement;
+  if (!parent) {
+    console.error('❌ [Firefly Modal] No parent element found'); // eslint-disable-line no-console
+    return;
+  }
+
+  // Move the block into the wrapper
+  parent.insertBefore(wrapper, block);
+  wrapper.appendChild(block);
+
+  // Create close button as a sibling to the modal
+  const closeButton = document.createElement('button');
+  closeButton.className = 'firefly-modal-close-btn';
+  closeButton.innerHTML = '&times;';
+  closeButton.setAttribute('aria-label', 'Dismiss');
+
+  // Add click event to dispatch custom event
+  closeButton.addEventListener('click', (e) => {
+    console.log('🔔 Firefly modal close button clicked'); // eslint-disable-line no-console
+    e.preventDefault();
+    // Dispatch custom event that bubbles up
+    const closeEvent = new CustomEvent('firefly-modal-close', {
+      bubbles: true,
+      composed: true,
+      detail: {
+        timestamp: Date.now(),
+        modalId: block.id || 'firefly-notification-modal'
+      }
+    });
+
+    // Dispatch from both the button and the window for maximum compatibility
+    closeButton.dispatchEvent(closeEvent);
+    window.dispatchEvent(closeEvent);
+
+    if (window.location.hostname === 'next.frame.io') {
+      window.location.reload();
+    }
+
+    console.log('✅ firefly-modal-close event dispatched'); // eslint-disable-line no-console
+
+    // Hide the modal
+    wrapper.style.display = 'none';
+  });
+
+  // Append button to wrapper (not to block)
+  wrapper.appendChild(closeButton);
+
+  const retryButton = block.querySelector('a[title="Retry"]');
+  if (retryButton) {
+    retryButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      console.log('🔔 Firefly modal retry button clicked'); // eslint-disable-line no-console
+      
+     
+      if (window.location.hostname === 'firefly.adobe.com') {
+        window.dispatchEvent(new CustomEvent('executeSharpieWorkflow', {
+          detail: { workstationId: '' }
+        }));
+      }
+
+      const closeEvent = new CustomEvent('firefly-modal-close', {
+        bubbles: true,
+        composed: true,
+        detail: {
+          timestamp: Date.now(),
+          modalId: block.id || 'firefly-notification-modal'
+        }
+      });
+
+      retryButton.dispatchEvent(closeEvent);
+      window.dispatchEvent(closeEvent);
+      window.location.reload();
+    });
+  }
+
+  console.log('✅ [Firefly Modal] Decoration complete'); // eslint-disable-line no-console
 }

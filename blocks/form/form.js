@@ -164,17 +164,51 @@ async function handleSubmit(form) {
 }
 
 export default async function decorate(block) {
+  console.log('🚀 FORM.JS DECORATE CALLED!', block); // eslint-disable-line no-console
+  console.log('🚀 Block element:', block?.tagName, block?.className); // eslint-disable-line no-console
+  console.log('🚀 Current URL:', window.location.href); // eslint-disable-line no-console
+
+  let retryCount = 0;
+  const maxRetries = 10;
+
+  // Set up listener FIRST with better filtering
   window.addEventListener('message', (event) => {
+    // Only accept messages from same origin
+    if (event.source !== window) return;
+
     if (event.data.type === 'EXTENSION_ID') {
       extensionId = event.data.id;
-      console.log('Extension ID:', extensionId); // eslint-disable-line no-console
+      console.log('✅ Extension ID received:', extensionId); // eslint-disable-line no-console
     }
   });
 
-  // Small delay to ensure content script is loaded
-  setTimeout(() => {
+  // Request extension ID with debugging
+  console.log('🔍 Requesting extension ID...'); // eslint-disable-line no-console
+
+
+  const requestExtensionId = () => {
+    console.log(`📤 Sending GET_EXTENSION_ID request (attempt ${retryCount + 1}/${maxRetries})`); // eslint-disable-line no-console
     window.postMessage({ type: 'GET_EXTENSION_ID' }, '*');
-  }, 100);
+  };
+
+  // Initial request with delay
+  setTimeout(() => {
+    requestExtensionId();
+    
+    // Retry every 500ms until we get it or hit max retries
+    const retryInterval = setInterval(() => {
+      if (extensionId) {
+        clearInterval(retryInterval);
+        console.log('✅ Extension ID confirmed:', extensionId); // eslint-disable-line no-console
+      } else if (retryCount < maxRetries) {
+        retryCount++;
+        requestExtensionId();
+      } else {
+        clearInterval(retryInterval);
+        console.warn('⚠️ Extension not detected after max retries. Extension may not be installed or running.'); // eslint-disable-line no-console
+      }
+    }, 500);
+  }, 400);
 
   if (!block) {
     console.error('No block provided to decorate function'); // eslint-disable-line no-console
@@ -214,7 +248,7 @@ export default async function decorate(block) {
     console.error('Error decorating form block:', error); // eslint-disable-line no-console
     block.textContent = 'Failed to load form. Please try again later.';
   }
-  
+
   const form = block.querySelector('form');
   [...form.elements].forEach((field) => {
     field.setAttribute('autocomplete', 'one-time-code');

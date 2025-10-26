@@ -19,6 +19,8 @@ export class AEMEmbed extends HTMLElement {
     window.hlx = window.hlx || {};
     window.hlx.suppressLoadPage = true;
     [window.hlx.codeBasePath] = new URL(import.meta.url).pathname.split('/scripts/');
+    //window.hlx.codeBasePath = new URL(import.meta.url).origin;
+    console.log('🔔 hlx.codeBasePath:', new URL(import.meta.url).origin);
   }
 
   async loadBlock(body, block, blockName, origin) {
@@ -103,8 +105,8 @@ export class AEMEmbed extends HTMLElement {
     body.append(main);
     main.innerHTML = htmlText;
 
-    //const { decorateMain } = await import(`${origin}${window.hlx.codeBasePath}/scripts/scripts.js`);
-    const { decorateMain } = await import('https://aem-embed--activations-da--adobedevxsc.aem.page/scripts/scripts.js');
+    const { decorateMain } = await import(`${origin}${window.hlx.codeBasePath}/scripts/scripts.js`);
+    // const { decorateMain } = await import('http://localhost:3000/scripts/scripts.js');
     if (decorateMain) {
       await decorateMain(main, true);
     }
@@ -170,8 +172,7 @@ export class AEMEmbed extends HTMLElement {
 
         const styles = document.createElement('link');
         styles.setAttribute('rel', 'stylesheet');
-        // styles.setAttribute('href', `${origin}${window.hlx.codeBasePath}/styles/styles.css`);
-        styles.setAttribute('href', 'https://aem-embed--activations-da--adobedevxsc.aem.page/styles/styles.css');
+        styles.setAttribute('href', `${origin}${window.hlx.codeBasePath}/styles/styles.css`);
         styles.onload = () => { body.style = ''; };
         styles.onerror = () => { body.style = ''; };
         this.shadowRoot.appendChild(styles);

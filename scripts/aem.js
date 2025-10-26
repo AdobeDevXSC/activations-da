@@ -107,7 +107,7 @@ function setup() {
   const scriptEl = document.querySelector('script[src$="/scripts/scripts.js"]');
   if (scriptEl) {
     try {
-      [window.hlx.codeBasePath] = new URL(scriptEl.src).pathname.split('/scripts/scripts.js');
+      [window.hlx.codeBasePath] = new URL(scriptEl.src).pathname.split('/');
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
@@ -197,11 +197,12 @@ function readBlockConfig(block) {
  * @param {string} href URL to the CSS file
  */
 async function loadCSS(href) {
+  const { origin } = new URL(import.meta.url);
   return new Promise((resolve, reject) => {
     if (!document.querySelector(`head > link[href="${href}"]`)) {
       const link = document.createElement('link');
       link.rel = 'stylesheet';
-      link.href = href;
+      link.href = `${origin}${href}`;
       link.onload = resolve;
       link.onerror = reject;
       document.head.append(link);
@@ -399,12 +400,14 @@ function decorateButtons(element) {
  * @param {string} [alt] alt text to be added to icon
  */
 function decorateIcon(span, prefix = '', alt = '') {
+  console.log('🔔 import:', new URL(import.meta.url).origin);
+  const { origin } = new URL(import.meta.url);
   const iconName = Array.from(span.classList)
     .find((c) => c.startsWith('icon-'))
     .substring(5);
   const img = document.createElement('img');
   img.dataset.iconName = iconName;
-  img.src = `${window.hlx.codeBasePath}${prefix}/icons/${iconName}.svg`;
+  img.src = `${origin}${window.hlx.codeBasePath}${prefix}/icons/${iconName}.svg`;
   img.alt = alt;
   img.loading = 'lazy';
   span.append(img);
