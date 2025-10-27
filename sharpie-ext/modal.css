@@ -43,27 +43,9 @@
   overflow: hidden;
 }
 
-.express-modal-content .sketch-screen-4 {
-  border: none !important;
-  box-shadow: unset !important;
-}
-
-.express-modal-content .sketch-screen-4 .caption {
-  height: auto !important;
-}
-
-.express-modal-content .express-modal-close-btn {
-  top: calc(4vw / var(--layout-size));
-  right: calc(7vw / var(--layout-size));
-}
-
-.express-modal-content .sketch-screen-4 .video-placeholder {
-  margin-left: auto !important;
-}
-
-/* Support both iframe (legacy) and aem-embed */
+/* Support both iframe (legacy) and */
 .express-modal-content iframe,
-.express-modal-content aem-embed {
+.express-modal-content {
   width: 100%;
   height: 100%;
   flex: 1;
@@ -73,7 +55,7 @@
 }
 
 /* Remove any default margins/padding from embedded content */
-.express-modal-content aem-embed {
+.express-modal-content {
   margin: 0 !important;
   padding: 0 !important;
 }
@@ -257,198 +239,53 @@
   transform: scale(0.95);
 }
 
-/* Firefly Boards Modal - Non-blocking Overlay */
+/* Add this at the end of the file, before the responsive design section */
+
+/* Firefly Modal Overlay - positioned in upper right */
 .firefly-modal-overlay {
   position: fixed;
-  top: calc(20vw / var(--layout-size));
-  right: calc(20vw / var(--layout-size));
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 999999;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 20px;
   pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .firefly-modal-overlay.show {
   pointer-events: auto;
-}
-
-.firefly-modal-content {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: calc(16vw / var(--layout-size));
-  box-shadow: 0 calc(8vw / var(--layout-size)) calc(32vw / var(--layout-size)) rgba(0, 0, 0, 0.3);
-  max-width: calc(400vw / var(--layout-size));
-  width: calc(400vw / var(--layout-size));
-  overflow: hidden;
-  position: relative;
-  transform: translateX(calc(450vw / var(--layout-size)));
-  transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  pointer-events: auto;
-}
-
-.firefly-modal-overlay.show .firefly-modal-content {
-  transform: translateX(0);
-}
-
-.firefly-modal-header {
-  padding: calc(20vw / var(--layout-size));
-  background: rgba(255, 255, 255, 0.1);
-  border-bottom: calc(1vw / var(--layout-size)) solid rgba(255, 255, 255, 0.2);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.firefly-modal-title {
-  font-size: calc(20vw / var(--layout-size));
-  font-weight: 700;
-  color: white;
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: calc(10vw / var(--layout-size));
-  flex: 1;
+  opacity: 1;
 }
 
 .firefly-modal-wrapper {
   position: relative;
+  transform: scale(0.7) translateY(-20px);
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55), opacity 0.3s ease;
+  pointer-events: auto;
 }
 
-.firefly-modal-close-btn {
-  background: rgba(255, 255, 255, 0.2);
-  border: none;
-  color: white;
-  font-size: calc(20vw / var(--layout-size));
-  width: calc(32vw / var(--layout-size));
-  height: calc(32vw / var(--layout-size));
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
-  padding: 0;
-  line-height: 1;
-  flex-shrink: 0;
-
-  position: absolute;
-  top: calc(-13vw / var(--layout-size));
-  right: calc(-13vw / var(--layout-size));
-  z-index: 10;
+.firefly-modal-overlay.show .firefly-modal-wrapper {
+  transform: scale(1) translateY(0);
+  opacity: 1;
 }
 
-.firefly-modal-close-btn:hover {
-  background: rgba(255, 255, 255, 0.4);
-  transform: rotate(90deg);
+/* AEM Embed in modal */
+.firefly-modal-wrapper {
+  display: block;
+  width: 700px;
+  min-height: 232px;
 }
 
-.firefly-modal-body {
-  padding: calc(20vw / var(--layout-size));
-  color: white;
-  max-height: calc(400vw / var(--layout-size));
-  overflow-y: auto;
-}
-
-.firefly-modal-body p {
-  margin: 0 0 calc(12vw / var(--layout-size)) 0;
-  line-height: 1.6;
-  font-size: calc(15vw / var(--layout-size));
-}
-
-.firefly-modal-body p:last-child {
-  margin-bottom: 0;
-}
-
-/* Loading spinner */
-.firefly-modal-spinner {
-  border: calc(3vw / var(--layout-size)) solid rgba(255, 255, 255, 0.3);
-  border-top: calc(3vw / var(--layout-size)) solid white;
-  border-radius: 50%;
-  width: calc(32vw / var(--layout-size));
-  height: calc(32vw / var(--layout-size));
-  animation: firefly-spin 1s linear infinite;
-  margin: calc(12vw / var(--layout-size)) auto;
-}
-
-@keyframes firefly-spin {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-/* Auto-dismiss progress bar (optional) */
-.firefly-modal-progress {
-  height: calc(3vw / var(--layout-size));
-  background: rgba(255, 255, 255, 0.3);
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
-
-.firefly-modal-progress-bar {
-  height: 100%;
-  background: white;
-  width: 100%;
-  transform-origin: left;
-  animation: firefly-progress-shrink 5s linear forwards;
-}
-
-@keyframes firefly-progress-shrink {
-  from {
-    transform: scaleX(1);
-  }
-
-  to {
-    transform: scaleX(0);
-  }
-}
-
-/* Action buttons in modal body */
-.firefly-modal-actions {
-  display: flex;
-  gap: calc(10vw / var(--layout-size));
-  margin-top: calc(20vw / var(--layout-size));
-  padding-top: calc(16vw / var(--layout-size));
-  border-top: calc(1vw / var(--layout-size)) solid rgba(255, 255, 255, 0.2);
-}
-
-.firefly-modal-action-btn {
-  flex: 1;
-  padding: calc(12vw / var(--layout-size)) calc(20vw / var(--layout-size));
-  border: calc(2vw / var(--layout-size)) solid rgba(255, 255, 255, 0.4);
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  border-radius: calc(8vw / var(--layout-size));
-  font-size: calc(14vw / var(--layout-size));
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: calc(6vw / var(--layout-size));
-}
-
-.firefly-modal-action-btn:hover {
-  background: rgba(255, 255, 255, 0.3);
-  border-color: rgba(255, 255, 255, 0.6);
-  transform: translateY(calc(-2vw / var(--layout-size)));
-}
-
-.firefly-modal-action-btn:active {
-  transform: translateY(0);
-}
-
-.firefly-modal-action-btn.primary {
-  background: white;
-  color: #667eea;
-  border-color: white;
-}
-
-.firefly-modal-action-btn.primary:hover {
-  background: #f0f0f0;
+/* Responsive design */
+@media (max-width: 768px) {
+  /* existing express modal responsive styles... */
 }
 
 /* Responsive design */
