@@ -9,7 +9,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: rgba(0, 0, 0, 1);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -25,8 +25,8 @@
 /* Modal Content */
 .express-modal-content {
   position: relative;
-  width: calc(1708vw / var(--layout-size));
   max-width: 95vw;
+  max-width: calc(1400vw / var(--layout-size)) !important;
   /* Fallback for smaller screens */
   height: calc(100vh - calc(148vw / var(--layout-size)));
   max-height: calc(810vw / var(--layout-size));
@@ -41,6 +41,19 @@
   transform: scale(0.9);
   transition: transform 0.3s ease;
   overflow: hidden;
+  height: unset !important;
+}
+
+
+
+.express-modal-content aem-embed {
+  border-radius: calc(10vw / var(--layout-size)) !important;
+  overflow: hidden;
+  display: block;
+}
+
+.express-modal-overlay.show .express-modal-content {
+  overflow: unset !important;
 }
 
 /* Support both iframe (legacy) and */
@@ -206,11 +219,12 @@
   background: #a8a8a8;
 }
 
+
 /* Close Button - positioned absolutely over iframe */
 .express-modal-close-btn {
   position: absolute;
-  top: calc(16vw / var(--layout-size));
-  right: calc(16vw / var(--layout-size));
+  top: calc(-20vw / var(--layout-size));
+  right: calc(-20vw / var(--layout-size));
   z-index: 10;
   background: rgba(255, 255, 255, 0.95);
   border: calc(1vw / var(--layout-size)) solid #e0e0e0;
@@ -219,7 +233,7 @@
   border-radius: 50%;
   font-size: calc(32vw / var(--layout-size));
   line-height: 1;
-  color: #666;
+  color: #000;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -257,6 +271,8 @@
   opacity: 0;
   transition: opacity 0.3s ease;
 }
+
+
 
 .firefly-modal-overlay.show {
   pointer-events: auto;

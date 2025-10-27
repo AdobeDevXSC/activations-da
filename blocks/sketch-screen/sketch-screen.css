@@ -397,3 +397,21 @@ body:has(.sketch-screen-1)::after {
 .sketch-screen-container>.default-content-wrapper>p>picture>img {
   width: calc(350vw / var(--layout-size));
 }
+
+/* express modal css */
+.sketch-screen-4.express-modal * {
+  width: unset !important;
+  min-width: unset !important;
+}
+
+.sketch-screen-4.express-modal h2 {
+  font-size: calc(80vw / var(--layout-size)) !important;
+}
+
+.sketch-screen-4.express-modal>div>div {
+  width: 50% !important;
+}
+
+.sketch-screen-4.express-modal .caption {
+  height: auto !important;
+}

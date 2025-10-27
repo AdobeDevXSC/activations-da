@@ -88,7 +88,11 @@ export default async function decorate(block) {
   // Create close button as a sibling to the modal
   const closeButton = document.createElement('button');
   closeButton.className = 'firefly-modal-close-btn';
-  closeButton.innerHTML = '&times;';
+  closeButton.innerHTML = `
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M11.9506 9.56994L18.6454 2.87514C19.303 2.21831 19.303 1.15072 18.6454 0.49388C17.9885 -0.164627 16.921 -0.164627 16.2641 0.49388L9.56931 7.18868L2.87452 0.49388C2.21768 -0.164627 1.15009 -0.164627 0.493254 0.49388C-0.164418 1.15072 -0.164418 2.21831 0.493254 2.87514L7.18805 9.56994L0.493254 16.2647C-0.164418 16.9216 -0.164418 17.9891 0.493254 18.646C0.821673 18.9752 1.2532 19.1398 1.68389 19.1398C2.11458 19.1398 2.5461 18.9752 2.87452 18.646L9.56931 11.9512L16.2641 18.646C16.5925 18.9752 17.024 19.1398 17.4548 19.1398C17.8855 19.1398 18.3169 18.9752 18.6454 18.646C19.303 17.9891 19.303 16.9216 18.6454 16.2647L11.9506 9.56994Z" fill="black"/>
+</svg>
+`;
   closeButton.setAttribute('aria-label', 'Dismiss');
 
   // Add click event to dispatch custom event
@@ -127,8 +131,8 @@ export default async function decorate(block) {
     retryButton.addEventListener('click', (e) => {
       e.preventDefault();
       console.log('🔔 Firefly modal retry button clicked'); // eslint-disable-line no-console
-      
-     
+
+
       if (window.location.hostname === 'firefly.adobe.com') {
         window.dispatchEvent(new CustomEvent('executeSharpieWorkflow', {
           detail: { workstationId: '' }
