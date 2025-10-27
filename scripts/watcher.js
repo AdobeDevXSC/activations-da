@@ -62,6 +62,7 @@ function generateUUID() {
  */
 async function uploadToWorkfrontFusion(file, filename) {
   const activation = getMetadata('theme');
+
   const key = generateUUID();
   const ext = filename.split('.').pop();
   filename = `${key}.${ext}`;
@@ -326,6 +327,9 @@ async function pollFolder() {
       const quietEnough = (now - lastMod) >= STABILITY_MS;
       const isNewOrChanged = lastMod > previously;
 
+      console.log('quietEnough:', quietEnough);
+      console.log('isNewOrChanged:', isNewOrChanged);
+      
       if (quietEnough && isNewOrChanged) {
         // Mark lastModified in seen early to avoid duplicate work in this tick
         seen.set(name, lastMod);
