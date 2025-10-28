@@ -113,7 +113,7 @@ export default async function decorate(block) {
 
   if (experience === 'sharpie' && block.classList.contains('sketch-screen-1')) {
     const uploadButton = document.querySelector('.button-container a[title^="Upload "]');
-    uploadButton.addEventListener('click', (e) => {e.preventDefault(); uploadMini();});
+    // uploadButton.addEventListener('click', (e) => {e.preventDefault(); uploadMini();});
     dbExists().then(async (exists) => {
       if (exists) {
 

@@ -27,6 +27,55 @@ export async function saveHandle(handle) {
   });
 }
 
+export async function uploadMini() {
+  console.log('uploadMini');
+  console.log('seen:', seen);
+  const button = document.querySelector('.button-container a[title^="Upload "]');
+  button.style.cursor = 'wait';
+  button.pointerEvents = 'none';
+  seen.forEach(async (value, key) => {
+    let fileName = key;
+    let file = value;
+    console.log('fileName:', fileName);
+    try {
+      inFlight.add(fileName); // Mark as in-flight
+      const result = await uploadToWorkfrontFusion(file, fileName);
+      console.log(`📤 File uploaded: ${fileName}`, result);
+
+      // Delete the file after successful upload
+      try {
+        await dirHandle.removeEntry(fileName);
+        console.log(`🗑️ File deleted: ${fileName}`);
+
+        // Remove from seen map since file is deleted
+        seen.delete(fileName);
+      } catch (deleteError) {
+        console.error(`❌ Failed to delete ${fileName}:`, deleteError);
+        // File uploaded but couldn't be deleted - log but continue
+      }
+
+      // Trigger event for other parts of the app
+      window.dispatchEvent(new CustomEvent('fileUploaded', {
+        detail: { filename: fileName, result, deleted: true }
+      }));
+
+      button.style.cursor = 'unset';
+      button.pointerEvents = 'unset';
+
+    } catch (uploadError) {
+      console.error(`❌ Upload failed for ${fileName}:`, uploadError);
+      button.style.cursor = 'unset';
+      button.pointerEvents = 'unset';
+      // Optionally show user notification
+    } finally {
+      inFlight.delete(fileName); // Clear in-flight status
+      button.style.cursor = 'unset';
+      button.pointerEvents = 'unset';
+    }
+  });
+}
+
+
 export async function dbExists() {
   return new Promise((resolve, reject) => {
     const req = indexedDB.open(DB_NAME);
@@ -293,41 +342,41 @@ async function pollFolder() {
 
       console.log('quietEnough:', quietEnough);
       console.log('isNewOrChanged:', isNewOrChanged);
-      
+
       if (quietEnough && isNewOrChanged) {
-      //   // Mark lastModified in seen early to avoid duplicate work in this tick
+        //   // Mark lastModified in seen early to avoid duplicate work in this tick
         seen.set(name, file);
 
-      //   // Upload to Workfront Fusion
-      //   // Upload to Workfront Fusion
-      //   try {
-      //     inFlight.add(name); // Mark as in-flight
-      //     const result = await uploadToWorkfrontFusion(file, name);
-      //     console.log(`📤 File uploaded: ${name}`, result);
+        //   // Upload to Workfront Fusion
+        //   // Upload to Workfront Fusion
+        //   try {
+        //     inFlight.add(name); // Mark as in-flight
+        //     const result = await uploadToWorkfrontFusion(file, name);
+        //     console.log(`📤 File uploaded: ${name}`, result);
 
-      //     // Delete the file after successful upload
-      //     try {
-      //       await dirHandle.removeEntry(name);
-      //       console.log(`🗑️ File deleted: ${name}`);
+        //     // Delete the file after successful upload
+        //     try {
+        //       await dirHandle.removeEntry(name);
+        //       console.log(`🗑️ File deleted: ${name}`);
 
-      //       // Remove from seen map since file is deleted
-      //       seen.delete(name);
-      //     } catch (deleteError) {
-      //       console.error(`❌ Failed to delete ${name}:`, deleteError);
-      //       // File uploaded but couldn't be deleted - log but continue
-      //     }
+        //       // Remove from seen map since file is deleted
+        //       seen.delete(name);
+        //     } catch (deleteError) {
+        //       console.error(`❌ Failed to delete ${name}:`, deleteError);
+        //       // File uploaded but couldn't be deleted - log but continue
+        //     }
 
-      //     // Trigger event for other parts of the app
-      //     window.dispatchEvent(new CustomEvent('fileUploaded', {
-      //       detail: { filename: name, result, deleted: true }
-      //     }));
+        //     // Trigger event for other parts of the app
+        //     window.dispatchEvent(new CustomEvent('fileUploaded', {
+        //       detail: { filename: name, result, deleted: true }
+        //     }));
 
-      //   } catch (uploadError) {
-      //     console.error(`❌ Upload failed for ${name}:`, uploadError);
-      //     // Optionally show user notification
-      //   } finally {
-      //     inFlight.delete(name); // Clear in-flight status
-      //   }
+        //   } catch (uploadError) {
+        //     console.error(`❌ Upload failed for ${name}:`, uploadError);
+        //     // Optionally show user notification
+        //   } finally {
+        //     inFlight.delete(name); // Clear in-flight status
+        //   }
       }
       //stopPolling(); // eslint-disable-line no-use-before-define
     }

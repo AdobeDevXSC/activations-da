@@ -12,6 +12,7 @@ import {
   loadCSS,
   getMetadata,
 } from './aem.js';
+import { uploadMini } from './watcher.js';
 
 /** updating for cors */
 
@@ -85,13 +86,18 @@ async function loadFonts() {
   }
 }
 
+
 function autolinkModals(element) {
   element.addEventListener('click', async (e) => {
+    await uploadMini();
     const origin = e.target.closest('a');
     if (origin && origin.href && origin.href.includes('/modals/')) {
       e.preventDefault();
       const { openModal } = await import(`${window.hlx.codeBasePath}/blocks/modal/modal.js`);
-      openModal(origin.href);
+      setTimeout(async () => {
+        openModal(origin.href);
+      }, 3000);
+      //openModal(origin.href);
     }
   });
 }
