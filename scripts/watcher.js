@@ -329,7 +329,7 @@ async function pollFolder() {
       //     inFlight.delete(name); // Clear in-flight status
       //   }
       }
-      stopPolling(); // eslint-disable-line no-use-before-define
+      //stopPolling(); // eslint-disable-line no-use-before-define
     }
   } catch (err) {
     console.log('Poll error:', err?.message || err); // eslint-disable-line no-console
