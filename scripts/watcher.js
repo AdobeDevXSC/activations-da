@@ -7,6 +7,9 @@ const DB_NAME = 'sharpie-db';
 const AZURE_STORAGE_ACCOUNT = 'tpmmdemo';
 const AZURE_CONTAINER = 'max2025/Scans';
 const AZURE_SAS_TOKEN = 'sv=2022-11-02&ss=b&srt=co&sp=rwdactfx&se=2026-03-04T09:37:42Z&st=2025-03-04T01:37:42Z&spr=https&sig=rVAkVfco2DGx%2BQ4fz07SKEx3wxmgCRjTImY0IjkKOAY%3D'; // Or use a function to get this from chrome.storage
+export let file = null;
+export let dirHandle = null;
+export let fileName = null;
 
 let UPLOAD_BUTTON;
 export async function saveHandle(handle) {
@@ -60,8 +63,9 @@ function generateUUID() {
  * @param {string} filename - The name of the file
  * @returns {Promise<object>} - The response from the webhook
  */
-async function uploadToWorkfrontFusion(file, filename) {
+export async function uploadToWorkfrontFusion(file, filename) {
   const activation = getMetadata('theme');
+
   const key = generateUUID();
   const ext = filename.split('.').pop();
   filename = `${key}.${ext}`;
@@ -137,45 +141,6 @@ export async function loadHandle() {
   });
 }
 
-/**
- * Upload file to Azure Blob Storage
- * @param {File} file - The file to upload
- * @param {string} filename - The name to save the file as
- * @returns {Promise<string>} - The URL of the uploaded blob
- */
-async function uploadToAzure(file, filename) {
-  console.log(`☁️ Uploading ${filename} to Azure...`);
-
-  // Construct the blob URL
-  const blobUrl = `https://${AZURE_STORAGE_ACCOUNT}.blob.core.windows.net/${AZURE_CONTAINER}/${filename}${AZURE_SAS_TOKEN}`;
-
-  try {
-    // Upload using PUT request
-    const response = await fetch(blobUrl, {
-      method: 'PUT',
-      headers: {
-        'x-ms-blob-type': 'BlockBlob',
-        'Content-Type': file.type || 'application/octet-stream',
-        'x-ms-blob-content-type': file.type || 'application/octet-stream',
-      },
-      body: file,
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Azure upload failed: ${response.status} ${response.statusText} - ${errorText}`);
-    }
-
-    // Return the public URL (without SAS token for display)
-    const publicUrl = `https://${AZURE_STORAGE_ACCOUNT}.blob.core.windows.net/${AZURE_CONTAINER}/${filename}`;
-    console.log(`✅ Uploaded to Azure: ${publicUrl}`);
-
-    return publicUrl;
-  } catch (error) {
-    console.error('❌ Azure upload error:', error);
-    throw error;
-  }
-}
 
 async function ensurePermission(handle, mode = 'readwrite', forcePrompt = false) {
   if (!handle) {
@@ -225,8 +190,8 @@ async function ensurePermission(handle, mode = 'readwrite', forcePrompt = false)
 }
 
 // CONFIG
-const inFlight = new Set(); // filenames being uploaded
-const seen = new Map(); // filename -> lastProcessedModified
+export const inFlight = new Set(); // filenames being uploaded
+export const seen = new Map(); // filename -> lastProcessedModified
 const STABILITY_MS = 1500; // file must be 'quiet' for this long before upload
 const POLL_MS = 1000; // how often to poll
 let pollTimer = null;
@@ -234,7 +199,7 @@ let pollTimer = null;
 /** Core: list files and decide what to upload */
 
 async function pollFolder() {
-  const dirHandle = await loadHandle();
+  dirHandle = await loadHandle();
   if (!dirHandle) return;
   console.log('polling folder'); // eslint-disable-line no-console
   try {
@@ -308,9 +273,9 @@ async function pollFolder() {
       console.log('processing file', handle.kind, name); // eslint-disable-line no-console
 
       UPLOAD_BUTTON.classList.remove('disabled');
-      stopPolling(); // eslint-disable-line no-use-before-define
+      fileName = name;
 
-      let file;
+      // let file;
       try {
         file = await handle.getFile();
       } catch (e) {
@@ -326,41 +291,45 @@ async function pollFolder() {
       const quietEnough = (now - lastMod) >= STABILITY_MS;
       const isNewOrChanged = lastMod > previously;
 
+      console.log('quietEnough:', quietEnough);
+      console.log('isNewOrChanged:', isNewOrChanged);
+      
       if (quietEnough && isNewOrChanged) {
-        // Mark lastModified in seen early to avoid duplicate work in this tick
-        seen.set(name, lastMod);
+      //   // Mark lastModified in seen early to avoid duplicate work in this tick
+        seen.set(name, file);
 
-        // Upload to Workfront Fusion
-        // Upload to Workfront Fusion
-        try {
-          inFlight.add(name); // Mark as in-flight
-          const result = await uploadToWorkfrontFusion(file, name);
-          console.log(`📤 File uploaded: ${name}`, result);
+      //   // Upload to Workfront Fusion
+      //   // Upload to Workfront Fusion
+      //   try {
+      //     inFlight.add(name); // Mark as in-flight
+      //     const result = await uploadToWorkfrontFusion(file, name);
+      //     console.log(`📤 File uploaded: ${name}`, result);
 
-          // Delete the file after successful upload
-          try {
-            await dirHandle.removeEntry(name);
-            console.log(`🗑️ File deleted: ${name}`);
+      //     // Delete the file after successful upload
+      //     try {
+      //       await dirHandle.removeEntry(name);
+      //       console.log(`🗑️ File deleted: ${name}`);
 
-            // Remove from seen map since file is deleted
-            seen.delete(name);
-          } catch (deleteError) {
-            console.error(`❌ Failed to delete ${name}:`, deleteError);
-            // File uploaded but couldn't be deleted - log but continue
-          }
+      //       // Remove from seen map since file is deleted
+      //       seen.delete(name);
+      //     } catch (deleteError) {
+      //       console.error(`❌ Failed to delete ${name}:`, deleteError);
+      //       // File uploaded but couldn't be deleted - log but continue
+      //     }
 
-          // Trigger event for other parts of the app
-          window.dispatchEvent(new CustomEvent('fileUploaded', {
-            detail: { filename: name, result, deleted: true }
-          }));
+      //     // Trigger event for other parts of the app
+      //     window.dispatchEvent(new CustomEvent('fileUploaded', {
+      //       detail: { filename: name, result, deleted: true }
+      //     }));
 
-        } catch (uploadError) {
-          console.error(`❌ Upload failed for ${name}:`, uploadError);
-          // Optionally show user notification
-        } finally {
-          inFlight.delete(name); // Clear in-flight status
-        }
+      //   } catch (uploadError) {
+      //     console.error(`❌ Upload failed for ${name}:`, uploadError);
+      //     // Optionally show user notification
+      //   } finally {
+      //     inFlight.delete(name); // Clear in-flight status
+      //   }
       }
+      stopPolling(); // eslint-disable-line no-use-before-define
     }
   } catch (err) {
     console.log('Poll error:', err?.message || err); // eslint-disable-line no-console
@@ -370,7 +339,7 @@ async function pollFolder() {
 
 export async function startPolling(uploadButton) { // eslint-disable-line no-unused-vars
   UPLOAD_BUTTON = uploadButton;
-  const dirHandle = await loadHandle();
+  dirHandle = await loadHandle();
   if (!dirHandle) { console.log('Pick a folder first.'); return; } // eslint-disable-line no-console
   if (pollTimer) return;
   pollTimer = setInterval(pollFolder, POLL_MS);
