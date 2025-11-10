@@ -9,7 +9,7 @@ p {
 }
 
 body {
-
+  background-color: #000;
   font-family: "adobe-clean", Arial, Helvetica, sans-serif;
   padding: calc(74vw / var(--layout-size));
   color: #ffffff !important;
