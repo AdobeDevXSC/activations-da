@@ -9,10 +9,10 @@
   ],
   "action": {
     "default_icon": {
-      "16": "sharpie-icon.png",
-      "32": "sharpie-icon.png",
-      "48": "sharpie-icon.png",
-      "128": "sharpie-icon.png"
+      "16": "coca-cola-icon.png",
+      "32": "coca-cola-icon.png",
+      "48": "coca-cola-icon.png",
+      "128": "coca-cola-icon.png"
     },
     "default_title": "Adobe MAX 2025 Activations"
   },
@@ -32,10 +32,10 @@
     "service_worker": "background.js"
   },
   "icons": {
-    "16": "sharpie-icon.png",
-    "32": "sharpie-icon.png",
-    "48": "sharpie-icon.png",
-    "128": "sharpie-icon.png"
+    "16": "coca-cola-icon.png",
+    "32": "coca-cola-icon.png",
+    "48": "coca-cola-icon.png",
+    "128": "coca-cola-icon.png"
   },
   "web_accessible_resources": [
     {

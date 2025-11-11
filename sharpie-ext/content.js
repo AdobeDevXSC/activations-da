@@ -42,16 +42,26 @@
   }
   initModalUrl();
 
-  function getTargetURL() {
+  async function getTargetURL() {
 
     let liveUrl = placeholders.find(item => item.Key === 'live_url').Text;
     if (liveUrl.endsWith('/')) {
       liveUrl = liveUrl.slice(0, -1);
     }
 
-    const domain = placeholders.find(item => window.location.hostname.startsWith(item.Key))?.Text;
-    if (domain && domain.startsWith('http')) return domain;
-    else return `${liveUrl}${domain}`;
+    const experienceName = await chrome.storage.local.get(['experienceName']);
+    if (experienceName?.experienceName === 'coca-cola') {
+      liveUrl = await chrome.storage.local.get(['cocacolaUrl']);
+    }
+
+    let domain = placeholders.find(item => window.location.hostname.startsWith(item.Key))?.Text;
+   
+    if (domain && domain.startsWith('http')) {
+      const liveURL = new URL(liveUrl?.cocacolaUrl);
+      const domainUrl = new URL(domain);
+      domain = `${liveURL.origin}${domainUrl.pathname}`;
+      return domain;
+    } else return `${liveUrl}${domain}`;
   }
 
   // Check if modal has already been shown in this session
@@ -352,13 +362,13 @@
     }
   }
 
-  function createButton() {
+  async function createButton() {
     ensureStyles();
 
     const bar = document.createElement('div');
     bar.className = 'tmx-activation-bottom-bar';
 
-    const targetUrl = getTargetURL();
+    const targetUrl = await getTargetURL();
     console.log('targetUrl:', targetUrl);
     if (targetUrl.includes('[no button]')) return;
     MESSAGE = placeholders.find(item => item.Key === 'button_text').Text || MESSAGE;
@@ -1005,7 +1015,7 @@
       }
 
       // Notify user
-      setTimeout(() => {
+      setTimeout(async () => {
         createFireflyModal({
           url: `${MODAL_URL}boards-mini-placed`,
           autoDismiss: true,
@@ -1014,7 +1024,7 @@
             console.log('[Firefly Notification Modal] User acknowledged success');
           }
         });
-        createButton();
+        await createButton();
       }, 1000);
     }
     // Handle completion (treating as success with retry option)
@@ -1028,7 +1038,7 @@
       }
 
       // Show success modal with retry option
-      setTimeout(() => {
+      setTimeout(async () => {
         createFireflyModal({
           url: `${MODAL_URL}boards-mini-placed`,
           autoDismiss: true,
@@ -1065,7 +1075,7 @@
             console.log('Workflow modal closed');
           }
         });
-        createButton();
+        await createButton();
       }, 3000);
     }
   });
@@ -1101,7 +1111,7 @@
     console.log('Experience Name URL:', `${experienceName}Url`);
     const url = await chrome.storage.local.get([`${experienceName}Url`]).then(result => result[`${experienceName}Url`]);
     console.log('URL:', url);
-    fetch(url + 'placeholders.json').then(response => response.json()).then(data => {
+    fetch(url + 'placeholders.json').then(response => response.json()).then(async data => {
 
       placeholders = data.data;
 
@@ -1202,13 +1212,13 @@
       if (window.location.hostname.includes('next.frame.io')) {
         console.log('[Frame.io] Frame.io detected - starting asset monitoring');
         startFrameIOMonitoring();
-        createButton();
+        await createButton();
         return;
       }
 
       if (!window.location.hostname.includes('express.adobe.com')) {
         console.log('Express Modal: Not supported on this platform');
-        createButton();
+        await createButton();
         return;
       }
 
@@ -1216,7 +1226,7 @@
         console.log('Express Modal: Not supported on this platform');
         // Set up continuous replacement
         setupContinuousReplacement();
-        createButton();
+        await createButton();
         return;
       }
 
