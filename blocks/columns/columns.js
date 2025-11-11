@@ -13,6 +13,8 @@ export default async function decorate(block) {
 
   if (activation === 'coca-cola') {
     const { pathname } = window.location;
+    console.log(pathname);
+    return;
     if (session.genStudio && session.illustrator && window && pathname !== '/coca-cola/thankyou') window.location.href = '/coca-cola/thankyou';
     if (session.genStudio && !session.illustrator && window && pathname !== '/coca-cola/completion-page-marketer') window.location.href = '/coca-cola/completion-page-marketer';
     if (!session.genStudio && session.illustrator && window && pathname !== '/coca-cola/completion-page-designer') window.location.href = '/coca-cola/completion-page-designer';

@@ -12,6 +12,7 @@ import {
   loadCSS,
   getMetadata,
 } from './aem.js';
+
 import { uploadMini } from './watcher.js';
 
 /** updating for cors */
@@ -90,10 +91,7 @@ async function loadFonts() {
 function autolinkModals(element) {
   element.addEventListener('click', async (e) => {
     console.log('element:', element);
-    
-    if (uploadMini) {
-      await uploadMini();
-    }
+    await uploadMini();
     const origin = e.target.closest('a');
     if (origin && origin.href && origin.href.includes('/modals/')) {
       e.preventDefault();
