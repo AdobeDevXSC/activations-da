@@ -1,6 +1,12 @@
 import { fetchPlaceholders } from '../../scripts/placeholders.js';
 import { getMetadata } from '../../scripts/aem.js';
 
+function removeFilename(path) {
+  const parts = path.split('/');
+  parts.pop(); // Remove last element
+  return parts.join('/') || '/';
+}
+
 export default async function decorate(block) {
   const activation = getMetadata('theme');
   let session = localStorage.getItem(`${activation}-session`);
@@ -13,9 +19,10 @@ export default async function decorate(block) {
 
   if (activation === 'coca-cola') {
     const { pathname } = window.location;
-    if (session.genStudio && session.illustrator && window && pathname !== '/coca-cola/thankyou') window.location.href = '/coca-cola/thankyou';
-    if (session.genStudio && !session.illustrator && window && pathname !== '/coca-cola/completion-page-marketer') window.location.href = '/coca-cola/completion-page-marketer';
-    if (!session.genStudio && session.illustrator && window && pathname !== '/coca-cola/completion-page-designer') window.location.href = '/coca-cola/completion-page-designer';
+    const pathAdjusted = removeFilename(pathname);
+    if (session.genStudio && (session.illustrator || session.express) && window && !pathname.includes('thank-you-form')) window.location.href = `${pathAdjusted}/thank-you-form`;
+    if (session.genStudio && (!session.illustrator || !session.express) && window && !pathname.includes('completion-page-designer')) window.location.href = `${pathAdjusted}/completion-page-designer`;
+    if (!session.genStudio && (session.illustrator || session.express) && window && !pathname.includes('completion-page-marketer')) window.location.href = `${pathAdjusted}/completion-page-marketer`;
   }
   const placeholders = await fetchPlaceholders(activation);
 
