@@ -29,7 +29,7 @@ export default async function decorate(block) {
   block.querySelectorAll('a').forEach(async (a) => {
     const product = a.href.split('/').pop();
     const link = placeholders[product.toLowerCase()];
-    a.href = link;
+    if (link) a.href = link;
     a.addEventListener('click', async () => {
       session[product] = true;
       localStorage.setItem(`${activation}-session`, JSON.stringify(session));
@@ -55,6 +55,7 @@ export default async function decorate(block) {
   const cols = [...block.firstElementChild.children];
   block.classList.add(`columns-${cols.length}-cols`);
 
+  console.log(block.classList);
   // setup image columns
   [...block.children].forEach((row) => {
     [...row.children].forEach((col) => {
@@ -64,6 +65,36 @@ export default async function decorate(block) {
         if (picWrapper && picWrapper.children.length === 1) {
           // picture is only content in column
           picWrapper.classList.add('columns-img-col');
+        }
+      }
+      if (block.classList.contains('video')) {
+        console.log(col);
+        if (pic.nextElementSibling.tagName === 'A') {
+          const link = pic.nextElementSibling;
+          //col.classList.add('video-module-col');
+
+          const videoWrapper = pic.parentElement; //document.createElement('div');
+          videoWrapper.className = 'video-placeholder';
+          videoWrapper.append(pic);
+
+          videoWrapper.innerHTML = `<video loop muted playsInline>
+              <source data-src='${link.href}' type='video/mp4' />
+            </video>`;
+          const video = videoWrapper.querySelector('video');
+          const source = videoWrapper.querySelector('video > source');
+          const pl = pic; //.closest('div');
+          console.log(pl);
+          console.log(videoWrapper);
+          link.replaceWith(videoWrapper);
+          source.src = source.dataset.src;
+
+          video.load();
+          video.addEventListener('loadeddata', () => {
+            video.setAttribute('autoplay', true);
+            video.setAttribute('data-loaded', true);
+            video.play();
+          });
+          //.replaceWith(videoWrapper);
         }
       }
     });
