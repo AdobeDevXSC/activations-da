@@ -24,7 +24,11 @@ export default async function decorate(block) {
     if (session.genStudio && (!session.illustrator || !session.express) && window && !pathname.includes('completion-page-designer')) window.location.href = `${pathAdjusted}/completion-page-designer`;
     if (!session.genStudio && (session.illustrator || session.express) && window && !pathname.includes('completion-page-marketer')) window.location.href = `${pathAdjusted}/completion-page-marketer`;
   }
-  const placeholders = await fetchPlaceholders(activation);
+
+  const { pathname } = window.location;
+  let pathSegments = pathname.split('/');
+  pathSegments = pathSegments.slice(1, pathSegments.length - 1);
+  const placeholders = await fetchPlaceholders(pathSegments.join('/'));
 
   block.querySelectorAll('a').forEach(async (a) => {
     const product = a.href.split('/').pop();
@@ -55,7 +59,6 @@ export default async function decorate(block) {
   const cols = [...block.firstElementChild.children];
   block.classList.add(`columns-${cols.length}-cols`);
 
-  console.log(block.classList);
   // setup image columns
   [...block.children].forEach((row) => {
     [...row.children].forEach((col) => {
