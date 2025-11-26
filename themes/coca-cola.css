@@ -241,7 +241,9 @@ select::placeholder {
 }
 
 .be-a-designer-module-disabled .columns>div>div:nth-child(1) img,
-.be-a-marketer-module-disabled .columns>div>div:nth-child(2) img {
+.be-a-marketer-module-disabled .columns>div>div:nth-child(2) img,
+.be-a-designer-module-disabled .columns>div>div:nth-child(1) video,
+.be-a-marketer-module-disabled .columns>div>div:nth-child(2) video {
   filter: brightness(0.5);
 }
 
