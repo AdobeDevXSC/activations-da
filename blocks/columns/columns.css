@@ -5,10 +5,10 @@
 
 .columns img, .columns video {
   width: 100%;
-  background-color: #2C2C2C;
+  /* background-color: #2C2C2C; */
 } 
 
-.columns .video-placeholder {
+.columns .video-placeholder { 
   overflow: hidden;
   display: block;
 }
@@ -16,6 +16,7 @@
 .columns video {
   position: relative;
   right: -2px;
+  max-height: calc(450vw / var(--layout-size));
 }
 
 .columns > div > div {
@@ -82,10 +83,6 @@ main .custom-2-column-section {
   border: calc(1.5vw / var(--layout-size)) solid #444;
   transition: all 0.4s ease;
   position: relative;
-}
-
-.custom-2-column-section .columns>div>div:nth-child(1) {
-  background: #292929;
 }
 
 .custom-2-column-section .columns>div>div:hover {
