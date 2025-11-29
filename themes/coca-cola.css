@@ -89,12 +89,16 @@ main>.section {
 .intake-form h2+p {
   font-size: calc(24vw / var(--layout-size));
   line-height: calc(32vw / var(--layout-size));
-  border-top: calc(1vw / var(--layout-size)) solid #686868;
+  border-bottom: calc(1vw / var(--layout-size)) solid #686868;
   margin: 0;
-  padding: calc(30vw / var(--layout-size)) 0;
+  padding: 0 0 calc(30vw / var(--layout-size));
   font-weight: 400;
 }
 
+.intake-form h4 {
+  padding: calc(30vw / var(--layout-size)) 0;
+  margin: 0;
+}
 
 
 .intake-form .form.block form input,
