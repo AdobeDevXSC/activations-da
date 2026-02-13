@@ -182,6 +182,18 @@ intake-form form input[type="checkbox"]:checked {
   height: calc(59vw / var(--layout-size));
 }
 
+.submit-class-mwc button.button {
+  display: flex;
+  min-width: 109.929px;
+  justify-content: center;
+  align-items: flex-start;
+  border-radius: 24.429px !important;
+  border: 2.036px solid var(--white, #FFF) !important;
+  background: var(--Palette-transparent-black-25, rgba(0, 0, 0, 0.00)) !important;
+  width: calc(313vw / var(--layout-size)) !important;
+  height: calc(59vw / var(--layout-size)) !important;
+}
+
 .submit-class {
   text-align: center;
 }

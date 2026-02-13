@@ -20,9 +20,21 @@ export default async function decorate(block) {
   if (activation === 'coca-cola') {
     const { pathname } = window.location;
     const pathAdjusted = removeFilename(pathname);
-    if (session.genStudio && (session.illustrator || session.express) && window && !pathname.includes('thank-you-form')) window.location.href = `${pathAdjusted}/thank-you-form`;
-    if (session.genStudio && (!session.illustrator || !session.express) && window && !pathname.includes('completion-page-designer')) window.location.href = `${pathAdjusted}/completion-page-designer`;
-    if (!session.genStudio && (session.illustrator || session.express) && window && !pathname.includes('completion-page-marketer')) window.location.href = `${pathAdjusted}/completion-page-marketer`;
+    const hasDesign = session.illustrator || session.express;
+  
+    if (session.genStudio && (hasDesign || session.cja) && !pathname.includes('thank-you-form')) {
+      // Multiple products completed (genStudio + at least one other) → thank you
+      window.location.href = `${pathAdjusted}/thank-you-form`;
+    } else if (session.genStudio && hasDesign && !pathname.includes('completion-page-designer')) {
+      // genStudio + design tool(s), but no cja → designer completion
+      window.location.href = `${pathAdjusted}/completion-page-designer`;
+    } else if (session.genStudio && !hasDesign && !session.cja && !pathname.includes('completion-page-marketer')) {
+      // Only genStudio → marketer completion
+      window.location.href = `${pathAdjusted}/completion-page-marketer`;
+    } else if (session.cja && !session.genStudio && !hasDesign && !pathname.includes('completion-page-analyst')) {
+      // Only cja → analyst completion
+      window.location.href = `${pathAdjusted}/completion-page-analyst`;
+    }
   }
 
   const { pathname } = window.location;

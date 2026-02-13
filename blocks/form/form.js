@@ -168,6 +168,13 @@ export default async function decorate(block) {
   console.log('🚀 FORM.JS DECORATE CALLED!', block); // eslint-disable-line no-console
   console.log('🚀 Block element:', block?.tagName, block?.className); // eslint-disable-line no-console
   console.log('🚀 Current URL:', window.location.href); // eslint-disable-line no-console
+  if(block.parentElement.parentElement.classList.contains('mwc')) {
+    block.classList.add('mwc-form');
+    const fWrapper = block.parentElement;
+    const eAbove = fWrapper.previousElementSibling;
+    eAbove.classList.add('mwc-form-wrapper');
+    eAbove.append(fWrapper);
+  }
 
   let retryCount = 0;
   const maxRetries = 10;

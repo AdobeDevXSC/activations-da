@@ -1,0 +1,115 @@
+{
+  "name": "Adobe MAX 2025 Activations",
+  "version": "1.0",
+  "manifest_version": 3,
+  "description": "Extension to manage the Sharpie and Coca-Cola activations at Adobe MAX 2025",
+  "permissions": [
+    "storage",
+    "downloads"
+  ],
+  "action": {
+    "default_icon": {
+      "16": "coca-cola-icon.png",
+      "32": "coca-cola-icon.png",
+      "48": "coca-cola-icon.png",
+      "128": "coca-cola-icon.png"
+    },
+    "default_title": "Adobe MAX 2025 Activations"
+  },
+  "options_page": "options.html",
+  "externally_connectable": {
+    "matches": [
+      "https://main--activations-da--adobedevxsc.aem.live/*",
+      "https://ext--activations-da--adobedevxsc.aem.live/*",
+      "https://new-coke--activations-da--adobedevxsc.aem.live/*",
+      "https://new-coke--activations-da--adobedevxsc.aem.page/*",
+      "https://main--activations-da--adobedevxsc.aem.page/*",
+      "https://ext--activations-da--adobedevxsc.aem.page/*",
+      "https://aem-embed--activations-da--adobedevxsc.aem.page/*",
+      "https://aem-embed--activations-da--adobedevxsc.aem.live/*",
+      "http://localhost:3000/*"
+    ]
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "icons": {
+    "16": "coca-cola-icon.png",
+    "32": "coca-cola-icon.png",
+    "48": "coca-cola-icon.png",
+    "128": "coca-cola-icon.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "injected.js",
+        "icons/*.png"
+      ],
+      "matches": [
+        "*://firefly.adobe.com/*"
+      ]
+    },
+    {
+      "resources": [
+        "aem-embed.js"
+      ],
+      "matches": [
+        "*://new.express.adobe.com/*",
+        "*://express.adobe.com/*",
+        "*://next.frame.io/*",
+        "*://firefly.adobe.com/*",
+        "https://main--activations-da--adobedevxsc.aem.live/*",
+        "https://ext--activations-da--adobedevxsc.aem.live/*",
+        "https://main--activations-da--adobedevxsc.aem.page/*",
+        "https://ext--activations-da--adobedevxsc.aem.page/*",
+        "https://new-coke--activations-da--adobedevxsc.aem.live/*",
+        "https://new-coke--activations-da--adobedevxsc.aem.page/*",
+        "https://aem-embed--activations-da--adobedevxsc.aem.page/*",
+        "https://aem-embed--activations-da--adobedevxsc.aem.live/*",
+        "https://firefly-modal--activations-da--adobedevxsc.aem.page/*",
+        "https://firefly-modal--activations-da--adobedevxsc.aem.live/*",
+        "http://localhost:3000/*",
+        "https://experience.adobe.com/*"
+      ]
+    }
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "*://new.express.adobe.com/*",
+        "*://express.adobe.com/*",
+        "*://next.frame.io/*",
+        "*://firefly.adobe.com/*",
+        "https://main--activations-da--adobedevxsc.aem.live/*",
+        "https://ext--activations-da--adobedevxsc.aem.live/*",
+        "https://main--activations-da--adobedevxsc.aem.page/*",
+        "https://ext--activations-da--adobedevxsc.aem.page/*",
+        "https://aem-embed--activations-da--adobedevxsc.aem.page/*",
+        "https://aem-embed--activations-da--adobedevxsc.aem.live/*",
+        "https://new-coke--activations-da--adobedevxsc.aem.live/*",
+        "https://new-coke--activations-da--adobedevxsc.aem.page/*",
+        "https://firefly-modal--activations-da--adobedevxsc.aem.page/*",
+        "https://firefly-modal--activations-da--adobedevxsc.aem.live/*",
+        "http://localhost:3000/*",
+        "https://experience.adobe.com/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "css": [
+        "modal.css"
+      ],
+      "run_at": "document_end"
+    },
+    {
+      "matches": [
+        "*://firefly.adobe.com/*"
+      ],
+      "js": [
+        "page-context.js"
+      ],
+      "run_at": "document_end",
+      "world": "MAIN"
+    }
+  ]
+}

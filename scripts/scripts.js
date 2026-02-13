@@ -90,7 +90,7 @@ async function loadFonts() {
 
 function autolinkModals(element) {
   element.addEventListener('click', async (e) => {
-    // await uploadMini();
+    // await uploadMini(element);
     const origin = e.target.closest('a');
     if (origin && origin.href && origin.href.includes('/modals/')) {
       e.preventDefault();
