@@ -397,14 +397,14 @@ main div.completion-section .default-content-wrapper p:nth-child(1) {
   width: 100%;
   margin-top: calc(30vw / var(--layout-size));
 }
-
-.completion-section .form-wrapper .form>form button.button {
+/* 
+.completion-section .form-wrapper .form>form button.button:not(.submit-class-mwc) {
   padding: calc(15vw / var(--layout-size)) calc(30vw / var(--layout-size));
   width: unset;
   height: unset;
   margin: 0;
   font-size: calc(18vw / var(--layout-size));
-}
+} */
 
 .completion-section .form-wrapper .form>form .field-wrapper input[type="checkbox"] {
   appearance: none;
@@ -457,6 +457,35 @@ main div.completion-section.coca-cola-thank-you-section {
   border-color: #444444;
   max-width: calc(940vw / var(--layout-size));
   border-radius: calc(16vw / var(--layout-size));
+}
+
+main div.completion-section.coca-cola-thank-you-section.mwc {
+  background: unset;
+  border-color: unset;
+  max-width: unset;
+  border-radius: unset;
+  border: unset;
+}
+
+main div.completion-section.coca-cola-thank-you-section.mwc > .default-content-wrapper {
+  padding: calc(50vw / var(--layout-size)) calc(56vw / var(--layout-size));
+}
+
+main div.completion-section.coca-cola-thank-you-section.mwc > .default-content-wrapper:nth-child(1) {
+  padding-left: 0;
+}
+
+main div.completion-section.coca-cola-thank-you-section.mwc > .default-content-wrapper:nth-child(2) {
+  background: #242424;
+  border-color: #444444;
+  max-width: calc(940vw / var(--layout-size));
+  border-radius: calc(16vw / var(--layout-size));
+}
+
+main div.completion-section.coca-cola-thank-you-section.mwc {
+  max-width: calc(1680vw / var(--layout-size));
+  display:flex;
+  flex-direction: row;
 }
 
 .custom-video-image .default-content-wrapper {

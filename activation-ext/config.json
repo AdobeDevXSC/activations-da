@@ -1,0 +1,60 @@
+{
+  "aem": {
+    "codeBasePath": "https://main--activations-da--adobedevxsc.aem.live"
+  },
+  "defaults": {
+    "experienceName": "sharpie",
+    "iconChoice": "sharpie",
+    "sharpieUrl": "https://main--activations-da--adobedevxsc.aem.live/sharpie/",
+    "sharpieWorkstation": "",
+    "cocacolaUrl": "https://main--activations-da--adobedevxsc.aem.live/coca-cola/",
+    "fragmentsPath": "fragments/",
+    "modalUrl": "https://main--activations-da--adobedevxsc.aem.live/sharpie/fragments/"
+  },
+  "webhooks": {
+    "miniDownload": "https://hook.fusion.adobe.com/3acwvdptenz1x9wbka2z3cbyetv92cvq",
+    "frameIoPolling": "https://hook.app.workfrontfusion.com/zcgk2uute1mvxiywisamf8sw20lez9h6"
+  },
+  "workflow": {
+    "name": "sharpie-retrieve-image",
+    "target": "main",
+    "params": {
+      "x": -3919,
+      "y": -1067,
+      "height": 800,
+      "width": 800
+    }
+  },
+  "polling": {
+    "frameIoInterval": 5000,
+    "replacementInterval": 2000,
+    "navigationCheckInterval": 1000,
+    "workflowDispatchDelay": 3000,
+    "boardsReadyCheckInterval": 1000
+  },
+  "domains": {
+    "downloadFilter": "amazonaws.com",
+    "skipPlatforms": ["localhost", "aem.live", "aem.page"],
+    "firefly": "firefly.adobe.com",
+    "fireflyBoardsPath": "/boards/id/",
+    "frameIo": "next.frame.io",
+    "express": "express.adobe.com"
+  },
+  "brands": {
+    "sharpie": {
+      "icon": "sharpie-icon.png",
+      "startPage": "interstitial-screen-1",
+      "settingsPage": "settings"
+    },
+    "coca-cola": {
+      "icon": "coca-cola-icon.png",
+      "startPage": "",
+      "settingsPage": "setup"
+    }
+  },
+  "ui": {
+    "buttonId": "tmx-activation-complete-btn",
+    "storageKey": "expressModalShown",
+    "defaultButtonText": "Next step"
+  }
+}

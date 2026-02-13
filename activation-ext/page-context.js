@@ -7,7 +7,15 @@ window.addEventListener('executeSharpieWorkflow', async (event) => {
   console.log('[Page Context] Received workflow execution request:', event.detail);
 
   try {
-    const { workstationId } = event.detail;
+    const { workstationId, workflowConfig } = event.detail;
+
+    // Use workflow config from event (passed from config.json via content script),
+    // falling back to defaults for backward compatibility
+    const wf = workflowConfig || {
+      name: 'sharpie-retrieve-image',
+      target: 'main',
+      params: { x: -3919, y: -1067, height: 800, width: 800 }
+    };
 
     if (!workstationId) {
       console.error('[Page Context] No workstation ID provided');
@@ -19,17 +27,17 @@ window.addEventListener('executeSharpieWorkflow', async (event) => {
       return;
     }
 
-    console.log('[Page Context] Executing sharpie-retrieve-image workflow...');
+    console.log(`[Page Context] Executing ${wf.name} workflow...`);
     const result = await window.DEBUG.executeWorkflow(
-      "sharpie-retrieve-image",
+      wf.name,
       {
-        x: { value: -3919 },
-        y: { value: -1067 },
-        height: { value: 1080 },
-        width: { value: 800 },
+        x: { value: wf.params.x },
+        y: { value: wf.params.y },
+        height: { value: wf.params.height },
+        width: { value: wf.params.width },
         workstationId: { value: workstationId }
       },
-      "main"
+      wf.target
     );
 
     console.log('[Page Context] Workflow result:', result);
