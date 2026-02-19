@@ -13,9 +13,9 @@
 (function () {
   'use strict';
 
-  window.hlx = window.hlx || {};
-  window.hlx.codeBasePath = 'https://main--activations-da--adobedevxsc.aem.live';
-  console.log('✅ hlx.codeBasePath set to:', window.hlx.codeBasePath); // eslint-disable-line no-console
+  // window.hlx = window.hlx || {};
+  // window.hlx.codeBasePath = 'https://main--activations-da--adobedevxsc.aem.live';
+  // console.log('✅ hlx.codeBasePath set to:', window.hlx.codeBasePath); // eslint-disable-line no-console
 
   const STORAGE_KEY = 'expressModalShown';
   let placeholders = [];
@@ -24,7 +24,7 @@
   let installed = false;
   let lastProjectId = null; // Add this to store project ID for retry
   let showWorkflowModals = true; // Add this flag
-  let MODAL_URL = 'https://main--activations-da--adobedevxsc.aem.live/sharpie/fragments/';
+  let MODAL_URL = initModalUrl();
 
   // Initialize MODAL_URL from storage
   async function initModalUrl() {
@@ -75,7 +75,8 @@
     sessionStorage.setItem(STORAGE_KEY, 'true');
   }
   // Create and inject the modal using AEM Embed
-  async function createModal() {
+  async function createModal(modalName) {
+    console.log('createModal MODAL_URL:', MODAL_URL);
     // Load AEM Embed component
     await loadAEMEmbedComponent();
 
@@ -96,7 +97,7 @@
 
     // Create AEM Embed element
     const aemEmbed = document.createElement('aem-embed');
-    aemEmbed.setAttribute('url', `${MODAL_URL}express-modal`);
+    aemEmbed.setAttribute('url', `${MODAL_URL}${modalName}`);
     aemEmbed.setAttribute('shadow', 'true'); // Enable shadow DOM isolation
     aemEmbed.style.width = '100%';
     aemEmbed.style.height = '100%';
@@ -368,6 +369,7 @@
     const bar = document.createElement('div');
     bar.className = 'tmx-activation-bottom-bar';
 
+    //fix to use url from extension
     const targetUrl = await getTargetURL();
     console.log('targetUrl:', targetUrl);
     if (targetUrl.includes('[no button]')) return;
@@ -864,119 +866,119 @@
   }
 
   // ========== FRAME.IO MONITORING SYSTEM ==========
-  async function startFrameIOMonitoring() {
-    const WEBHOOK_URL = 'https://hook.app.workfrontfusion.com/zcgk2uute1mvxiywisamf8sw20lez9h6';
-    const POLL_INTERVAL = 5000; // 5 seconds
+  // async function startFrameIOMonitoring() {
+  //   const WEBHOOK_URL = 'https://hook.app.workfrontfusion.com/zcgk2uute1mvxiywisamf8sw20lez9h6';
+  //   const POLL_INTERVAL = 5000; // 5 seconds
 
-    let initialAssetCount = null;
-    let pollInterval = null;
+  //   let initialAssetCount = null;
+  //   let pollInterval = null;
 
-    console.log('📹 [Frame.io] Starting asset monitoring...');
+  //   console.log('📹 [Frame.io] Starting asset monitoring...');
 
-    async function checkAssetCount() {
-      try {
-        console.log('📡 [Frame.io] Requesting asset count from webhook...');
+  //   async function checkAssetCount() {
+  //     try {
+  //       console.log('📡 [Frame.io] Requesting asset count from webhook...');
 
-        // Check if extension context is still valid
-        if (!chrome.runtime?.id) {
-          console.log('⚠️ [Frame.io] Extension context invalidated, stopping polling');
-          if (pollInterval) {
-            clearInterval(pollInterval);
-            pollInterval = null;
-          }
-          return;
-        }
+  //       // Check if extension context is still valid
+  //       if (!chrome.runtime?.id) {
+  //         console.log('⚠️ [Frame.io] Extension context invalidated, stopping polling');
+  //         if (pollInterval) {
+  //           clearInterval(pollInterval);
+  //           pollInterval = null;
+  //         }
+  //         return;
+  //       }
 
-        let result, workstation;
-        try {
-          result = await chrome.storage.local.get(['sharpieWorkstation']);
-          workstation = placeholders.find(item => item.Key.toLowerCase() === result.sharpieWorkstation.toLowerCase());
-          console.log('[Frame.io] Workstation:', workstation);
-        } catch (err) {
-          if (err.message.includes('Extension context invalidated')) {
-            console.log('⚠️ [Frame.io] Extension was reloaded, stopping polling');
-            if (pollInterval) {
-              clearInterval(pollInterval);
-              pollInterval = null;
-            }
-            return;
-          }
-          throw err; // Re-throw if it's a different error
-        }
-        const projectId = workstation.Text.split('/').pop();
-        console.log('[Frame.io] Project ID:', window.location.pathname);
-        const response = await fetch(`${WEBHOOK_URL}?projectId=${projectId}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
+  //       let result, workstation;
+  //       try {
+  //         result = await chrome.storage.local.get(['sharpieWorkstation']);
+  //         workstation = placeholders.find(item => item.Key.toLowerCase() === result.sharpieWorkstation.toLowerCase());
+  //         console.log('[Frame.io] Workstation:', workstation);
+  //       } catch (err) {
+  //         if (err.message.includes('Extension context invalidated')) {
+  //           console.log('⚠️ [Frame.io] Extension was reloaded, stopping polling');
+  //           if (pollInterval) {
+  //             clearInterval(pollInterval);
+  //             pollInterval = null;
+  //           }
+  //           return;
+  //         }
+  //         throw err; // Re-throw if it's a different error
+  //       }
+  //       const projectId = workstation.Text.split('/').pop();
+  //       console.log('[Frame.io] Project ID:', window.location.pathname);
+  //       const response = await fetch(`${WEBHOOK_URL}?projectId=${projectId}`, {
+  //         method: 'GET',
+  //         headers: {
+  //           'Content-Type': 'application/json'
+  //         }
+  //       });
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
+  //       if (!response.ok) {
+  //         throw new Error(`HTTP error! status: ${response.status}`);
+  //       }
 
 
-        const data = await response.json();
-        const currentCount = parseInt(data) || 0;
+  //       const data = await response.json();
+  //       const currentCount = parseInt(data) || 0;
 
-        console.log(`📊 [Frame.io] Asset count: ${currentCount}`);
+  //       console.log(`📊 [Frame.io] Asset count: ${currentCount}`);
 
-        // Set initial count on first request
-        if (initialAssetCount === null) {
-          initialAssetCount = currentCount;
-          console.log(`📌 [Frame.io] Initial asset count set to: ${initialAssetCount}`);
-          return;
-        }
+  //       // Set initial count on first request
+  //       if (initialAssetCount === null) {
+  //         initialAssetCount = currentCount;
+  //         console.log(`📌 [Frame.io] Initial asset count set to: ${initialAssetCount}`);
+  //         return;
+  //       }
 
-        // Check if there's a new file
-        const newFilesCount = currentCount - initialAssetCount;
+  //       // Check if there's a new file
+  //       const newFilesCount = currentCount - initialAssetCount;
 
-        if (newFilesCount >= 1) {
-          console.log(`🎉 [Frame.io] New file detected! (${newFilesCount} new file(s))`);
+  //       if (newFilesCount >= 1) {
+  //         console.log(`🎉 [Frame.io] New file detected! (${newFilesCount} new file(s))`);
 
-          // Stop polling IMMEDIATELY
-          if (pollInterval) {
-            clearInterval(pollInterval);
-            pollInterval = null;
-            console.log('✅ [Frame.io] Polling stopped - new file detected');
-          }
+  //         // Stop polling IMMEDIATELY
+  //         if (pollInterval) {
+  //           clearInterval(pollInterval);
+  //           pollInterval = null;
+  //           console.log('✅ [Frame.io] Polling stopped - new file detected');
+  //         }
 
-          // Show notification with page reload on close
-          createFireflyModal({
-            url: `${MODAL_URL}firefly-services-done`,
-            autoDismiss: true,
-            dismissAfter: 5000,
-            onClose: () => {
-              console.log('🔄 [Frame.io] Refreshing page...');
-              window.location.reload();
-            }
-          });
+  //         // Show notification with page reload on close
+  //         // createFireflyModal({
+  //         //   url: `${MODAL_URL}firefly-services-done`,
+  //         //   autoDismiss: true,
+  //         //   dismissAfter: 5000,
+  //         //   onClose: () => {
+  //         //     console.log('🔄 [Frame.io] Refreshing page...');
+  //         //     window.location.reload();
+  //         //   }
+  //         // });
 
-          // Return early to prevent any further execution
-          return;
-        }
-      } catch (error) {
-        console.error('❌ [Frame.io] Error checking asset count:', error);
-      }
-    }
+  //         // Return early to prevent any further execution
+  //         return;
+  //       }
+  //     } catch (error) {
+  //       console.error('❌ [Frame.io] Error checking asset count:', error);
+  //     }
+  //   }
 
-    // Make initial request immediately
-    await checkAssetCount();
+  //   // Make initial request immediately
+  //   await checkAssetCount();
 
-    // Set up polling every 5 seconds
-    pollInterval = setInterval(checkAssetCount, POLL_INTERVAL);
-    console.log(`⏰ [Frame.io] Polling every ${POLL_INTERVAL / 1000} seconds`);
+  //   // Set up polling every 5 seconds
+  //   pollInterval = setInterval(checkAssetCount, POLL_INTERVAL);
+  //   console.log(`⏰ [Frame.io] Polling every ${POLL_INTERVAL / 1000} seconds`);
 
-    // Cleanup on page unload
-    window.addEventListener('beforeunload', () => {
-      if (pollInterval) {
-        clearInterval(pollInterval);
-        console.log('🧹 [Frame.io] Cleanup: Polling stopped');
-      }
-    });
-  }
-  // ========== END FRAME.IO MONITORING SYSTEM ==========
+  //   // Cleanup on page unload
+  //   window.addEventListener('beforeunload', () => {
+  //     if (pollInterval) {
+  //       clearInterval(pollInterval);
+  //       console.log('🧹 [Frame.io] Cleanup: Polling stopped');
+  //     }
+  //   });
+  // }
+  // // ========== END FRAME.IO MONITORING SYSTEM ==========
 
   async function boardsReadyCheck() {
     console.log('[Content Script] Requesting boards ready check');
@@ -1015,17 +1017,17 @@
       }
 
       // Notify user
-      setTimeout(async () => {
-        createFireflyModal({
-          url: `${MODAL_URL}boards-mini-placed`,
-          autoDismiss: true,
-          dismissAfter: 7000,
-          onClose: () => {
-            console.log('[Firefly Notification Modal] User acknowledged success');
-          }
-        });
-        await createButton();
-      }, 1000);
+      // setTimeout(async () => {
+      //   createFireflyModal({
+      //     url: `${MODAL_URL}boards-mini-placed`,
+      //     autoDismiss: true,
+      //     dismissAfter: 7000,
+      //     onClose: () => {
+      //       console.log('[Firefly Notification Modal] User acknowledged success');
+      //     }
+      //   });
+      //   await createButton();
+      // }, 1000);
     }
     // Handle completion (treating as success with retry option)
     else {
@@ -1038,45 +1040,45 @@
       }
 
       // Show success modal with retry option
-      setTimeout(async () => {
-        createFireflyModal({
-          url: `${MODAL_URL}boards-mini-placed`,
-          autoDismiss: true,
-          dismissAfter: 7000,
-          buttons: [
-            {
-              label: 'Retry',
-              icon: '',
-              primary: true,
-              onClick: (close) => {
-                if (lastProjectId) {
-                  console.log('Retrying workflow with projectId:', lastProjectId);
-                  showWorkflowModals = false;
-                  window.dispatchEvent(new CustomEvent('executeSharpieWorkflow', {
-                    detail: { workstationId: lastProjectId }
-                  }));
-                  close();
-                } else {
-                  console.error('No project ID available for retry');
-                  alert('Unable to retry - no project ID found');
-                }
-              }
-            },
-            {
-              label: 'Dismiss',
-              icon: '',
-              onClick: (close) => {
-                console.log('User dismissed modal');
-                close();
-              }
-            }
-          ],
-          onClose: () => {
-            console.log('Workflow modal closed');
-          }
-        });
-        await createButton();
-      }, 3000);
+      // setTimeout(async () => {
+      //   createFireflyModal({
+      //     url: `${MODAL_URL}boards-mini-placed`,
+      //     autoDismiss: true,
+      //     dismissAfter: 7000,
+      //     buttons: [
+      //       {
+      //         label: 'Retry',
+      //         icon: '',
+      //         primary: true,
+      //         onClick: (close) => {
+      //           if (lastProjectId) {
+      //             console.log('Retrying workflow with projectId:', lastProjectId);
+      //             showWorkflowModals = false;
+      //             window.dispatchEvent(new CustomEvent('executeSharpieWorkflow', {
+      //               detail: { workstationId: lastProjectId }
+      //             }));
+      //             close();
+      //           } else {
+      //             console.error('No project ID available for retry');
+      //             alert('Unable to retry - no project ID found');
+      //           }
+      //         }
+      //       },
+      //       {
+      //         label: 'Dismiss',
+      //         icon: '',
+      //         onClick: (close) => {
+      //           console.log('User dismissed modal');
+      //           close();
+      //         }
+      //       }
+      //     ],
+      //     onClose: () => {
+      //       console.log('Workflow modal closed');
+      //     }
+      //   });
+      //   await createButton();
+      // }, 3000);
     }
   });
 
@@ -1140,11 +1142,11 @@
           console.log('Boards are ready');
 
           // With auto-dismiss
-          createFireflyModal({
-            url: `${MODAL_URL}boards-processing`,
-            autoDismiss: false,
-            dismissAfter: 5000
-          });
+          // createFireflyModal({
+          //   url: `${MODAL_URL}boards-processing`,
+          //   autoDismiss: false,
+          //   dismissAfter: 5000
+          // });
 
 
           if (typeof chrome !== 'undefined' && chrome.storage) {
@@ -1205,14 +1207,13 @@
           }
         });
         intervalId = setInterval(boardsReadyCheck, 1000);
-        return;
-      }
 
-      // ADD THIS NEW FRAME.IO CHECK
-      if (window.location.hostname.includes('next.frame.io')) {
-        console.log('[Frame.io] Frame.io detected - starting asset monitoring');
-        startFrameIOMonitoring();
-        await createButton();
+        setTimeout(() => {
+          if (experienceName === 'sharpie') {
+            createModal('boards-modal');
+          }
+        }, 500);
+
         return;
       }
 
@@ -1258,7 +1259,7 @@
       // Wait a moment for page to load
       setTimeout(() => {
         if (experienceName === 'sharpie') {
-          createModal();
+          createModal('express-modal');
         }
       }, 500);
 

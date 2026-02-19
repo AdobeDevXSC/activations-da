@@ -4,6 +4,7 @@ console.log('[Page Context] DEBUG available:', typeof window.DEBUG !== 'undefine
 
 // Listen for workflow execution request from content script
 window.addEventListener('executeSharpieWorkflow', async (event) => {
+  
   console.log('[Page Context] Received workflow execution request:', event.detail);
 
   try {
@@ -25,12 +26,23 @@ window.addEventListener('executeSharpieWorkflow', async (event) => {
       {
         x: { value: -3919 },
         y: { value: -1067 },
-        height: { value: 1080 },
-        width: { value: 800 },
-        workstationId: { value: workstationId }
+        height: { value: 1580 },
+        width: { value: 1580 },
+        workstationId: { value: "4655e3b0-13f6-4b6e-8e6c-c6091f782b8b" }
       },
       "main"
     );
+    // const result = await window.DEBUG.executeWorkflow(
+    //   "sharpie-retrieve-image",
+    //   {
+    //     x: { value: -3919 },
+    //     y: { value: -1067 },
+    //     height: { value: 1080 },
+    //     width: { value: 800 },
+    //     workstationId: { value: workstationId }
+    //   },
+    //   "main"
+    // );
 
     console.log('[Page Context] Workflow result:', result);
     // ADD THESE DEBUG LINES:
