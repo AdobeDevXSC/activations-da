@@ -169,6 +169,7 @@ export default async function decorate(block) {
   console.log('🚀 Block element:', block?.tagName, block?.className); // eslint-disable-line no-console
   console.log('🚀 Current URL:', window.location.href); // eslint-disable-line no-console
   if(block.parentElement.parentElement.classList.contains('mwc')) {
+    console.log('🔍 Adding MWC form class to block'); // eslint-disable-line no-console
     block.classList.add('mwc-form');
     const fWrapper = block.parentElement;
     const eAbove = fWrapper.previousElementSibling;
@@ -224,8 +225,13 @@ export default async function decorate(block) {
   }
 
   const links = [...block.querySelectorAll('a')].map((a) => a.href);
+  console.log('🔍 Links:', links); // eslint-disable-line no-console
   const formLink = links.find((link) => link.startsWith(window.location.origin) && link.includes('.json'));
-  const confirmationLink = links.find((link) => link.startsWith(window.location.origin) && link !== formLink); // eslint-disable-line max-len
+  const confirmationLink = links.find((link) => {
+    if(link.startsWith(window.location.origin) && link !== formLink) return link;  
+    else if(link.includes('://firefly.adobe.com')) return link;
+  });
+  console.log('🔍 Confirmation Link:', confirmationLink); // eslint-disable-line no-console
 
   const submitLink = links.find((link) => link !== formLink);
 

@@ -106,8 +106,12 @@ main>.section {
   font-size: calc(14.78vw / var(--layout-size));
 }
 
-.adobecheckbox label#form-adobeupdate-label {
+.adobecheckbox label#form-adobeupdate-label, .adobecheckbox label#form-adobepermission-label {
   font-size: calc(12vw / var(--layout-size));
+}
+
+.adobecheckbox:first-of-type {
+  padding-bottom: 0 !important;
 }
 
 .intake-form input:-internal-autofill-selected {

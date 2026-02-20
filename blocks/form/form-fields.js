@@ -217,6 +217,8 @@ const FIELD_CREATOR_FUNCTIONS = {
   checkbox: (fd) => {
     const { field, fieldWrapper } = createInput(fd);
     if (!field.value) field.value = 'checked';
+    const defaultChecked = (fd.Placeholder || fd.placeholder || '').toLowerCase();
+    if (defaultChecked === 'checked') field.checked = true;
     fieldWrapper.classList.add('selection-wrapper');
     return { field, fieldWrapper };
   },
