@@ -169,12 +169,13 @@ export default async function decorate(block) {
   console.log('🚀 Block element:', block?.tagName, block?.className); // eslint-disable-line no-console
   console.log('🚀 Current URL:', window.location.href); // eslint-disable-line no-console
   if(block.parentElement.parentElement.classList.contains('mwc')) {
-    console.log('🔍 Adding MWC form class to block'); // eslint-disable-line no-console
     block.classList.add('mwc-form');
-    const fWrapper = block.parentElement;
+    const fWrapper = block.closest('.form-wrapper');
     const eAbove = fWrapper.previousElementSibling;
     eAbove.classList.add('mwc-form-wrapper');
     eAbove.append(fWrapper);
+    const vWrapper = block.parentElement.parentElement.parentElement.querySelector('.video-wrapper');
+    vWrapper.nextElementSibling.prepend(vWrapper);
   }
 
   let retryCount = 0;

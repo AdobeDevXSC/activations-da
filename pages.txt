@@ -1,0 +1,21 @@
+mwc pages:
+https://main--activations-da--adobedevxsc.aem.page/coca-cola/mwc/completion-page-analyst
+https://main--activations-da--adobedevxsc.aem.page/coca-cola/mwc/completion-page-marketer
+https://main--activations-da--adobedevxsc.aem.page/coca-cola/mwc/
+https://main--activations-da--adobedevxsc.aem.page/coca-cola/mwc/placeholders.json
+https://main--activations-da--adobedevxsc.aem.page/coca-cola/mwc/thank-you-form
+https://main--activations-da--adobedevxsc.aem.page/coca-cola/mwc/track-landing-page
+https://main--activations-da--adobedevxsc.aem.page/coca-cola/mwc/data/completion-form-data.json
+https://main--activations-da--adobedevxsc.aem.page/coca-cola/mwc/data/form.json
+https://main--activations-da--adobedevxsc.aem.page/sharpie/mwc/completion
+https://main--activations-da--adobedevxsc.aem.page/sharpie/mwc/
+https://main--activations-da--adobedevxsc.aem.page/sharpie/mwc/placeholders.json
+https://main--activations-da--adobedevxsc.aem.page/sharpie/mwc/screen-1
+https://main--activations-da--adobedevxsc.aem.page/sharpie/mwc/data/completion-form-data.json
+https://main--activations-da--adobedevxsc.aem.page/sharpie/mwc/fragments/boards-mini-placed
+https://main--activations-da--adobedevxsc.aem.page/sharpie/mwc/fragments/boards-modal
+https://main--activations-da--adobedevxsc.aem.page/sharpie/mwc/fragments/boards-processing
+https://main--activations-da--adobedevxsc.aem.page/sharpie/mwc/fragments/express-modal
+https://main--activations-da--adobedevxsc.aem.page/sharpie/mwc/fragments/firefly-modal
+https://main--activations-da--adobedevxsc.aem.page/sharpie/mwc/fragments/firefly-services-done
+https://main--activations-da--adobedevxsc.aem.page/sharpie/mwc/modals/frameio
