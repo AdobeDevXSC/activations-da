@@ -202,7 +202,7 @@ document.addEventListener('DOMContentLoaded', loadSettings);
 // Sharpie action buttons
 document.getElementById('sharpie-goto-experience')?.addEventListener('click', () => {
   chrome.storage.local.get(['sharpieUrl'], (result) => {
-    const url = (result.sharpieUrl || DEFAULTS.sharpieUrl) + 'interstitial-screen-1';
+    const url = (result.sharpieUrl || DEFAULTS.sharpieUrl);
     chrome.tabs.create({ url: url }, () => {
       showStatus('✓ Opened Sharpie experience', 'success');
     });
