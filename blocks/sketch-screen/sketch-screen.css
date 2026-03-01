@@ -290,6 +290,10 @@ body:has(.sketch-screen-1)::after {
   top: 60px;
 } */
 
+.sketch-screen-4 .caption {
+  top:-19px;
+}
+
 .sketch-screen-wrapper>[class*="sketch-screen"]:not(.sketch-screen-1):not(.sketch-screen-5):not(.cola-thank-you) div div:last-child>p:first-child {
   text-align: left;
   font-weight: 400;
