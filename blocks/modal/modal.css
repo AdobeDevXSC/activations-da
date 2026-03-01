@@ -30,6 +30,10 @@ body.modal-open {
   border-radius: calc(15vw / var(--layout-size));
 }
 
+.modal dialog img {
+  max-width: calc(262vw / var(--layout-size)) !important;
+}
+
 .modal-wrapper .modal-content {
   text-align: center;
   padding: 0;
