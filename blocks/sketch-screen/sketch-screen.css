@@ -313,6 +313,7 @@ body:has(.sketch-screen-1)::after {
   color: #222;
   position: relative;
   z-index: 1;
+  top:-19px;
 }
 
 .sketch-screen-5 p:first-child img {
