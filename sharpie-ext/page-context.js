@@ -21,14 +21,15 @@ window.addEventListener('executeSharpieWorkflow', async (event) => {
     }
 
     console.log('[Page Context] Executing sharpie-retrieve-image workflow...');
+    console.log('[Page Context] Executing sharpie-retrieve-image workflow...', workstationId);
     const result = await window.DEBUG.executeWorkflow(
       "sharpie-retrieve-image",
       {
         x: { value: -3919 },
         y: { value: -1067 },
-        height: { value: 1580 },
-        width: { value: 1580 },
-        workstationId: { value: "4655e3b0-13f6-4b6e-8e6c-c6091f782b8b" }
+        height: { value: 1070 },
+        width: { value: 1070 },
+        workstationId: { value: workstationId }
       },
       "main"
     );

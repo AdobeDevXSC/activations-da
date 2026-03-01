@@ -28,6 +28,7 @@ window.addEventListener('executeSharpieWorkflow', async (event) => {
     }
 
     console.log(`[Page Context] Executing ${wf.name} workflow...`);
+    console.log(`[Page Context] Executing ${workstationId} workflow...`);
     const result = await window.DEBUG.executeWorkflow(
       wf.name,
       {

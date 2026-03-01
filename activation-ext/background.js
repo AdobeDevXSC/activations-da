@@ -112,7 +112,7 @@ async function handleMiniDownload(item, suggest) {
         wsID: workstation,
         key: activationSession.split('-').pop()
       }
-
+      console.log('[Data]:', JSON.stringify(data));
       const webhookUrl = config.webhooks?.miniDownload;
       fetch(webhookUrl, {
         method: 'POST',
