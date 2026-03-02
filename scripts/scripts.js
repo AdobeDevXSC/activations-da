@@ -97,7 +97,7 @@ function autolinkModals(element) {
       const { openModal } = await import(`${window.hlx.codeBasePath}/blocks/modal/modal.js`);
       setTimeout(async () => {
         openModal(origin.href);
-      }, 3000);
+      }, 5000);
       //openModal(origin.href);
     }
   });
