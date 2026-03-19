@@ -1,0 +1,28 @@
+.completion-container {
+    width: 40%;
+}
+
+.completion-container .completion.block h1:first-of-type {
+    text-align: center;
+    margin-bottom: 40px;
+    scale: .8;
+}
+
+.completion-container .completion.block h1 {
+    margin: 0px;
+    font-size: 60px;
+    line-height: 60px;
+}
+
+.completion-container .completion.block picture {
+    margin: auto;
+}
+
+.completion-container .completion.block p {
+    margin-top: 20px;
+}
+
+.completion-container .completion .button-container {
+    text-align: center;
+    padding-top: 30px;
+}
