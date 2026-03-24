@@ -1,0 +1,316 @@
+import createField from './form-fields.js';
+import { saveHandle, loadHandle, dbExists } from '../../scripts/watcher.js';
+import { getMetadata } from '../../scripts/aem.js';
+
+let extensionId = null;
+
+// Helper function to send messages (waits for extension ID if needed)
+async function sendToExtension(message) {
+  // Wait for extension ID if not yet available
+  console.log('Waiting for extension ID', extensionId); // eslint-disable-line no-console
+  while (!extensionId) {
+    await new Promise((resolve) => { setTimeout(resolve, 100); });// eslint-disable-line no-await-in-loop
+  }
+
+  return new Promise((resolve, reject) => {
+    chrome.runtime.sendMessage(extensionId, message, (response) => { // eslint-disable-line no-undef
+      if (chrome.runtime.lastError) { // eslint-disable-line no-undef
+        reject(chrome.runtime.lastError); // eslint-disable-line no-undef
+      } else {
+        resolve(response);
+      }
+    });
+  });
+}
+
+async function createForm(formHref, submitHref, confirmationHref) {
+  const { pathname, search } = new URL(formHref);
+  const resp = await fetch(`${pathname}${search}`);
+  if (!resp.ok) {
+    throw new Error(`Failed to fetch form JSON: ${resp.statusText}`);
+  }
+  const json = await resp.json();
+
+  const form = document.createElement('form');
+  form.dataset.action = submitHref;
+  form.dataset.confirmation = confirmationHref;
+
+  const fields = await Promise.all(json.data.map((fd) => createField(fd, form)));
+  fields.forEach((field) => {
+    if (field) {
+      form.append(field);
+    }
+  });
+
+  const activation = document.body.classList[0];
+  const hiddenFields = form.querySelector('input[name="key"]');
+  const session = localStorage.getItem(`${activation}-session`);
+  if (hiddenFields && session) {
+    try {
+      const { key } = JSON.parse(session);
+      hiddenFields.value = key;
+    } catch (e) {
+      console.log('error parsing session', e); // eslint-disable-line no-console
+    }
+  }
+
+  // group fields into fieldsets if any
+  const fieldsets = form.querySelectorAll('fieldset');
+  fieldsets.forEach((fieldset) => {
+    form.querySelectorAll(`[data-fieldset="${fieldset.Name}"]`).forEach((field) => {
+      fieldset.append(field);
+    });
+  });
+
+  const workstationInput = document.createElement('input');
+  workstationInput.type = 'hidden';
+  workstationInput.name = 'sharpie-workstation';
+  workstationInput.value = localStorage.getItem('sharpie-workstation') || '';
+  form.append(workstationInput);
+
+  return form;
+}
+
+function generatePayload(form) {
+  const payload = {};
+  [...form.elements].forEach((field) => {
+    if (field.name && field.type !== 'submit' && !field.disabled) {
+      if (field.type === 'radio') {
+        if (field.checked) payload[field.name] = field.value;
+      } else if (field.type === 'checkbox') {
+        if (field.checked) {
+          payload[field.name] = payload[field.name]
+            ? `${payload[field.name]},${field.value}`
+            : field.value;
+        }
+      } else {
+        payload[field.name] = field.value;
+      }
+    }
+  });
+  return payload;
+}
+
+function nameToFilename(firstName, lastName) {
+  // Helper to sanitize a single name part - keep only a-z and A-Z
+  const sanitize = (str) => {
+    return str
+      .trim()
+      .replace(/[^a-zA-Z]/g, ''); // Remove anything that's not a letter
+  };
+
+  const cleanFirst = sanitize(firstName || '');
+  const cleanLast = sanitize(lastName || '');
+
+  // Join with underscore, handle empty cases
+  if (cleanFirst && cleanLast) {
+    return `${cleanFirst}_${cleanLast}`;
+  }
+  return cleanFirst || cleanLast || 'unnamed';
+}
+
+async function handleSubmit(form) {
+  const activation = getMetadata('theme');
+  if (!activation) return;
+  if (form.getAttribute('data-submitting') === 'true') return;
+  form.style.cursor = 'wait';
+
+  const submit = form.querySelector('button[type="submit"]');
+
+  form.setAttribute('data-submitting', 'true');
+  submit.style.cursor = 'wait';
+  submit.disabled = true;
+
+  const payload = generatePayload(form);
+  let session = localStorage.getItem(`${activation}-session`);
+  session = JSON.parse(session);
+
+  payload.key = session.key;
+  form.style.cursor = 'wait';
+
+  // not waiting for response
+  fetch(form.dataset.action, {
+    method: 'POST',
+    body: JSON.stringify({ data: payload }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    keepalive: true,
+  });
+
+  form.style.cursor = 'default';
+  if (form.dataset.confirmation && activation) {
+
+    if (payload && payload.firstName && payload.lastName) {
+      const { firstName, lastName } = payload;
+      const filename = nameToFilename(firstName, lastName);
+      session.fn = `${filename}-${session.key}`;
+
+      try {
+        const res = await sendToExtension({
+          type: 'activationSession',
+          payload: session.fn,
+        });
+        console.log('Response:', res); // eslint-disable-line no-console
+      } catch (error) {
+        console.error('Error:', error); // eslint-disable-line no-console
+        console.error('Extension ID', extensionId); // eslint-disable-line no-console
+      }
+
+      localStorage.setItem(`${activation}-session`, JSON.stringify(session));
+    } else {
+      localStorage.removeItem(`${activation}-session`);
+    }
+    setTimeout(() => {
+      window.location.href = form.dataset.confirmation;
+    }, 1000);
+  } else {
+    console.log('Form submitted successfully!'); // eslint-disable-line no-console
+    console.log(form.dataset); // eslint-disable-line no-console
+  }
+}
+
+export default async function decorate(block) {
+  console.log('🚀 FORM.JS DECORATE CALLED!', block); // eslint-disable-line no-console
+  console.log('🚀 Block element:', block?.tagName, block?.className); // eslint-disable-line no-console
+  console.log('🚀 Current URL:', window.location.href); // eslint-disable-line no-console
+  if(block.parentElement.parentElement.classList.contains('mwc')) {
+    block.classList.add('mwc-form');
+    const fWrapper = block.closest('.form-wrapper');
+    const eAbove = fWrapper.previousElementSibling;
+    eAbove.classList.add('mwc-form-wrapper');
+    eAbove.append(fWrapper);
+    const vWrapper = block.parentElement.parentElement.parentElement.querySelector('.video-wrapper');
+    vWrapper.nextElementSibling.prepend(vWrapper);
+  }
+
+  let retryCount = 0;
+  const maxRetries = 10;
+
+  // Set up listener FIRST with better filtering
+  window.addEventListener('message', (event) => {
+    // Only accept messages from same origin
+    if (event.source !== window) return;
+
+    if (event.data.type === 'EXTENSION_ID') {
+      extensionId = event.data.id;
+      console.log('✅ Extension ID received:', extensionId); // eslint-disable-line no-console
+    }
+  });
+
+  // Request extension ID with debugging
+  console.log('🔍 Requesting extension ID...'); // eslint-disable-line no-console
+
+
+  const requestExtensionId = () => {
+    console.log(`📤 Sending GET_EXTENSION_ID request (attempt ${retryCount + 1}/${maxRetries})`); // eslint-disable-line no-console
+    window.postMessage({ type: 'GET_EXTENSION_ID' }, '*');
+  };
+
+  // Initial request with delay
+  setTimeout(() => {
+    requestExtensionId();
+    
+    // Retry every 500ms until we get it or hit max retries
+    const retryInterval = setInterval(() => {
+      if (extensionId) {
+        clearInterval(retryInterval);
+        console.log('✅ Extension ID confirmed:', extensionId); // eslint-disable-line no-console
+      } else if (retryCount < maxRetries) {
+        retryCount++;
+        requestExtensionId();
+      } else {
+        clearInterval(retryInterval);
+        console.warn('⚠️ Extension not detected after max retries. Extension may not be installed or running.'); // eslint-disable-line no-console
+      }
+    }, 500);
+  }, 400);
+
+  if (!block) {
+    console.error('No block provided to decorate function'); // eslint-disable-line no-console
+    return;
+  }
+
+  const links = [...block.querySelectorAll('a')].map((a) => a.href);
+  console.log('🔍 Links:', links); // eslint-disable-line no-console
+  const formLink = links.find((link) => link.startsWith(window.location.origin) && link.includes('.json'));
+  const confirmationLink = links.find((link) => {
+    if(link.startsWith(window.location.origin) && link !== formLink) return link;  
+    else if(link.includes('://firefly.adobe.com')) return link;
+  });
+  console.log('🔍 Confirmation Link:', confirmationLink); // eslint-disable-line no-console
+
+  const submitLink = links.find((link) => link !== formLink);
+
+  if (!formLink || !confirmationLink) {
+    console.warn('Form JSON link or confirmation link endpoint missing in block'); // eslint-disable-line no-console
+  }
+
+  try {
+    const form = await createForm(formLink, submitLink, confirmationLink);
+    form.style.cursor = 'default';
+    form.querySelector('button[type="submit"]').style.cursor = 'default';
+    block.replaceChildren(form);
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const valid = form.checkValidity();
+      if (valid) {
+        handleSubmit(form);
+      } else {
+        const firstInvalidEl = form.querySelector(':invalid:not(fieldset)');
+        if (firstInvalidEl) {
+          firstInvalidEl.focus();
+          firstInvalidEl.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    });
+  } catch (error) {
+    console.error('Error decorating form block:', error); // eslint-disable-line no-console
+    block.textContent = 'Failed to load form. Please try again later.';
+  }
+
+  const form = block.querySelector('form');
+  [...form.elements].forEach((field) => {
+    field.setAttribute('autocomplete', 'one-time-code');
+  });
+
+  if (block.classList.contains('settings')) {
+    const handleSel = block.querySelector('.settings .handle > button');
+    handleSel.setAttribute('id', 'handle-select');
+    handleSel.setAttribute('class', 'handle-button');
+    const handleDisplay = document.createElement('label');
+    handleDisplay.setAttribute('id', 'handle-display-label');
+    handleDisplay.setAttribute('for', 'handle-select');
+    block.querySelector('.settings .handle').prepend(handleDisplay);
+
+    block.querySelector('form .button[type="submit"').style.display = 'none';
+    console.log('Form submit button hidden', block.querySelector('form .button[type="submit"'));
+
+    const db = await dbExists();
+    let handle;
+    if (db) {
+      handle = await loadHandle();
+      handleDisplay.textContent = `Folder selected: ${handle?.name}`;
+    } else {
+      handleDisplay.textContent = 'No handle selected';
+    }
+    handleSel.addEventListener('click', async () => {
+      handle = await window.showDirectoryPicker();
+      await saveHandle(handle);
+      handleDisplay.textContent = `Folder selected: ${handle.name}`;
+    });
+
+    const wkSelect = block.querySelector('#form-workstation');
+    wkSelect.value = localStorage.getItem('sharpie-workstation') || '';
+    wkSelect.addEventListener('change', async (e) => {
+      localStorage.setItem('sharpie-workstation', e.target.value);
+      console.log('Sending workstation to extension', e.target.value); // eslint-disable-line no-console
+      const response = await sendToExtension({
+        type: 'sharpie-workstation',
+        payload: e.target.value,
+      });
+      console.log('Response:', response); // eslint-disable-line no-console
+    });
+  }
+}
