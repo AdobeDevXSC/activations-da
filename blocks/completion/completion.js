@@ -15,7 +15,7 @@
         e.preventDefault();
         if (isDeleting) return;
         isDeleting = true;
-        await fetch("https://summit.svpoc.io/api/summit2026/deleteUserAssets?workstation=" + localStorage.getItem('sharpie-workstation'));
+        // await fetch("https://summit.svpoc.io/api/summit2026/deleteUserAssets?workstation=" + localStorage.getItem('sharpie-workstation'));
 
         const { href } = anchor;
         if (href) {
